@@ -1,0 +1,24 @@
+Stamply tells you in seconds whether you need a visa for your next trip.
+
+Pick your passport and your destination, and Stamply shows a clear result: visa-free, visa on arrival, electronic travel authorisation (ETA), e-Visa or visa required, plus the allowed stay where it is known.
+
+<b>Features</b>
+• Visa requirements for 199 passports and destinations
+• Allowed stay in days, where available
+• "Before you fly" tips for every trip
+• Explore every destination for your passport, filtered by status
+• Save trips and see your recent checks
+• Works fully offline: all data is built into the app
+• "Update data" downloads the latest visa data when you choose
+• Light and dark theme
+
+<b>Private by design</b>
+• No ads, no analytics, no tracking
+• No account or sign-in
+• Your checks stay on your device
+• Free and open source
+
+<b>Please note</b>
+Stamply gives general guidance only. Visa rules change often. Always confirm with the embassy or the official government website of your destination before you travel.
+
+Visa data: Passport Index Data (MIT License).

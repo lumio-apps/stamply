@@ -1,0 +1,168 @@
+import 'package:flutter/material.dart';
+
+import '../app_state.dart';
+import '../models.dart';
+import '../theme.dart';
+import '../widgets.dart';
+import 'country_picker_page.dart';
+import 'result_page.dart';
+
+/// "Explore" tab: every destination for the user's passport, grouped by status.
+class ExplorePage extends StatefulWidget {
+  const ExplorePage({super.key});
+
+  @override
+  State<ExplorePage> createState() => _ExplorePageState();
+}
+
+class _ExplorePageState extends State<ExplorePage> {
+  EntryStatus? _filter;
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final scope = AppScope.of(context);
+    final state = scope.state;
+    final data = scope.repo.data;
+    final extra = StamplyColors.of(context);
+    final passport = state.passport;
+    final b = Theme.of(context).brightness;
+
+    Future<void> choosePassport() async {
+      final code = await pickCountry(context, title: 'My passport', selected: passport);
+      if (code != null) state.setPassport(code);
+    }
+
+    if (passport == null) {
+      return SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.travel_explore, size: 56, color: extra.muted),
+                const SizedBox(height: 16),
+                Text('Where can I go?', style: Theme.of(context).textTheme.headlineSmall),
+                const SizedBox(height: 8),
+                Text(
+                  'Choose your passport to see every destination at a glance.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 15, color: extra.muted),
+                ),
+                const SizedBox(height: 24),
+                FilledButton(onPressed: choosePassport, child: const Text('Choose passport')),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    final all = data.destinationsFor(passport);
+    final counts = <EntryStatus, int>{};
+    for (final e in all) {
+      counts[e.value.status] = (counts[e.value.status] ?? 0) + 1;
+    }
+    final q = _query.trim().toLowerCase();
+    final shown = all
+        .where((e) => _filter == null || e.value.status == _filter)
+        .where((e) => q.isEmpty || data.nameOf(e.key).toLowerCase().contains(q))
+        .toList();
+    final easy = (counts[EntryStatus.visaFree] ?? 0) + (counts[EntryStatus.visaOnArrival] ?? 0);
+
+    return SafeArea(
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+            sliver: SliverList.list(
+              children: [
+                Text('Explore', style: Theme.of(context).textTheme.headlineMedium),
+                const SizedBox(height: 16),
+                CardBox(
+                  child: ListTile(
+                    onTap: choosePassport,
+                    leading: CountryBadge(code: passport),
+                    title: Text(data.nameOf(passport),
+                        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
+                    subtitle: Text('$easy destinations without a visa in advance',
+                        style: TextStyle(color: extra.muted)),
+                    trailing: const Icon(Icons.edit_outlined),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  onChanged: (v) => setState(() => _query = v),
+                  decoration: InputDecoration(
+                    labelText: 'Search destination',
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: extra.card,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    ChoiceChip(
+                      label: Text('All ${all.length}'),
+                      selected: _filter == null,
+                      onSelected: (_) => setState(() => _filter = null),
+                    ),
+                    for (final s in EntryStatus.values)
+                      if ((counts[s] ?? 0) > 0)
+                        ChoiceChip(
+                          avatar: Icon(s.icon, size: 18, color: s.foreground(b)),
+                          label: Text('${s.label} ${counts[s]}'),
+                          selected: _filter == s,
+                          onSelected: (on) => setState(() => _filter = on ? s : null),
+                        ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+          if (shown.isEmpty)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Text('No destinations match.',
+                    textAlign: TextAlign.center, style: TextStyle(color: extra.muted)),
+              ),
+            )
+          else
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 32),
+              sliver: SliverList.builder(
+                itemCount: shown.length,
+                itemBuilder: (context, i) {
+                  final e = shown[i];
+                  final check = TripCheck(passport, e.key);
+                  return ListTile(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    leading: CountryBadge(code: e.key, filled: false, size: 40),
+                    title: Text(data.nameOf(e.key), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    trailing: StatusPill(rule: e.value),
+                    onTap: () {
+                      state.addRecent(check);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ResultPage(check: check)),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
