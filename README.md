@@ -4,66 +4,134 @@
 
 # Stamply – Visa Checker
 
-**Check visa and entry requirements for 199 passports, fully offline.**
-Pick your passport and destination and see at a glance: visa-free, visa on arrival, ETA, e-Visa or visa required.
+**Do I need a visa? Find out in seconds — even offline.**
+
+Visa and entry requirements for **199 passports** to every destination.
+Visa-free, visa on arrival, ETA, e-Visa or visa required — with the allowed stay where it is known.
+
 No ads. No tracking. No account. Free and open source.
 
-[![Latest release](https://img.shields.io/github/v/release/lumio-apps/stamply?label=Download&color=C2441E)](https://github.com/lumio-apps/stamply/releases/latest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/lumio-apps/stamply?label=Download%20APK&color=C2441E)](https://github.com/lumio-apps/stamply/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-1B2A4A.svg)](LICENSE)
 ![Platform: Android](https://img.shields.io/badge/Platform-Android-3DDC84)
 ![Built with Flutter](https://img.shields.io/badge/Built%20with-Flutter-02569B)
+![Works offline](https://img.shields.io/badge/Works-Offline-2E8B6E)
 
 </div>
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/home.jpg" alt="Check screen: pick your passport and destination" width="200">
+  <img src="screenshots/explore.jpg" alt="Explore screen: every destination for your passport" width="200">
+  <img src="screenshots/settings.jpg" alt="Settings: theme and visa data updates" width="200">
+  <img src="screenshots/about.jpg" alt="About, privacy and data source" width="200">
+</p>
+
 ## Features
 
-- **Check**: choose your passport and destination, swap them with one tap, and get a clear result with a passport-stamp style status card
-- **Allowed stay** in days, where the data has it
-- **Before you fly** tips: passport validity, return ticket, proof of funds, official e-Visa sites
-- **Explore**: every destination for your passport, filtered by status, with search
-- **Saved** trips and **recent checks**
-- **Works offline**: all visa data is built into the app
-- **Update data** in Settings downloads the latest data file from this repository — no server, no account, no personal data sent
-- Light and dark theme
+### ✅ Check
+- Pick your **passport** and **destination** from a searchable list of 199 countries
+- **Swap** them with one tap
+- Clear result card styled like a passport stamp
+- **Allowed stay** in days, where available
+- **Before you fly** tips: passport validity, return ticket, proof of funds, and a warning about fake e-Visa websites
+- **Recent checks** with their status at a glance
 
-## Visa data
+### 🌍 Explore
+- Every destination for your passport in one list
+- See how many countries you can visit **without a visa in advance**
+- Filter by status: Visa-free, Visa on arrival, ETA, e-Visa, Visa required
+- Search any destination
 
-Stamply uses the open [Passport Index Data](https://github.com/imorte/passport-index-data) (MIT License), converted to a compact file at `assets/data/visa_data.json` by `tool/build_data.py`.
+### 🔖 Saved
+- Bookmark trips from the result screen
+- Swipe to remove
 
-A GitHub Action (`.github/workflows/update-data.yml`) rebuilds this file on the 1st of every month. The app's **Update data** button downloads the same file from the `main` branch, so users get new rules without an app update.
+### ⚙️ Settings
+- Light, dark or system theme
+- **Update data**: download the latest visa data with one tap
+- In-app **Check for updates** (GitHub APK)
 
-To rebuild it by hand:
+## How the data works
+
+| | |
+| --- | --- |
+| **Built in** | All visa data ships inside the app, so Stamply works with no internet at all — even at the airport. |
+| **Optional update** | **Settings → Update data** downloads one static file, [`assets/data/visa_data.json`](assets/data/visa_data.json), from this repository. No server, no account, no personal data sent. |
+| **Monthly refresh** | A GitHub Action ([`update-data.yml`](.github/workflows/update-data.yml)) rebuilds the file from the open [Passport Index Data](https://github.com/imorte/passport-index-data) on the 1st of every month. |
+
+Rebuild the data by hand:
 
 ```bash
 python3 tool/build_data.py
 ```
 
-> **Disclaimer:** Stamply gives general guidance only. Visa rules change often. Always confirm with the embassy or the official government website of your destination before you travel.
+> [!IMPORTANT]
+> Stamply gives **general guidance only**. Visa rules change often. Always confirm with the embassy or the official government website of your destination before you travel.
 
-## Build
+## Privacy
+
+- ❌ No ads
+- ❌ No analytics, crash reporting or tracking
+- ❌ No account or sign-in
+- ✅ Your passport, saved trips and recent checks stay on your device
+- 🌐 Internet is used **only** when you tap **Update data** or **Check for updates**
+
+Full policy: [PRIVACY.md](PRIVACY.md)
+
+## Download
+
+Get the latest APK from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)**.
+Google Play and F-Droid versions are coming soon.
+
+## Build from source
+
+Requirements: [Flutter](https://flutter.dev) (stable channel) and Java 17.
 
 ```bash
+git clone https://github.com/lumio-apps/stamply.git
+cd stamply
 flutter pub get
 flutter analyze
 flutter build apk --release
 ```
 
-Google Play build (no in-app updater):
+Google Play build (without the in-app updater):
 
 ```bash
 flutter build appbundle --release --dart-define=SELF_UPDATE=false
 ```
 
-Releases are built and signed by GitHub Actions when a version tag (for example `v0.1.0`) is pushed. Required secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
+### Releases
 
-## Privacy
+Pushing a version tag (for example `v0.1.0`) makes GitHub Actions build, sign and publish the APK, plus a Play Store bundle as a workflow download.
 
-See [PRIVACY.md](PRIVACY.md). In short: no data collection, and internet is used only when you tap **Update data** or **Check for updates**.
+Required repository secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
+
+## Project structure
+
+```
+lib/
+├── main.dart               App entry and bottom navigation
+├── theme.dart              Colors, fonts, light and dark themes
+├── models.dart             Entry status, visa rule, trip
+├── visa_repository.dart    Bundled data + optional download
+├── app_state.dart          Saved trips, recent checks, settings
+├── update_service.dart     In-app updater (GitHub APK)
+├── widgets.dart            Shared UI pieces and the logo
+└── pages/                  Check, Explore, Saved, Settings, Result, Country picker
+tool/build_data.py          Builds visa_data.json from Passport Index Data
+```
 
 ## Credits
 
 - Visa data: [Passport Index Data](https://github.com/imorte/passport-index-data), MIT License
 - Fonts: [Space Grotesk](https://github.com/floriankarsten/space-grotesk) and [IBM Plex Sans](https://github.com/IBM/plex), SIL Open Font License
+
+## More from Lumio Apps
+
+Privacy-first apps with no ads and no tracking: [lumio-apps.online](https://lumio-apps.online) · [GitHub](https://github.com/lumio-apps)
 
 ## License
 
