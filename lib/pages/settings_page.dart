@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../app_state.dart';
+import '../passport_validity.dart';
 import '../theme.dart';
 import '../update_service.dart';
 import '../visa_repository.dart';
@@ -49,6 +50,9 @@ class _SettingsPageState extends State<SettingsPage> {
     final state = scope.state;
     final data = scope.repo.data;
     final extra = StamplyColors.of(context);
+    final brightness = Theme.of(context).brightness;
+    final expiry = state.passportExpiry;
+    final validity = expiry == null ? null : PassportValidity.check(expiry, DateTime.now());
 
     return SafeArea(
       child: ListView(
@@ -64,6 +68,75 @@ class _SettingsPageState extends State<SettingsPage> {
             ],
             selected: {state.themeMode},
             onSelectionChanged: (s) => state.setThemeMode(s.first),
+          ),
+          const SectionLabel('My passport'),
+          CardBox(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.event_available_outlined, color: Theme.of(context).colorScheme.primary),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            expiry == null ? 'Passport expiry date' : 'Expires ${formatDate(expiry)}',
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                          if (validity != null) ...[
+                            const SizedBox(height: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: validity.tone.background(brightness),
+                                borderRadius: BorderRadius.circular(999),
+                              ),
+                              child: Text(
+                                validity.summary,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: validity.tone.foreground(brightness),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  validity?.advice ??
+                      'Add your expiry date to check it against the common 6-month rule. '
+                          'It stays on this device.',
+                  style: TextStyle(fontSize: 14, height: 1.5, color: extra.muted),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => pickPassportExpiry(context, state),
+                        child: Text(expiry == null ? 'Add expiry date' : 'Change date'),
+                      ),
+                    ),
+                    if (expiry != null) ...[
+                      const SizedBox(width: 12),
+                      TextButton(
+                        onPressed: () => state.setPassportExpiry(null),
+                        child: const Text('Remove'),
+                      ),
+                    ],
+                  ],
+                ),
+              ],
+            ),
           ),
           const SectionLabel('Visa data'),
           CardBox(

@@ -33,9 +33,12 @@ No ads. No tracking. No account. Free and open source.
 ### ✅ Check
 - Pick your **passport** and **destination** from a searchable list of 199 countries
 - **Swap** them with one tap
+- Country **flags** everywhere
 - Clear result card styled like a passport stamp
+- **Share** the result as a picture (WhatsApp, Instagram, anywhere)
 - **Allowed stay** in days, where available
-- **Before you fly** tips: passport validity, return ticket, proof of funds, and a warning about fake e-Visa websites
+- **Before you fly** tips: return ticket, proof of funds, and a warning about fake e-Visa websites
+- **Passport expiry check**: add your expiry date and see if you meet the common 6-month rule
 - **Recent checks** with their status at a glance
 
 ### 🌍 Explore
@@ -46,9 +49,11 @@ No ads. No tracking. No account. Free and open source.
 
 ### 🔖 Saved
 - Bookmark trips from the result screen
+- A **Changed** badge appears when a data update changes the rule for a saved trip
 - Swipe to remove
 
 ### ⚙️ Settings
+- Passport expiry date (stays on your device)
 - Light, dark or system theme
 - **Update data**: download the latest visa data with one tap
 - In-app **Check for updates** (GitHub APK)
@@ -83,7 +88,7 @@ Full policy: [PRIVACY.md](PRIVACY.md)
 ## Download
 
 Get the latest APK from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)**.
-Google Play and F-Droid versions are coming soon.
+An **F-Droid** version is planned. Stamply is distributed only through GitHub and F-Droid, never through Google Play.
 
 ## Build from source
 
@@ -97,15 +102,15 @@ flutter analyze
 flutter build apk --release
 ```
 
-Google Play build (without the in-app updater):
+F-Droid build (without the in-app updater, as F-Droid updates apps itself):
 
 ```bash
-flutter build appbundle --release --dart-define=SELF_UPDATE=false
+flutter build apk --release --dart-define=SELF_UPDATE=false
 ```
 
 ### Releases
 
-Pushing a version tag (for example `v0.1.0`) makes GitHub Actions build, sign and publish the APK, plus a Play Store bundle as a workflow download.
+Pushing a version tag (for example `v0.1.0`) makes GitHub Actions build, sign and publish the APK.
 
 Required repository secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
 
@@ -115,6 +120,8 @@ Required repository secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`
 lib/
 ├── main.dart               App entry and bottom navigation
 ├── theme.dart              Colors, fonts, light and dark themes
+├── passport_validity.dart  Passport expiry and the 6-month rule
+├── share.dart              Share sheet bridge (text and image)
 ├── models.dart             Entry status, visa rule, trip
 ├── visa_repository.dart    Bundled data + optional download
 ├── app_state.dart          Saved trips, recent checks, settings

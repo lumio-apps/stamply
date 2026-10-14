@@ -44,6 +44,11 @@ kotlin {
     }
 }
 
+dependencies {
+    // FileProvider, used to share the result picture
+    implementation("androidx.core:core:1.13.1")
+}
+
 flutter {
     source = "../.."
 }

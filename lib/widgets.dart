@@ -1,31 +1,68 @@
 import 'package:flutter/material.dart';
 
+import 'app_state.dart';
 import 'models.dart';
 import 'theme.dart';
 
-/// Rounded square with the two-letter country code.
+/// Flag emoji for a two-letter country code, or "" if the code is not A–Z.
+String flagEmoji(String code) {
+  final c = code.toUpperCase();
+  if (c.length != 2) return '';
+  final a = c.codeUnitAt(0);
+  final b = c.codeUnitAt(1);
+  if (a < 0x41 || a > 0x5A || b < 0x41 || b > 0x5A) return '';
+  return String.fromCharCodes([0x1F1E6 + a - 0x41, 0x1F1E6 + b - 0x41]);
+}
+
+/// Rounded square with the country flag (or the code if no flag exists).
 class CountryBadge extends StatelessWidget {
-  const CountryBadge({super.key, required this.code, this.filled = true, this.size = 44});
+  const CountryBadge({super.key, required this.code, this.size = 44});
 
   final String code;
-  final bool filled;
   final double size;
 
   @override
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
-    final scheme = Theme.of(context).colorScheme;
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final bg = filled ? (dark ? Brand.paper : Brand.ink) : extra.divider;
-    final fg = filled ? (dark ? Brand.ink : Brand.paper) : scheme.onSurface;
+    final flag = flagEmoji(code);
     return Container(
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(size * 0.27)),
+      decoration: BoxDecoration(
+        color: extra.divider,
+        borderRadius: BorderRadius.circular(size * 0.27),
+      ),
+      child: flag.isEmpty
+          ? Text(
+              code,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.w600,
+                fontSize: size * 0.32,
+              ),
+            )
+          : Text(flag, style: TextStyle(fontSize: size * 0.52, height: 1.0)),
+    );
+  }
+}
+
+/// Small "Changed" label for a saved trip whose rule changed after a data update.
+class ChangedBadge extends StatelessWidget {
+  const ChangedBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme.primary;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(999),
+      ),
       child: Text(
-        code,
-        style: TextStyle(color: fg, fontWeight: FontWeight.w600, fontSize: size * 0.32),
+        'Changed',
+        style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -170,4 +207,21 @@ class _LogoPainter extends CustomPainter {
   @override
   bool shouldRepaint(_LogoPainter oldDelegate) =>
       oldDelegate.book != book || oldDelegate.lines != lines || oldDelegate.badge != badge;
+}
+
+/// Asks for the passport expiry date and saves it on this device.
+Future<void> pickPassportExpiry(BuildContext context, AppState state) async {
+  final now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  final first = DateTime(today.year - 5);
+  var initial = state.passportExpiry ?? DateTime(today.year + 1, today.month, today.day);
+  if (initial.isBefore(first)) initial = first;
+  final picked = await showDatePicker(
+    context: context,
+    initialDate: initial,
+    firstDate: first,
+    lastDate: DateTime(today.year + 20),
+    helpText: 'Passport expiry date',
+  );
+  if (picked != null) state.setPassportExpiry(picked);
 }

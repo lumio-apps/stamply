@@ -83,7 +83,7 @@ class _CountryPickerPageState extends State<CountryPickerPage> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                         selected: selected,
                         selectedTileColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
-                        leading: CountryBadge(code: e.key, filled: selected, size: 40),
+                        leading: CountryBadge(code: e.key, size: 40),
                         title: Text(
                           e.value,
                           style: TextStyle(

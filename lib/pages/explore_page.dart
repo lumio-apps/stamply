@@ -147,7 +147,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   final check = TripCheck(passport, e.key);
                   return ListTile(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    leading: CountryBadge(code: e.key, filled: false, size: 40),
+                    leading: CountryBadge(code: e.key, size: 40),
                     title: Text(data.nameOf(e.key), maxLines: 1, overflow: TextOverflow.ellipsis),
                     trailing: StatusPill(rule: e.value),
                     onTap: () {

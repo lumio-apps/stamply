@@ -37,7 +37,8 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
           echo "BUILD_TOOLS=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)" >> "$GITHUB_ENV"
 
-      # 1) GitHub APK: includes the in-app "Check for updates".
+      # GitHub APK: includes the in-app "Check for updates".
+      # (F-Droid builds the app itself from source, without the updater.)
       - name: Build GitHub APK
         run: flutter build apk --release
 
@@ -56,39 +57,12 @@ jobs:
             build/app/outputs/flutter-apk/app-release.apk
           "$BUILD_TOOLS/apksigner" verify --print-certs "Stamply-${{ github.ref_name }}.apk"
 
-      # 2) Google Play bundle: no in-app updater. Internet stays for "Update data".
-      - name: Build Play Store bundle
-        run: |
-          sed -i -e '/REQUEST_INSTALL_PACKAGES/d' android/app/src/main/AndroidManifest.xml
-          flutter build appbundle --release --dart-define=SELF_UPDATE=false
-          git checkout -- android/app/src/main/AndroidManifest.xml
-
-      - name: Sign Play Store bundle
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          AAB=build/app/outputs/bundle/release/app-release.aab
-          # Remove the debug signature, then sign with the Lumio upload key.
-          zip -q -d "$AAB" 'META-INF/*.SF' 'META-INF/*.RSA' 'META-INF/*.EC' 'META-INF/*.DSA' 'META-INF/MANIFEST.MF' || true
-          jarsigner -keystore "$RUNNER_TEMP/release.jks" \
-            -storepass:env KEYSTORE_PASSWORD \
-            -keypass:env KEY_PASSWORD \
-            -signedjar "Stamply-${{ github.ref_name }}-play.aab" \
-            "$AAB" "$KEY_ALIAS"
-          jarsigner -verify "Stamply-${{ github.ref_name }}-play.aab"
-          rm "$RUNNER_TEMP/release.jks"
+      - name: Remove signing key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
           files: Stamply-${{ github.ref_name }}.apk
           generate_release_notes: true
-
-      # The Play bundle is kept as a download on the workflow run, not in the public release.
-      - name: Upload Play Store bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: play-store-bundle
-          path: Stamply-${{ github.ref_name }}-play.aab

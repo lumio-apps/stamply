@@ -65,7 +65,6 @@ class HomePage extends StatelessWidget {
                       label: 'My passport',
                       code: passport,
                       name: passport == null ? null : data.nameOf(passport),
-                      filled: true,
                       onTap: choosePassport,
                     ),
                     Divider(height: 1, indent: 12, endIndent: 12, color: extra.divider),
@@ -73,7 +72,6 @@ class HomePage extends StatelessWidget {
                       label: 'Travelling to',
                       code: destination,
                       name: destination == null ? null : data.nameOf(destination),
-                      filled: false,
                       onTap: chooseDestination,
                     ),
                   ],
@@ -127,14 +125,12 @@ class _CountryRow extends StatelessWidget {
     required this.label,
     required this.code,
     required this.name,
-    required this.filled,
     required this.onTap,
   });
 
   final String label;
   final String? code;
   final String? name;
-  final bool filled;
   final VoidCallback onTap;
 
   @override
@@ -157,7 +153,7 @@ class _CountryRow extends StatelessWidget {
                     ),
                     child: Icon(Icons.add, color: extra.muted),
                   )
-                : CountryBadge(code: code!, filled: filled),
+                : CountryBadge(code: code!),
             const SizedBox(width: 14),
             Expanded(
               child: Column(
@@ -190,10 +186,13 @@ class _CountryRow extends StatelessWidget {
 
 /// One row: "IN → Thailand" with its status pill.
 class CheckTile extends StatelessWidget {
-  const CheckTile({super.key, required this.check, required this.onTap});
+  const CheckTile({super.key, required this.check, required this.onTap, this.changed = false});
 
   final TripCheck check;
   final VoidCallback onTap;
+
+  /// True when the rule changed since the user last looked at it.
+  final bool changed;
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +206,15 @@ class CheckTile extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
       ),
-      trailing: rule == null ? null : StatusPill(rule: rule),
+      trailing: rule == null
+          ? null
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (changed) ...[const ChangedBadge(), const SizedBox(width: 8)],
+                StatusPill(rule: rule),
+              ],
+            ),
     );
   }
 }

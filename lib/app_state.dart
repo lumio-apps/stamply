@@ -14,6 +14,8 @@ class AppState extends ChangeNotifier {
   static const _kRecent = 'recent';
   static const _kSaved = 'saved';
   static const _kTheme = 'theme';
+  static const _kExpiry = 'passport_expiry';
+  static const _kSeen = 'seen_rules';
   static const _maxRecent = 10;
 
   final SharedPreferences _prefs;
@@ -24,6 +26,12 @@ class AppState extends ChangeNotifier {
   List<TripCheck> saved = [];
   ThemeMode themeMode = ThemeMode.system;
 
+  /// Expiry date of the user's passport (optional).
+  DateTime? passportExpiry;
+
+  /// Saved trip key → the rule the user last saw, to spot changes after data updates.
+  Map<String, String> seen = {};
+
   static Future<AppState> load() async {
     final prefs = await SharedPreferences.getInstance();
     final s = AppState._(prefs);
@@ -31,6 +39,13 @@ class AppState extends ChangeNotifier {
     s.destination = prefs.getString(_kDestination);
     s.recent = _readChecks(prefs, _kRecent);
     s.saved = _readChecks(prefs, _kSaved);
+    s.passportExpiry = DateTime.tryParse(prefs.getString(_kExpiry) ?? '');
+    final seen = <String, String>{};
+    for (final line in prefs.getStringList(_kSeen) ?? const <String>[]) {
+      final i = line.lastIndexOf('|');
+      if (i > 0 && i < line.length - 1) seen[line.substring(0, i)] = line.substring(i + 1);
+    }
+    s.seen = seen;
     s.themeMode = switch (prefs.getString(_kTheme)) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
@@ -51,6 +66,10 @@ class AppState extends ChangeNotifier {
         data.countries.containsKey(t.passport) && data.countries.containsKey(t.destination);
     recent = recent.where(valid).toList();
     saved = saved.where(valid).toList();
+    seen = {
+      for (final e in seen.entries)
+        if (saved.any((t) => t.key == e.key)) e.key: e.value,
+    };
   }
 
   void setPassport(String? code) {
@@ -85,9 +104,51 @@ class AppState extends ChangeNotifier {
 
   bool isSaved(TripCheck check) => saved.contains(check);
 
-  void toggleSaved(TripCheck check) {
-    saved = isSaved(check) ? saved.where((t) => t != check).toList() : [check, ...saved];
+  /// Saves or un-saves a trip. [signature] is the rule shown right now.
+  void toggleSaved(TripCheck check, {String? signature}) {
+    if (isSaved(check)) {
+      saved = saved.where((t) => t != check).toList();
+      seen = {
+        for (final e in seen.entries)
+          if (e.key != check.key) e.key: e.value,
+      };
+    } else {
+      saved = [check, ...saved];
+      if (signature != null) seen = {...seen, check.key: signature};
+    }
     _prefs.setStringList(_kSaved, saved.map((t) => t.key).toList());
+    _saveSeen();
+    notifyListeners();
+  }
+
+  /// Remembers the rule the user is looking at, so "Changed" only shows for new changes.
+  void markSeen(TripCheck check, String? signature) {
+    if (!isSaved(check) || signature == null || seen[check.key] == signature) return;
+    seen = {...seen, check.key: signature};
+    _saveSeen();
+    notifyListeners();
+  }
+
+  bool hasChanged(TripCheck check, String? currentSignature) {
+    final old = seen[check.key];
+    return old != null && currentSignature != null && old != currentSignature;
+  }
+
+  void _saveSeen() {
+    _prefs.setStringList(_kSeen, seen.entries.map((e) => '${e.key}|${e.value}').toList());
+  }
+
+  void setPassportExpiry(DateTime? date) {
+    if (date == null) {
+      passportExpiry = null;
+      _prefs.remove(_kExpiry);
+    } else {
+      final d = DateTime(date.year, date.month, date.day);
+      passportExpiry = d;
+      final mm = d.month.toString().padLeft(2, '0');
+      final dd = d.day.toString().padLeft(2, '0');
+      _prefs.setString(_kExpiry, '${d.year.toString().padLeft(4, '0')}-$mm-$dd');
+    }
     notifyListeners();
   }
 

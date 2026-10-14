@@ -70,6 +70,12 @@ class VisaData {
     return null;
   }
 
+  /// Short text that changes whenever the rule for this pair changes.
+  String? signature(String passport, String destination) {
+    final value = _rules[passport]?[destination];
+    return value == null ? null : '$value';
+  }
+
   /// All destinations for one passport, sorted by country name.
   List<MapEntry<String, VisaRule>> destinationsFor(String passport) {
     final list = <MapEntry<String, VisaRule>>[];

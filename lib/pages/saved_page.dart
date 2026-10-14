@@ -12,8 +12,13 @@ class SavedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = AppScope.of(context).state;
+    final scope = AppScope.of(context);
+    final state = scope.state;
+    final data = scope.repo.data;
     final extra = StamplyColors.of(context);
+    final changedCount = state.saved
+        .where((c) => state.hasChanged(c, data.signature(c.passport, c.destination)))
+        .length;
 
     return SafeArea(
       child: ListView(
@@ -22,7 +27,11 @@ class SavedPage extends StatelessWidget {
           Text('Saved', style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: 8),
           Text(
-            'Trips you bookmark appear here, ready to check again.',
+            changedCount > 0
+                ? (changedCount == 1
+                    ? '1 saved trip has new rules since the last data update. Tap it to see what changed.'
+                    : '$changedCount saved trips have new rules since the last data update. Tap them to see what changed.')
+                : 'Trips you bookmark appear here, ready to check again.',
             style: TextStyle(fontSize: 15, color: extra.muted),
           ),
           const SizedBox(height: 16),
@@ -59,6 +68,7 @@ class SavedPage extends StatelessWidget {
                       onDismissed: (_) => state.toggleSaved(check),
                       child: CheckTile(
                         check: check,
+                        changed: state.hasChanged(check, data.signature(check.passport, check.destination)),
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(builder: (_) => ResultPage(check: check)),
