@@ -1,4 +1,2 @@
-• 20 languages, including Hindi, Bengali, Tamil, Telugu, Arabic and more
-• Country names translated too
-• Welcome screen to pick your language and passport
-• Language picker in Settings
+• Stamply is now also available for Windows
+• Wide-window layout

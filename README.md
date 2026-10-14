@@ -94,8 +94,22 @@ Full policy: [PRIVACY.md](PRIVACY.md)
 
 ## Download
 
-Get the latest APK from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)**.
+Get the latest build from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)**:
+
+- **Android**: `Stamply-<version>.apk`
+- **Windows 10/11**: `Stamply-<version>-windows.zip`. Unzip it and run `stamply.exe`. No installer, no admin rights needed.
+
 An **F-Droid** version is planned. Stamply is distributed only through GitHub and F-Droid, never through Google Play.
+
+## Windows
+
+The same app runs on Windows with the same offline data. Sharing a result copies the text and opens the picture in your image viewer. The in-app updater is Android only; on Windows, download the new zip from Releases.
+
+```
+flutter create --platforms=windows .   # once, creates the windows/ folder
+flutter run -d windows
+flutter build windows --release
+```
 
 ## Translations
 

@@ -78,6 +78,16 @@ class StamplyApp extends StatelessWidget {
             themeMode: state.themeMode,
             theme: buildTheme(Brightness.light),
             darkTheme: buildTheme(Brightness.dark),
+            // On a wide window (Windows) keep the phone-style layout centered.
+            builder: (context, child) => ColoredBox(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 640),
+                  child: child,
+                ),
+              ),
+            ),
             home: state.onboarded ? const HomeShell() : WelcomePage(state: state),
           );
         },

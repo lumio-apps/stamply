@@ -66,3 +66,36 @@ jobs:
         with:
           files: Stamply-${{ github.ref_name }}.apk
           generate_release_notes: true
+
+  # Windows app: a portable zip. Unzip it and run stamply.exe.
+  # Needs the windows/ folder in the repo (created once with
+  # `flutter create --platforms=windows .`).
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # Window title and app icon for the .exe
+      - name: Brand the Windows app
+        shell: bash
+        run: |
+          sed -i 's/L"stamply"/L"Stamply – Visa Checker"/' windows/runner/main.cpp
+          cp tool/windows/app_icon.ico windows/runner/resources/app_icon.ico
+
+      - run: flutter build windows --release
+
+      - name: Zip the app
+        shell: pwsh
+        run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath "Stamply-${{ github.ref_name }}-windows.zip"
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Stamply-${{ github.ref_name }}-windows.zip

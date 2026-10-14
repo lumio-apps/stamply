@@ -9,9 +9,11 @@ import 'package:path_provider/path_provider.dart';
 
 import 'l10n/l10n.dart';
 
-/// False for F-Droid and Google Play builds, which update through their store.
+/// False for F-Droid builds, which update through the store.
 /// Build with `--dart-define=SELF_UPDATE=false` to turn the in-app updater off.
-const bool kSelfUpdate = bool.fromEnvironment('SELF_UPDATE', defaultValue: true);
+/// Only Android installs APKs, so the updater is off on Windows.
+final bool kSelfUpdate =
+    const bool.fromEnvironment('SELF_UPDATE', defaultValue: true) && Platform.isAndroid;
 
 /// Checks GitHub Releases for a newer APK and installs it inside the app.
 class UpdateService {
