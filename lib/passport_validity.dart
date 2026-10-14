@@ -1,3 +1,4 @@
+import 'l10n/l10n.dart';
 import 'models.dart';
 
 /// Whole calendar months from [from] to [to] (day of month counts).
@@ -6,14 +7,6 @@ int monthsUntil(DateTime from, DateTime to) {
   if (to.day < from.day) months -= 1;
   return months;
 }
-
-const _monthNames = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', //
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-];
-
-/// "14 Oct 2026"
-String formatDate(DateTime d) => '${d.day} ${_monthNames[d.month - 1]} ${d.year}';
 
 enum ValidityLevel { expired, critical, short, good }
 
@@ -45,24 +38,18 @@ class PassportValidity {
     return PassportValidity._(level, months, days);
   }
 
-  String get summary {
-    if (level == ValidityLevel.expired) {
-      final ago = -days;
-      return ago == 1 ? 'Expired yesterday' : 'Expired $ago days ago';
-    }
-    if (months >= 1) return months == 1 ? '1 month left' : '$months months left';
-    if (days == 0) return 'Expires today';
-    return days == 1 ? '1 day left' : '$days days left';
+  String summary(AppLocalizations l) {
+    if (level == ValidityLevel.expired) return l.expiredDaysAgo(-days);
+    if (months >= 1) return l.monthsLeft(months);
+    if (days == 0) return l.expiresToday;
+    return l.daysLeft(days);
   }
 
-  String get advice => switch (level) {
-        ValidityLevel.expired => 'Your passport has expired. Renew it before you travel.',
-        ValidityLevel.critical =>
-          'Less than 3 months left. Many countries will refuse entry. Consider renewing first.',
-        ValidityLevel.short =>
-          'Less than 6 months left. Many countries require at least 6 months of validity.',
-        ValidityLevel.good =>
-          'Meets the common 6-month rule. Still confirm the rule for your destination.',
+  String advice(AppLocalizations l) => switch (level) {
+        ValidityLevel.expired => l.validityExpired,
+        ValidityLevel.critical => l.validityCritical,
+        ValidityLevel.short => l.validityShort,
+        ValidityLevel.good => l.validityGood,
       };
 
   /// Reuses the status colors: green, amber or red.

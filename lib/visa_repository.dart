@@ -90,9 +90,10 @@ class VisaData {
 /// Loads the bundled data (always works offline) and, if the user has
 /// downloaded newer data with "Update data", uses that instead.
 class VisaRepository extends ChangeNotifier {
-  VisaRepository._(this._data, this._bundledVersion);
+  VisaRepository._(this._data, this._bundledVersion, this._names);
 
   static const _asset = 'assets/data/visa_data.json';
+  static const _namesAsset = 'assets/data/country_names.json';
   static const _fileName = 'visa_data.json';
 
   /// The same file this app ships with, from the main branch on GitHub.
@@ -102,6 +103,9 @@ class VisaRepository extends ChangeNotifier {
 
   VisaData _data;
   final String _bundledVersion;
+
+  /// Country code → language code → name (from Unicode CLDR).
+  final Map<String, Map<String, String>> _names;
 
   VisaData get data => _data;
   bool get usingDownloadedData => _data.version.compareTo(_bundledVersion) > 0;
@@ -119,8 +123,27 @@ class VisaRepository extends ChangeNotifier {
       // A broken download must never stop the app: fall back to bundled data.
       debugPrint('Ignoring downloaded data: $e');
     }
-    return VisaRepository._(data, bundled.version);
+    return VisaRepository._(data, bundled.version, await _loadNames());
   }
+
+  static Future<Map<String, Map<String, String>>> _loadNames() async {
+    try {
+      final json = jsonDecode(await rootBundle.loadString(_namesAsset));
+      return {
+        for (final e in (json as Map<String, dynamic>).entries)
+          e.key: {
+            for (final n in (e.value as Map<String, dynamic>).entries) n.key: n.value as String,
+          },
+      };
+    } catch (e) {
+      // Names are a nicety: without them the app shows English names.
+      debugPrint('Country names not loaded: $e');
+      return {};
+    }
+  }
+
+  /// Name of a country in [lang]; English (from the visa data) when unknown.
+  String nameOf(String code, String lang) => _names[code]?[lang] ?? _data.nameOf(code);
 
   /// Downloads the latest data file. Only called when the user taps the button.
   Future<DataRefreshResult> refresh() async {

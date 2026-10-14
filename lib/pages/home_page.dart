@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_state.dart';
+import '../l10n/l10n.dart';
 import '../models.dart';
 import '../theme.dart';
 import '../widgets.dart';
@@ -15,18 +16,18 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final scope = AppScope.of(context);
     final state = scope.state;
-    final data = scope.repo.data;
     final extra = StamplyColors.of(context);
+    final l = context.l10n;
     final passport = state.passport;
     final destination = state.destination;
 
     Future<void> choosePassport() async {
-      final code = await pickCountry(context, title: 'My passport', selected: passport);
+      final code = await pickCountry(context, title: l.myPassport, selected: passport);
       if (code != null) state.setPassport(code);
     }
 
     Future<void> chooseDestination() async {
-      final code = await pickCountry(context, title: 'Travelling to', selected: destination);
+      final code = await pickCountry(context, title: l.travellingTo, selected: destination);
       if (code != null) state.setDestination(code);
     }
 
@@ -47,39 +48,39 @@ class HomePage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          Text('Can I enter without a visa?', style: Theme.of(context).textTheme.headlineMedium),
+          Text(l.homeTitle, style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: 8),
           Text(
-            'Pick your passport and destination. Works fully offline.',
+            l.homeSubtitle,
             style: TextStyle(fontSize: 15, height: 1.5, color: extra.muted),
           ),
           const SizedBox(height: 24),
           CardBox(
             padding: const EdgeInsets.all(8),
             child: Stack(
-              alignment: Alignment.centerRight,
+              alignment: AlignmentDirectional.centerEnd,
               children: [
                 Column(
                   children: [
                     _CountryRow(
-                      label: 'My passport',
+                      label: l.myPassport,
                       code: passport,
-                      name: passport == null ? null : data.nameOf(passport),
+                      name: passport == null ? null : scope.nameOf(passport),
                       onTap: choosePassport,
                     ),
                     Divider(height: 1, indent: 12, endIndent: 12, color: extra.divider),
                     _CountryRow(
-                      label: 'Travelling to',
+                      label: l.travellingTo,
                       code: destination,
-                      name: destination == null ? null : data.nameOf(destination),
+                      name: destination == null ? null : scope.nameOf(destination),
                       onTap: chooseDestination,
                     ),
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 44),
+                  padding: const EdgeInsetsDirectional.only(end: 44),
                   child: IconButton.outlined(
-                    tooltip: 'Swap passport and destination',
+                    tooltip: l.swapTooltip,
                     style: IconButton.styleFrom(
                       backgroundColor: extra.card,
                       side: BorderSide(color: extra.divider),
@@ -96,12 +97,12 @@ class HomePage extends StatelessWidget {
             onPressed: passport != null && destination != null
                 ? () => openResult(TripCheck(passport, destination))
                 : null,
-            child: const Text('Check requirements'),
+            child: Text(l.checkRequirements),
           ),
           if (state.recent.isNotEmpty) ...[
             SectionLabel(
-              'Recent checks',
-              trailing: TextButton(onPressed: state.clearRecent, child: const Text('Clear')),
+              l.recentChecks,
+              trailing: TextButton(onPressed: state.clearRecent, child: Text(l.clear)),
             ),
             CardBox(
               child: Column(
@@ -162,7 +163,7 @@ class _CountryRow extends StatelessWidget {
                   Text(label, style: TextStyle(fontSize: 13, color: extra.muted)),
                   const SizedBox(height: 2),
                   Text(
-                    name ?? 'Choose country',
+                    name ?? context.l10n.chooseCountry,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -196,12 +197,13 @@ class CheckTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = AppScope.of(context).repo.data;
+    final scope = AppScope.of(context);
+    final data = scope.repo.data;
     final rule = data.rule(check.passport, check.destination);
     return ListTile(
       onTap: onTap,
       title: Text(
-        '${check.passport} → ${data.nameOf(check.destination)}',
+        '${check.passport} → ${scope.nameOf(check.destination)}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),

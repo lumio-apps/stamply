@@ -41,6 +41,12 @@ No ads. No tracking. No account. Free and open source.
 - **Passport expiry check**: add your expiry date and see if you meet the common 6-month rule
 - **Recent checks** with their status at a glance
 
+### 🌐 20 languages
+- English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն
+- **Country names** are translated too, so you can search in your own language
+- Right-to-left layout for Arabic and Urdu
+- A first-launch **welcome screen** to pick your language and passport
+
 ### 🌍 Explore
 - Every destination for your passport in one list
 - See how many countries you can visit **without a visa in advance**
@@ -54,6 +60,7 @@ No ads. No tracking. No account. Free and open source.
 
 ### ⚙️ Settings
 - Passport expiry date (stays on your device)
+- **Language** picker (20 languages)
 - Light, dark or system theme
 - **Update data**: download the latest visa data with one tap
 - In-app **Check for updates** (GitHub APK)
@@ -90,6 +97,10 @@ Full policy: [PRIVACY.md](PRIVACY.md)
 Get the latest APK from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)**.
 An **F-Droid** version is planned. Stamply is distributed only through GitHub and F-Droid, never through Google Play.
 
+## Translations
+
+Texts live in `lib/l10n/app_<code>.arb`; `app_en.arb` is the template. To fix or add a translation, edit the matching `.arb` file and open a pull request. `flutter pub get` regenerates the Dart code.
+
 ## Build from source
 
 Requirements: [Flutter](https://flutter.dev) (stable channel) and Java 17.
@@ -119,6 +130,8 @@ Required repository secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`
 ```
 lib/
 ├── main.dart               App entry and bottom navigation
+├── l10n/                   20 translation files (.arb) and the language list
+├── status_text.dart        Translated texts for statuses and rules
 ├── theme.dart              Colors, fonts, light and dark themes
 ├── passport_validity.dart  Passport expiry and the 6-month rule
 ├── share.dart              Share sheet bridge (text and image)
@@ -129,11 +142,13 @@ lib/
 ├── widgets.dart            Shared UI pieces and the logo
 └── pages/                  Check, Explore, Saved, Settings, Result, Country picker
 tool/build_data.py          Builds visa_data.json from Passport Index Data
+assets/data/country_names.json  Country names in 19 languages (Unicode CLDR)
 ```
 
 ## Credits
 
 - Visa data: [Passport Index Data](https://github.com/imorte/passport-index-data), MIT License
+- Country names: [Unicode CLDR](https://cldr.unicode.org/), Unicode License v3
 - Fonts: [Space Grotesk](https://github.com/floriankarsten/space-grotesk) and [IBM Plex Sans](https://github.com/IBM/plex), SIL Open Font License
 
 ## More from Lumio Apps

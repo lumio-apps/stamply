@@ -2,3 +2,7 @@
 • Share a result as a picture
 • Passport expiry check against the 6-month rule
 • Saved trips show "Changed" after a data update
+• 20 languages, including Hindi, Bengali, Tamil, Telugu, Arabic and more
+• Country names translated too
+• Welcome screen to pick your language and passport
+• Language picker in Settings

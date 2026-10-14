@@ -1,4 +1,6 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:stamply/l10n/l10n.dart';
 import 'package:stamply/passport_validity.dart';
 import 'package:stamply/widgets.dart';
 
@@ -27,7 +29,7 @@ void main() {
   test('past date is expired', () {
     final v = PassportValidity.check(DateTime(2026, 10, 1), now);
     expect(v.level, ValidityLevel.expired);
-    expect(v.summary, 'Expired 13 days ago');
+    expect(v.summary(lookupAppLocalizations(const Locale('en'))), 'Expired 13 days ago');
   });
 
   test('flag emoji from country code', () {

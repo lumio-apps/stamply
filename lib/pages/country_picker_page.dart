@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_state.dart';
+import '../l10n/l10n.dart';
 import '../theme.dart';
 import '../widgets.dart';
 
@@ -27,12 +28,24 @@ class _CountryPickerPageState extends State<CountryPickerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final data = AppScope.of(context).repo.data;
+    final scope = AppScope.of(context);
+    final data = scope.repo.data;
+    final l = context.l10n;
     final extra = StamplyColors.of(context);
     final q = _query.trim().toLowerCase();
-    final entries = data.countries.entries
-        .where((e) => q.isEmpty || e.value.toLowerCase().contains(q) || e.key.toLowerCase() == q)
-        .toList();
+    // (code, name in the app's language), sorted by that name. The search also
+    // matches the English name and the two-letter code.
+    final entries = [
+      for (final code in data.countries.keys) (code, scope.nameOf(code)),
+    ]..sort((a, b) => a.$2.toLowerCase().compareTo(b.$2.toLowerCase()));
+    final shown = q.isEmpty
+        ? entries
+        : entries
+            .where((e) =>
+                e.$2.toLowerCase().contains(q) ||
+                data.nameOf(e.$1).toLowerCase().contains(q) ||
+                e.$1.toLowerCase() == q)
+            .toList();
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
@@ -46,12 +59,12 @@ class _CountryPickerPageState extends State<CountryPickerPage> {
               textInputAction: TextInputAction.search,
               onChanged: (v) => setState(() => _query = v),
               decoration: InputDecoration(
-                labelText: 'Search country',
+                labelText: l.searchCountry,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _query.isEmpty
                     ? null
                     : IconButton(
-                        tooltip: 'Clear search',
+                        tooltip: l.clearSearch,
                         icon: const Icon(Icons.close),
                         onPressed: () => setState(() {
                           _search.clear();
@@ -68,24 +81,24 @@ class _CountryPickerPageState extends State<CountryPickerPage> {
             ),
           ),
           Expanded(
-            child: entries.isEmpty
+            child: shown.isEmpty
                 ? Center(
-                    child: Text('No country matches "$_query"',
+                    child: Text(l.noCountryMatches(_query.trim()),
                         style: TextStyle(color: extra.muted)),
                   )
                 : ListView.builder(
                     padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
-                    itemCount: entries.length,
+                    itemCount: shown.length,
                     itemBuilder: (context, i) {
-                      final e = entries[i];
-                      final selected = e.key == widget.selected;
+                      final e = shown[i];
+                      final selected = e.$1 == widget.selected;
                       return ListTile(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                         selected: selected,
                         selectedTileColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
-                        leading: CountryBadge(code: e.key, size: 40),
+                        leading: CountryBadge(code: e.$1, size: 40),
                         title: Text(
-                          e.value,
+                          e.$2,
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
@@ -95,7 +108,7 @@ class _CountryPickerPageState extends State<CountryPickerPage> {
                         trailing: selected
                             ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
                             : null,
-                        onTap: () => Navigator.pop(context, e.key),
+                        onTap: () => Navigator.pop(context, e.$1),
                       );
                     },
                   ),

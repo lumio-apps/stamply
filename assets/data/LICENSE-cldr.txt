@@ -1,0 +1,14 @@
+Country names in the translated languages
+
+The translated country and region names in assets/data/country_names.json come
+from the Unicode Common Locale Data Repository (CLDR), as shipped in the Python
+Babel package.
+
+Copyright © 1991-2026 Unicode, Inc.
+
+CLDR data files are distributed under the Unicode License v3. In short: you may
+use, copy, modify and distribute the data free of charge, as long as this
+copyright and permission notice stays with all copies. The data is provided "as
+is", without warranty of any kind.
+
+The full license text is at https://www.unicode.org/license.txt

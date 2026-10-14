@@ -7,6 +7,8 @@ import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'l10n/l10n.dart';
+
 /// False for F-Droid and Google Play builds, which update through their store.
 /// Build with `--dart-define=SELF_UPDATE=false` to turn the in-app updater off.
 const bool kSelfUpdate = bool.fromEnvironment('SELF_UPDATE', defaultValue: true);
@@ -19,8 +21,9 @@ class UpdateService {
   /// Shows the full "Check for updates" flow with dialogs.
   static Future<void> checkForUpdates(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
+    final l = context.l10n;
     messenger.showSnackBar(
-      const SnackBar(content: Text('Checking for updates...'), duration: Duration(seconds: 1)),
+      SnackBar(content: Text(l.updChecking), duration: const Duration(seconds: 1)),
     );
 
     try {
@@ -42,7 +45,7 @@ class UpdateService {
       if (latest.isEmpty || !_isNewer(latest, info.version) || apk == null) {
         messenger.hideCurrentSnackBar();
         messenger.showSnackBar(
-          SnackBar(content: Text('You are on the latest version (${info.version}).')),
+          SnackBar(content: Text(l.updLatest(info.version))),
         );
         return;
       }
@@ -50,32 +53,36 @@ class UpdateService {
       final install = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text('Update available: $latestTag'),
+          title: Text(l.updAvailable(latestTag)),
           content: SingleChildScrollView(
             child: Text(
-              'Current version: ${info.version}\n\n'
-              '${notes.isEmpty ? 'A new version is ready to install.' : notes}',
+              '${l.updCurrent(info.version)}\n\n'
+              '${notes.isEmpty ? l.updReady : notes}',
             ),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Later')),
-            FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Update')),
+            TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.updLater)),
+            FilledButton(onPressed: () => Navigator.pop(ctx, true), child: Text(l.updUpdate)),
           ],
         ),
       );
       if (install != true || !context.mounted) return;
 
-      await _downloadAndInstall(context, apk['browser_download_url'] as String);
+      await _downloadAndInstall(context, apk['browser_download_url'] as String, l);
     } catch (_) {
       if (!context.mounted) return;
       messenger.hideCurrentSnackBar();
       messenger.showSnackBar(
-        const SnackBar(content: Text('Could not check for updates. Check your internet connection.')),
+        SnackBar(content: Text(l.updCheckFailed)),
       );
     }
   }
 
-  static Future<void> _downloadAndInstall(BuildContext context, String url) async {
+  static Future<void> _downloadAndInstall(
+    BuildContext context,
+    String url,
+    AppLocalizations l,
+  ) async {
     final progress = ValueNotifier<double?>(null);
     showDialog<void>(
       context: context,
@@ -83,7 +90,7 @@ class UpdateService {
       builder: (ctx) => PopScope(
         canPop: false,
         child: AlertDialog(
-          title: const Text('Downloading update'),
+          title: Text(l.updDownloading),
           content: ValueListenableBuilder<double?>(
             valueListenable: progress,
             builder: (ctx, value, child) => Column(
@@ -91,7 +98,7 @@ class UpdateService {
               children: [
                 LinearProgressIndicator(value: value),
                 const SizedBox(height: 12),
-                Text(value == null ? 'Starting...' : '${(value * 100).toStringAsFixed(0)}%'),
+                Text(value == null ? l.updStarting : '${(value * 100).toStringAsFixed(0)}%'),
               ],
             ),
           ),
@@ -122,13 +129,13 @@ class UpdateService {
       final result = await OpenFilex.open(file.path, type: 'application/vnd.android.package-archive');
       if (result.type != ResultType.done) {
         messenger.showSnackBar(
-          SnackBar(content: Text('Could not open installer: ${result.message}')),
+          SnackBar(content: Text(l.updInstallerFailed(result.message))),
         );
       }
     } catch (_) {
       navigator.pop();
       messenger.showSnackBar(
-        const SnackBar(content: Text('Download failed. Please try again.')),
+        SnackBar(content: Text(l.updDownloadFailed)),
       );
     } finally {
       client.close();

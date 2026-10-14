@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../app_state.dart';
+import '../l10n/l10n.dart';
 import '../models.dart';
+import '../status_text.dart';
 import '../theme.dart';
 import '../widgets.dart';
 import 'country_picker_page.dart';
@@ -24,12 +26,13 @@ class _ExplorePageState extends State<ExplorePage> {
     final scope = AppScope.of(context);
     final state = scope.state;
     final data = scope.repo.data;
+    final l = context.l10n;
     final extra = StamplyColors.of(context);
     final passport = state.passport;
     final b = Theme.of(context).brightness;
 
     Future<void> choosePassport() async {
-      final code = await pickCountry(context, title: 'My passport', selected: passport);
+      final code = await pickCountry(context, title: l.myPassport, selected: passport);
       if (code != null) state.setPassport(code);
     }
 
@@ -43,15 +46,15 @@ class _ExplorePageState extends State<ExplorePage> {
               children: [
                 Icon(Icons.travel_explore, size: 56, color: extra.muted),
                 const SizedBox(height: 16),
-                Text('Where can I go?', style: Theme.of(context).textTheme.headlineSmall),
+                Text(l.whereCanIGo, style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(
-                  'Choose your passport to see every destination at a glance.',
+                  l.exploreEmptyBody,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 15, color: extra.muted),
                 ),
                 const SizedBox(height: 24),
-                FilledButton(onPressed: choosePassport, child: const Text('Choose passport')),
+                FilledButton(onPressed: choosePassport, child: Text(l.choosePassport)),
               ],
             ),
           ),
@@ -67,8 +70,12 @@ class _ExplorePageState extends State<ExplorePage> {
     final q = _query.trim().toLowerCase();
     final shown = all
         .where((e) => _filter == null || e.value.status == _filter)
-        .where((e) => q.isEmpty || data.nameOf(e.key).toLowerCase().contains(q))
-        .toList();
+        .where((e) =>
+            q.isEmpty ||
+            scope.nameOf(e.key).toLowerCase().contains(q) ||
+            data.nameOf(e.key).toLowerCase().contains(q))
+        .toList()
+      ..sort((a, b) => scope.nameOf(a.key).toLowerCase().compareTo(scope.nameOf(b.key).toLowerCase()));
     final easy = (counts[EntryStatus.visaFree] ?? 0) + (counts[EntryStatus.visaOnArrival] ?? 0);
 
     return SafeArea(
@@ -78,15 +85,15 @@ class _ExplorePageState extends State<ExplorePage> {
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
             sliver: SliverList.list(
               children: [
-                Text('Explore', style: Theme.of(context).textTheme.headlineMedium),
+                Text(l.exploreTitle, style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: 16),
                 CardBox(
                   child: ListTile(
                     onTap: choosePassport,
                     leading: CountryBadge(code: passport),
-                    title: Text(data.nameOf(passport),
+                    title: Text(scope.nameOf(passport),
                         style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
-                    subtitle: Text('$easy destinations without a visa in advance',
+                    subtitle: Text(l.destinationsNoVisa(easy),
                         style: TextStyle(color: extra.muted)),
                     trailing: const Icon(Icons.edit_outlined),
                   ),
@@ -95,7 +102,7 @@ class _ExplorePageState extends State<ExplorePage> {
                 TextField(
                   onChanged: (v) => setState(() => _query = v),
                   decoration: InputDecoration(
-                    labelText: 'Search destination',
+                    labelText: l.searchDestination,
                     prefixIcon: const Icon(Icons.search),
                     filled: true,
                     fillColor: extra.card,
@@ -111,7 +118,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   runSpacing: 8,
                   children: [
                     ChoiceChip(
-                      label: Text('All ${all.length}'),
+                      label: Text(l.allCount(all.length)),
                       selected: _filter == null,
                       onSelected: (_) => setState(() => _filter = null),
                     ),
@@ -119,7 +126,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       if ((counts[s] ?? 0) > 0)
                         ChoiceChip(
                           avatar: Icon(s.icon, size: 18, color: s.foreground(b)),
-                          label: Text('${s.label} ${counts[s]}'),
+                          label: Text(l.chipCount(s.label(l), counts[s]!)),
                           selected: _filter == s,
                           onSelected: (on) => setState(() => _filter = on ? s : null),
                         ),
@@ -133,7 +140,7 @@ class _ExplorePageState extends State<ExplorePage> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(32),
-                child: Text('No destinations match.',
+                child: Text(l.noDestinationsMatch,
                     textAlign: TextAlign.center, style: TextStyle(color: extra.muted)),
               ),
             )
@@ -148,7 +155,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   return ListTile(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     leading: CountryBadge(code: e.key, size: 40),
-                    title: Text(data.nameOf(e.key), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    title: Text(scope.nameOf(e.key), maxLines: 1, overflow: TextOverflow.ellipsis),
                     trailing: StatusPill(rule: e.value),
                     onTap: () {
                       state.addRecent(check);

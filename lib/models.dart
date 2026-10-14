@@ -21,49 +21,6 @@ enum EntryStatus {
     return null;
   }
 
-  String get label => switch (this) {
-        EntryStatus.visaFree => 'Visa-free',
-        EntryStatus.visaOnArrival => 'Visa on arrival',
-        EntryStatus.eta => 'ETA',
-        EntryStatus.eVisa => 'e-Visa',
-        EntryStatus.visaRequired => 'Visa required',
-        EntryStatus.noAdmission => 'No admission',
-      };
-
-  /// Big headline on the result screen.
-  String get headline => switch (this) {
-        EntryStatus.visaFree => 'No visa needed',
-        EntryStatus.visaOnArrival => 'Visa on arrival',
-        EntryStatus.eta => 'Travel authorisation needed',
-        EntryStatus.eVisa => 'e-Visa needed',
-        EntryStatus.visaRequired => 'Visa required',
-        EntryStatus.noAdmission => 'Entry not permitted',
-      };
-
-  /// Text inside the round stamp.
-  String get stampText => switch (this) {
-        EntryStatus.visaFree => 'VISA-FREE',
-        EntryStatus.visaOnArrival => 'ON ARRIVAL',
-        EntryStatus.eta => 'ETA',
-        EntryStatus.eVisa => 'E-VISA',
-        EntryStatus.visaRequired => 'VISA NEEDED',
-        EntryStatus.noAdmission => 'NO ENTRY',
-      };
-
-  String get explanation => switch (this) {
-        EntryStatus.visaFree => 'You can enter without applying for a visa.',
-        EntryStatus.visaOnArrival =>
-          'You can get your visa at the border when you arrive. A fee may apply.',
-        EntryStatus.eta =>
-          'Apply online for an electronic travel authorisation (ETA) before you fly. It is usually quicker than a visa.',
-        EntryStatus.eVisa =>
-          'Apply online for an e-Visa before you travel and keep a copy with you.',
-        EntryStatus.visaRequired =>
-          'Apply for a visa at an embassy, consulate or visa centre before you travel.',
-        EntryStatus.noAdmission =>
-          'Entry is currently not allowed for this passport, for example because of a travel ban.',
-      };
-
   IconData get icon => switch (this) {
         EntryStatus.visaFree => Icons.check_circle_outline,
         EntryStatus.visaOnArrival => Icons.flight_land,
@@ -109,16 +66,6 @@ class VisaRule {
 
   final EntryStatus status;
   final int? days;
-
-  String get shortLabel =>
-      status == EntryStatus.visaFree && days != null ? '${status.label} · $days d' : status.label;
-
-  String? get stayText {
-    if (days == null) {
-      return status == EntryStatus.visaFree ? 'Allowed stay not listed' : null;
-    }
-    return 'Stay up to $days days';
-  }
 }
 
 /// A passport → destination pair the user has looked up.

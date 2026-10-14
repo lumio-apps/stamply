@@ -7,9 +7,11 @@ import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../app_state.dart';
+import '../l10n/l10n.dart';
 import '../models.dart';
 import '../passport_validity.dart';
 import '../share.dart';
+import '../status_text.dart';
 import '../theme.dart';
 import '../widgets.dart';
 
@@ -41,6 +43,7 @@ class _ResultPageState extends State<ResultPage> {
 
   Future<void> _share(String text) async {
     final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.couldNotShare;
     setState(() => _sharing = true);
     try {
       final boundary = _shareKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
@@ -54,7 +57,7 @@ class _ResultPageState extends State<ResultPage> {
       await file.writeAsBytes(bytes.buffer.asUint8List(), flush: true);
       await ShareService.shareImage(file.path, text);
     } catch (_) {
-      messenger.showSnackBar(const SnackBar(content: Text('Could not share this result.')));
+      messenger.showSnackBar(SnackBar(content: Text(failed)));
     } finally {
       if (mounted) setState(() => _sharing = false);
     }
@@ -66,18 +69,22 @@ class _ResultPageState extends State<ResultPage> {
     final scope = AppScope.of(context);
     final data = scope.repo.data;
     final extra = StamplyColors.of(context);
+    final l = context.l10n;
     final rule = data.rule(check.passport, check.destination);
     final saved = scope.state.isSaved(check);
-    final from = data.nameOf(check.passport);
-    final to = data.nameOf(check.destination);
+    final from = scope.nameOf(check.passport);
+    final to = scope.nameOf(check.destination);
     final expiry = scope.state.passportExpiry;
     final validity = expiry == null ? null : PassportValidity.check(expiry, DateTime.now());
 
+    final stay = rule?.stayText(l);
     final shareText = rule == null
         ? ''
-        : '$from passport → $to: ${rule.status.headline}'
-            '${rule.stayText != null ? ' (${rule.stayText!.toLowerCase()})' : ''}.\n'
-            'Checked with Stamply, an open source visa checker: https://github.com/lumio-apps/stamply';
+        : l.shareMessage(
+            from,
+            to,
+            stay == null ? rule.status.headline(l) : '${rule.status.headline(l)} · $stay',
+          );
 
     return Scaffold(
       appBar: AppBar(
@@ -89,14 +96,14 @@ class _ResultPageState extends State<ResultPage> {
         actions: [
           if (rule != null)
             IconButton(
-              tooltip: 'Share as image',
+              tooltip: l.shareAsImage,
               icon: _sharing
                   ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
                   : const Icon(Icons.ios_share),
               onPressed: _sharing ? null : () => _share(shareText),
             ),
           IconButton(
-            tooltip: saved ? 'Remove from saved' : 'Save this check',
+            tooltip: saved ? l.removeFromSaved : l.saveThisCheck,
             icon: Icon(saved ? Icons.bookmark : Icons.bookmark_border),
             onPressed: () => scope.state.toggleSaved(
               check,
@@ -109,15 +116,15 @@ class _ResultPageState extends State<ResultPage> {
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: [
           if (check.passport == check.destination)
-            const _Hero(
-              title: 'Your own country',
-              subtitle: 'Citizens can enter their own country with a valid passport.',
+            _Hero(
+              title: l.ownCountryTitle,
+              subtitle: l.ownCountrySubtitle,
               stamp: null,
             )
           else if (rule == null)
             _Hero(
-              title: 'No data yet',
-              subtitle: 'We do not have a rule for $from passports travelling to $to.',
+              title: l.noDataTitle,
+              subtitle: l.noDataSubtitle(from, to),
               stamp: null,
             )
           else ...[
@@ -133,43 +140,41 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
             const SizedBox(height: 8),
-            Text(rule.status.explanation, style: TextStyle(fontSize: 15, height: 1.5, color: extra.muted)),
-            const SectionLabel('Before you fly'),
+            Text(rule.status.explanation(l), style: TextStyle(fontSize: 15, height: 1.5, color: extra.muted)),
+            SectionLabel(l.beforeYouFly),
             CardBox(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: Column(
                 children: [
                   _Tip(
                     icon: Icons.badge_outlined,
-                    title: 'Passport validity',
-                    text: validity?.advice ??
-                        'Many countries ask for 6 months of validity and blank pages. '
-                            'Add your expiry date to see how yours compares.',
-                    status: validity?.summary,
+                    title: l.passportValidity,
+                    text: validity?.advice(l) ?? l.validityHint,
+                    status: validity?.summary(l),
                     statusTone: validity?.tone,
                     action: TextButton(
                       onPressed: () => pickPassportExpiry(context, scope.state),
-                      child: Text(expiry == null ? 'Add expiry date' : 'Change expiry date'),
+                      child: Text(expiry == null ? l.addExpiryDate : l.changeExpiryDate),
                     ),
                   ),
                   Divider(height: 1, color: extra.divider),
-                  const _Tip(
+                  _Tip(
                     icon: Icons.confirmation_number_outlined,
-                    title: 'Return or onward ticket',
-                    text: 'Border officers may ask to see it, along with your hotel booking.',
+                    title: l.returnTicket,
+                    text: l.returnTicketText,
                   ),
                   Divider(height: 1, color: extra.divider),
-                  const _Tip(
+                  _Tip(
                     icon: Icons.account_balance_wallet_outlined,
-                    title: 'Proof of funds',
-                    text: 'Some countries ask how you will pay for your stay. Keep a card or bank statement ready.',
+                    title: l.proofOfFunds,
+                    text: l.proofOfFundsText,
                   ),
                   if (rule.status == EntryStatus.eVisa || rule.status == EntryStatus.eta) ...[
                     Divider(height: 1, color: extra.divider),
                     _Tip(
                       icon: Icons.gpp_maybe_outlined,
-                      title: 'Use the official website',
-                      text: 'Apply only on the government website of $to. Many look-alike sites charge extra fees.',
+                      title: l.officialWebsite,
+                      text: l.officialWebsiteText(to),
                     ),
                   ],
                 ],
@@ -203,6 +208,7 @@ class _ShareCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
+    final l = context.l10n;
     return Container(
       // Same color as the page, so on screen it looks like plain content and
       // the shared picture gets a clean margin around it.
@@ -211,14 +217,14 @@ class _ShareCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _Hero(title: rule.status.headline, subtitle: rule.stayText, stamp: rule.status),
+          _Hero(title: rule.status.headline(l), subtitle: rule.stayText(l), stamp: rule.status),
           const SizedBox(height: 16),
           Text(
             '${flagEmoji(check.passport)} $from  →  ${flagEmoji(check.destination)} $to',
             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, height: 1.3),
           ),
           const SizedBox(height: 4),
-          Text('$from passport holders', style: TextStyle(fontSize: 14, color: extra.muted)),
+          Text(l.passportHolders(from), style: TextStyle(fontSize: 14, color: extra.muted)),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -229,7 +235,7 @@ class _ShareCard extends StatelessWidget {
                 style: TextStyle(fontFamily: Brand.displayFont, fontWeight: FontWeight.w700, fontSize: 15),
               ),
               const Spacer(),
-              Text('Data from $dataVersion', style: TextStyle(fontSize: 12, color: extra.muted)),
+              Text(l.dataFrom(dataVersion), style: TextStyle(fontSize: 12, color: extra.muted)),
             ],
           ),
         ],
@@ -262,7 +268,7 @@ class _Hero extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ENTRY STATUS',
+                  context.l10n.entryStatusLabel,
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 1.0,
@@ -303,7 +309,7 @@ class _Stamp extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = status.onHero;
     return Semantics(
-      label: '${status.label} stamp',
+      label: context.l10n.stampSemantics(status.label(context.l10n)),
       child: Transform.rotate(
         angle: -10 * math.pi / 180,
         child: Container(
@@ -328,7 +334,7 @@ class _Stamp extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: FittedBox(
                     child: Text(
-                      status.stampText,
+                      status.stampText(context.l10n),
                       style: TextStyle(
                         fontFamily: Brand.displayFont,
                         fontWeight: FontWeight.w700,
@@ -402,7 +408,7 @@ class _Tip extends StatelessWidget {
                 ],
                 const SizedBox(height: 4),
                 Text(text, style: TextStyle(fontSize: 14, height: 1.4, color: StamplyColors.of(context).muted)),
-                if (action != null) Align(alignment: Alignment.centerLeft, child: action!),
+                if (action != null) Align(alignment: AlignmentDirectional.centerStart, child: action!),
               ],
             ),
           ),
@@ -430,8 +436,7 @@ class _Disclaimer extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'General guidance only. Visa rules change often — always confirm with the '
-              'embassy or official government website before you travel. Data from $version.',
+              context.l10n.disclaimerResult(version),
               style: TextStyle(fontSize: 13, height: 1.5, color: Theme.of(context).colorScheme.onSurface),
             ),
           ),

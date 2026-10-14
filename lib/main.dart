@@ -1,12 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 
 import 'app_state.dart';
+import 'l10n/l10n.dart';
 import 'pages/explore_page.dart';
 import 'pages/home_page.dart';
 import 'pages/saved_page.dart';
 import 'pages/settings_page.dart';
+import 'pages/welcome_page.dart';
 import 'theme.dart';
 import 'visa_repository.dart';
 
@@ -25,6 +29,10 @@ void _registerLicenses() {
     yield LicenseEntryWithLineBreaks(
       ['Passport Index Data'],
       await rootBundle.loadString('assets/data/LICENSE-data.txt'),
+    );
+    yield LicenseEntryWithLineBreaks(
+      ['Unicode CLDR (country names)'],
+      await rootBundle.loadString('assets/data/LICENSE-cldr.txt'),
     );
     yield LicenseEntryWithLineBreaks(
       ['Space Grotesk'],
@@ -50,14 +58,29 @@ class StamplyApp extends StatelessWidget {
       repo: repo,
       child: ListenableBuilder(
         listenable: state,
-        builder: (context, _) => MaterialApp(
-          title: 'Stamply',
-          debugShowCheckedModeBanner: false,
-          themeMode: state.themeMode,
-          theme: buildTheme(Brightness.light),
-          darkTheme: buildTheme(Brightness.dark),
-          home: const HomeShell(),
-        ),
+        builder: (context, _) {
+          final language = state.languageCode;
+          // Dates (DateFormat) follow the app language.
+          Intl.defaultLocale = language;
+          return MaterialApp(
+            // A fresh key after the welcome screen clears every open page.
+            key: ValueKey(state.onboarded),
+            title: 'Stamply',
+            debugShowCheckedModeBanner: false,
+            locale: Locale(language),
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            themeMode: state.themeMode,
+            theme: buildTheme(Brightness.light),
+            darkTheme: buildTheme(Brightness.dark),
+            home: state.onboarded ? const HomeShell() : WelcomePage(state: state),
+          );
+        },
       ),
     );
   }
@@ -78,31 +101,32 @@ class _HomeShellState extends State<HomeShell> {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     return Scaffold(
       body: IndexedStack(index: _index, children: _pages),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.task_alt_outlined),
-            selectedIcon: Icon(Icons.task_alt),
-            label: 'Check',
+            icon: const Icon(Icons.task_alt_outlined),
+            selectedIcon: const Icon(Icons.task_alt),
+            label: l.navCheck,
           ),
           NavigationDestination(
-            icon: Icon(Icons.travel_explore_outlined),
-            selectedIcon: Icon(Icons.travel_explore),
-            label: 'Explore',
+            icon: const Icon(Icons.travel_explore_outlined),
+            selectedIcon: const Icon(Icons.travel_explore),
+            label: l.navExplore,
           ),
           NavigationDestination(
-            icon: Icon(Icons.bookmark_border),
-            selectedIcon: Icon(Icons.bookmark),
-            label: 'Saved',
+            icon: const Icon(Icons.bookmark_border),
+            selectedIcon: const Icon(Icons.bookmark),
+            label: l.navSaved,
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: const Icon(Icons.settings_outlined),
+            selectedIcon: const Icon(Icons.settings),
+            label: l.navSettings,
           ),
         ],
       ),

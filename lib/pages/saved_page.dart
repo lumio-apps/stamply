@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_state.dart';
+import '../l10n/l10n.dart';
 import '../theme.dart';
 import '../widgets.dart';
 import 'home_page.dart';
@@ -16,6 +17,7 @@ class SavedPage extends StatelessWidget {
     final state = scope.state;
     final data = scope.repo.data;
     final extra = StamplyColors.of(context);
+    final l = context.l10n;
     final changedCount = state.saved
         .where((c) => state.hasChanged(c, data.signature(c.passport, c.destination)))
         .length;
@@ -24,14 +26,10 @@ class SavedPage extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         children: [
-          Text('Saved', style: Theme.of(context).textTheme.headlineMedium),
+          Text(l.savedTitle, style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: 8),
           Text(
-            changedCount > 0
-                ? (changedCount == 1
-                    ? '1 saved trip has new rules since the last data update. Tap it to see what changed.'
-                    : '$changedCount saved trips have new rules since the last data update. Tap them to see what changed.')
-                : 'Trips you bookmark appear here, ready to check again.',
+            changedCount > 0 ? l.savedChanged(changedCount) : l.savedIntro,
             style: TextStyle(fontSize: 15, color: extra.muted),
           ),
           const SizedBox(height: 16),
@@ -43,7 +41,7 @@ class SavedPage extends StatelessWidget {
                   Icon(Icons.bookmark_border, size: 48, color: extra.muted),
                   const SizedBox(height: 12),
                   Text(
-                    'Tap the bookmark on a result to save it.',
+                    l.savedEmpty,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: extra.muted),
                   ),
@@ -60,8 +58,8 @@ class SavedPage extends StatelessWidget {
                       key: ValueKey(check.key),
                       direction: DismissDirection.endToStart,
                       background: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 20),
+                        alignment: AlignmentDirectional.centerEnd,
+                        padding: const EdgeInsetsDirectional.only(end: 20),
                         color: Theme.of(context).colorScheme.error,
                         child: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.onError),
                       ),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../app_state.dart';
+import '../l10n/l10n.dart';
 import '../passport_validity.dart';
 import '../theme.dart';
 import '../update_service.dart';
 import '../visa_repository.dart';
 import '../widgets.dart';
+import 'language_list.dart';
 
 /// "Settings" tab: theme, visa data updates and app info.
 class SettingsPage extends StatefulWidget {
@@ -31,15 +34,16 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _updateData() async {
     final scope = AppScope.of(context);
     final messenger = ScaffoldMessenger.of(context);
+    final l = context.l10n;
     setState(() => _updating = true);
     final result = await scope.repo.refresh();
     if (!mounted) return;
     setState(() => _updating = false);
     if (result == DataRefreshResult.updated) scope.state.cleanUp(scope.repo.data);
     final text = switch (result) {
-      DataRefreshResult.updated => 'Visa data updated to ${scope.repo.data.version}.',
-      DataRefreshResult.upToDate => 'You already have the latest visa data.',
-      DataRefreshResult.failed => 'Could not update. Check your internet connection and try again.',
+      DataRefreshResult.updated => l.dataUpdated(scope.repo.data.version),
+      DataRefreshResult.upToDate => l.dataUpToDate,
+      DataRefreshResult.failed => l.dataFailed,
     };
     messenger.showSnackBar(SnackBar(content: Text(text)));
   }
@@ -50,6 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final state = scope.state;
     final data = scope.repo.data;
     final extra = StamplyColors.of(context);
+    final l = context.l10n;
     final brightness = Theme.of(context).brightness;
     final expiry = state.passportExpiry;
     final validity = expiry == null ? null : PassportValidity.check(expiry, DateTime.now());
@@ -58,18 +63,29 @@ class _SettingsPageState extends State<SettingsPage> {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         children: [
-          Text('Settings', style: Theme.of(context).textTheme.headlineMedium),
-          const SectionLabel('Appearance'),
+          Text(l.settingsTitle, style: Theme.of(context).textTheme.headlineMedium),
+          SectionLabel(l.appearance),
           SegmentedButton<ThemeMode>(
-            segments: const [
-              ButtonSegment(value: ThemeMode.system, label: Text('System'), icon: Icon(Icons.brightness_auto)),
-              ButtonSegment(value: ThemeMode.light, label: Text('Light'), icon: Icon(Icons.light_mode_outlined)),
-              ButtonSegment(value: ThemeMode.dark, label: Text('Dark'), icon: Icon(Icons.dark_mode_outlined)),
+            segments: [
+              ButtonSegment(
+                  value: ThemeMode.system,
+                  label: Text(l.themeSystem),
+                  icon: const Icon(Icons.brightness_auto)),
+              ButtonSegment(
+                  value: ThemeMode.light,
+                  label: Text(l.themeLight),
+                  icon: const Icon(Icons.light_mode_outlined)),
+              ButtonSegment(
+                  value: ThemeMode.dark,
+                  label: Text(l.themeDark),
+                  icon: const Icon(Icons.dark_mode_outlined)),
             ],
             selected: {state.themeMode},
             onSelectionChanged: (s) => state.setThemeMode(s.first),
           ),
-          const SectionLabel('My passport'),
+          SectionLabel(l.language),
+          CardBox(child: LanguageTile(state: state)),
+          SectionLabel(l.myPassport),
           CardBox(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -84,7 +100,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            expiry == null ? 'Passport expiry date' : 'Expires ${formatDate(expiry)}',
+                            expiry == null
+                                ? l.passportExpiryDate
+                                : l.expiresOn(DateFormat.yMMMd().format(expiry)),
                             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                           ),
                           if (validity != null) ...[
@@ -96,7 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 borderRadius: BorderRadius.circular(999),
                               ),
                               child: Text(
-                                validity.summary,
+                                validity.summary(l),
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -112,9 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  validity?.advice ??
-                      'Add your expiry date to check it against the common 6-month rule. '
-                          'It stays on this device.',
+                  validity?.advice(l) ?? l.expiryEmptyAdvice,
                   style: TextStyle(fontSize: 14, height: 1.5, color: extra.muted),
                 ),
                 const SizedBox(height: 16),
@@ -123,14 +139,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => pickPassportExpiry(context, state),
-                        child: Text(expiry == null ? 'Add expiry date' : 'Change date'),
+                        child: Text(expiry == null ? l.addExpiryDate : l.changeDate),
                       ),
                     ),
                     if (expiry != null) ...[
                       const SizedBox(width: 12),
                       TextButton(
                         onPressed: () => state.setPassportExpiry(null),
-                        child: const Text('Remove'),
+                        child: Text(l.remove),
                       ),
                     ],
                   ],
@@ -138,7 +154,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          const SectionLabel('Visa data'),
+          SectionLabel(l.visaData),
           CardBox(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -152,11 +168,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Data from ${data.version}',
+                          Text(l.dataFrom(data.version),
                               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                           Text(
-                            '${data.countries.length} countries · '
-                            '${scope.repo.usingDownloadedData ? 'downloaded update' : 'built into the app'}',
+                            '${l.dataCountries(data.countries.length)} · '
+                            '${scope.repo.usingDownloadedData ? l.dataDownloaded : l.dataBuiltIn}',
                             style: TextStyle(fontSize: 13, color: extra.muted),
                           ),
                         ],
@@ -166,8 +182,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Stamply works offline. Tap below to download the latest visa data file '
-                  'from GitHub. No account, and no personal data is sent.',
+                  l.dataExplain,
                   style: TextStyle(fontSize: 14, height: 1.5, color: extra.muted),
                 ),
                 const SizedBox(height: 16),
@@ -180,12 +195,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.download_outlined),
-                  label: Text(_updating ? 'Updating…' : 'Update data'),
+                  label: Text(_updating ? l.updating : l.updateData),
                 ),
               ],
             ),
           ),
-          const SectionLabel('About'),
+          SectionLabel(l.about),
           CardBox(
             child: Column(
               children: [
@@ -193,26 +208,26 @@ class _SettingsPageState extends State<SettingsPage> {
                   leading: const StamplyLogo(size: 36),
                   title: const Text('Stamply – Visa Checker',
                       style: TextStyle(fontWeight: FontWeight.w600)),
-                  subtitle: Text(_appVersion.isEmpty ? 'Lumio Apps' : 'Version $_appVersion · Lumio Apps'),
+                  subtitle: Text(_appVersion.isEmpty ? 'Lumio Apps' : '${l.appVersion(_appVersion)} · Lumio Apps'),
                 ),
                 if (kSelfUpdate) ...[
                   Divider(height: 1, color: extra.divider),
                   ListTile(
                     leading: const Icon(Icons.system_update_outlined),
-                    title: const Text('Check for updates'),
+                    title: Text(l.checkForUpdates),
                     onTap: () => UpdateService.checkForUpdates(context),
                   ),
                 ],
                 Divider(height: 1, color: extra.divider),
-                const ListTile(
-                  leading: Icon(Icons.privacy_tip_outlined),
-                  title: Text('Privacy'),
-                  subtitle: Text('No ads, no tracking, no account. Your checks stay on this device.'),
+                ListTile(
+                  leading: const Icon(Icons.privacy_tip_outlined),
+                  title: Text(l.privacy),
+                  subtitle: Text(l.privacySummary),
                 ),
                 Divider(height: 1, color: extra.divider),
                 ListTile(
                   leading: const Icon(Icons.description_outlined),
-                  title: const Text('Licenses and data source'),
+                  title: Text(l.licensesAndData),
                   subtitle: Text(data.source),
                   onTap: () => showLicensePage(
                     context: context,
@@ -229,8 +244,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Stamply gives general guidance only. Visa rules change often — always confirm '
-            'with the embassy or official government website before you travel.',
+            l.disclaimerSettings,
             style: TextStyle(fontSize: 13, height: 1.5, color: extra.muted),
           ),
         ],

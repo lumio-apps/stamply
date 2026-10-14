@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'app_state.dart';
+import 'l10n/l10n.dart';
 import 'models.dart';
+import 'status_text.dart';
 import 'theme.dart';
 
 /// Flag emoji for a two-letter country code, or "" if the code is not A–Z.
@@ -61,7 +63,7 @@ class ChangedBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
-        'Changed',
+        context.l10n.changedBadge,
         style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
       ),
     );
@@ -84,7 +86,7 @@ class StatusPill extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
-        rule.shortLabel,
+        rule.shortLabel(context.l10n),
         style: TextStyle(
           color: rule.status.foreground(b),
           fontSize: 13,
@@ -221,7 +223,7 @@ Future<void> pickPassportExpiry(BuildContext context, AppState state) async {
     initialDate: initial,
     firstDate: first,
     lastDate: DateTime(today.year + 20),
-    helpText: 'Passport expiry date',
+    helpText: context.l10n.passportExpiryDate,
   );
   if (picked != null) state.setPassportExpiry(picked);
 }

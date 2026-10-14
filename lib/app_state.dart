@@ -1,6 +1,9 @@
+import 'dart:ui' show PlatformDispatcher;
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'l10n/l10n.dart';
 import 'models.dart';
 import 'visa_repository.dart';
 
@@ -16,6 +19,8 @@ class AppState extends ChangeNotifier {
   static const _kTheme = 'theme';
   static const _kExpiry = 'passport_expiry';
   static const _kSeen = 'seen_rules';
+  static const _kLanguage = 'language';
+  static const _kOnboarded = 'onboarded';
   static const _maxRecent = 10;
 
   final SharedPreferences _prefs;
@@ -32,11 +37,43 @@ class AppState extends ChangeNotifier {
   /// Saved trip key → the rule the user last saw, to spot changes after data updates.
   Map<String, String> seen = {};
 
+  /// Language chosen by the user, or null (= follow the device).
+  String? get languageSetting => _prefs.getString(_kLanguage);
+
+  /// Language the app is shown in: the user's choice, else the device
+  /// language if the app has it, else English.
+  String get languageCode {
+    final chosen = languageSetting;
+    if (chosen != null && kLanguages.any((l) => l.code == chosen)) return chosen;
+    return deviceLanguageCode;
+  }
+
+  static String get deviceLanguageCode {
+    final device = PlatformDispatcher.instance.locale.languageCode;
+    return kLanguages.any((l) => l.code == device) ? device : 'en';
+  }
+
+  void setLanguage(String code) {
+    _prefs.setString(_kLanguage, code);
+    notifyListeners();
+  }
+
+  /// False until the welcome screen is finished. People who used an earlier
+  /// version (they already picked a passport) skip it.
+  bool onboarded = true;
+
+  void completeOnboarding() {
+    onboarded = true;
+    _prefs.setBool(_kOnboarded, true);
+    notifyListeners();
+  }
+
   static Future<AppState> load() async {
     final prefs = await SharedPreferences.getInstance();
     final s = AppState._(prefs);
     s.passport = prefs.getString(_kPassport);
     s.destination = prefs.getString(_kDestination);
+    s.onboarded = prefs.getBool(_kOnboarded) ?? (s.passport != null);
     s.recent = _readChecks(prefs, _kRecent);
     s.saved = _readChecks(prefs, _kSaved);
     s.passportExpiry = DateTime.tryParse(prefs.getString(_kExpiry) ?? '');
@@ -167,6 +204,9 @@ class AppScope extends InheritedNotifier<Listenable> {
 
   final AppState state;
   final VisaRepository repo;
+
+  /// Country name in the app's language.
+  String nameOf(String code) => repo.nameOf(code, state.languageCode);
 
   static AppScope of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<AppScope>();

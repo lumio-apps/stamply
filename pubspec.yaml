@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
   http: ">=1.2.0 <2.0.0"
   open_filex: ">=4.5.0 <5.0.0"
   package_info_plus: ">=8.0.0 <11.0.0"
@@ -23,10 +26,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/data/visa_data.json
+    - assets/data/country_names.json
     - assets/data/LICENSE-data.txt
+    - assets/data/LICENSE-cldr.txt
     - assets/fonts/OFL-SpaceGrotesk.txt
     - assets/fonts/OFL-IBMPlexSans.txt
 

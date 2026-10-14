@@ -1,0 +1,328 @@
+{
+  "@@locale": "en",
+  "navCheck": "Check",
+  "navExplore": "Explore",
+  "navSaved": "Saved",
+  "navSettings": "Settings",
+  "homeTitle": "Can I enter without a visa?",
+  "homeSubtitle": "Pick your passport and destination. Works fully offline.",
+  "myPassport": "My passport",
+  "travellingTo": "Travelling to",
+  "chooseCountry": "Choose country",
+  "swapTooltip": "Swap passport and destination",
+  "checkRequirements": "Check requirements",
+  "recentChecks": "Recent checks",
+  "clear": "Clear",
+  "searchCountry": "Search country",
+  "clearSearch": "Clear search",
+  "noCountryMatches": "No country matches \"{query}\"",
+  "@noCountryMatches": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "statusVisaFree": "Visa-free",
+  "statusVoa": "Visa on arrival",
+  "statusEta": "ETA",
+  "statusEvisa": "e-Visa",
+  "statusVisaRequired": "Visa required",
+  "statusNoAdmission": "No admission",
+  "headlineVisaFree": "No visa needed",
+  "headlineVoa": "Visa on arrival",
+  "headlineEta": "Travel authorisation needed",
+  "headlineEvisa": "e-Visa needed",
+  "headlineVisaRequired": "Visa required",
+  "headlineNoAdmission": "Entry not permitted",
+  "stampVisaFree": "VISA-FREE",
+  "stampVoa": "ON ARRIVAL",
+  "stampEta": "ETA",
+  "stampEvisa": "E-VISA",
+  "stampVisaRequired": "VISA NEEDED",
+  "stampNoAdmission": "NO ENTRY",
+  "explainVisaFree": "You can enter without applying for a visa.",
+  "explainVoa": "You can get your visa at the border when you arrive. A fee may apply.",
+  "explainEta": "Apply online for an electronic travel authorisation (ETA) before you fly. It is usually quicker than a visa.",
+  "explainEvisa": "Apply online for an e-Visa before you travel and keep a copy with you.",
+  "explainVisaRequired": "Apply for a visa at an embassy, consulate or visa centre before you travel.",
+  "explainNoAdmission": "Entry is currently not allowed for this passport, for example because of a travel ban.",
+  "stayUpTo": "{days, plural, =1{Stay up to 1 day} other{Stay up to {days} days}}",
+  "@stayUpTo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "stayNotListed": "Allowed stay not listed",
+  "daysShort": "{days} d",
+  "@daysShort": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "shareAsImage": "Share as image",
+  "removeFromSaved": "Remove from saved",
+  "saveThisCheck": "Save this check",
+  "couldNotShare": "Could not share this result.",
+  "ownCountryTitle": "Your own country",
+  "ownCountrySubtitle": "Citizens can enter their own country with a valid passport.",
+  "noDataTitle": "No data yet",
+  "noDataSubtitle": "We do not have a rule for {from} passports travelling to {to}.",
+  "@noDataSubtitle": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "entryStatusLabel": "ENTRY STATUS",
+  "passportHolders": "{from} passport holders",
+  "@passportHolders": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      }
+    }
+  },
+  "dataFrom": "Data from {version}",
+  "@dataFrom": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "shareMessage": "{from} passport → {to}: {status}.\nChecked with Stamply, an open source visa checker: https://github.com/lumio-apps/stamply",
+  "@shareMessage": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "beforeYouFly": "Before you fly",
+  "passportValidity": "Passport validity",
+  "validityHint": "Many countries ask for 6 months of validity and blank pages. Add your expiry date to see how yours compares.",
+  "addExpiryDate": "Add expiry date",
+  "changeExpiryDate": "Change expiry date",
+  "returnTicket": "Return or onward ticket",
+  "returnTicketText": "Border officers may ask to see it, along with your hotel booking.",
+  "proofOfFunds": "Proof of funds",
+  "proofOfFundsText": "Some countries ask how you will pay for your stay. Keep a card or bank statement ready.",
+  "officialWebsite": "Use the official website",
+  "officialWebsiteText": "Apply only on the government website of {to}. Many look-alike sites charge extra fees.",
+  "@officialWebsiteText": {
+    "placeholders": {
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "disclaimerResult": "General guidance only. Visa rules change often — always confirm with the embassy or official government website before you travel. Data from {version}.",
+  "@disclaimerResult": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "stampSemantics": "{status} stamp",
+  "@stampSemantics": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "expiredDaysAgo": "{count, plural, =1{Expired yesterday} other{Expired {count} days ago}}",
+  "@expiredDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "monthsLeft": "{count, plural, =1{1 month left} other{{count} months left}}",
+  "@monthsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "expiresToday": "Expires today",
+  "daysLeft": "{count, plural, =1{1 day left} other{{count} days left}}",
+  "@daysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "validityExpired": "Your passport has expired. Renew it before you travel.",
+  "validityCritical": "Less than 3 months left. Many countries will refuse entry. Consider renewing first.",
+  "validityShort": "Less than 6 months left. Many countries require at least 6 months of validity.",
+  "validityGood": "Meets the common 6-month rule. Still confirm the rule for your destination.",
+  "exploreTitle": "Explore",
+  "whereCanIGo": "Where can I go?",
+  "exploreEmptyBody": "Choose your passport to see every destination at a glance.",
+  "choosePassport": "Choose passport",
+  "destinationsNoVisa": "{count, plural, =1{1 destination without a visa in advance} other{{count} destinations without a visa in advance}}",
+  "@destinationsNoVisa": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDestination": "Search destination",
+  "allCount": "All {count}",
+  "@allCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chipCount": "{label} {count}",
+  "@chipCount": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noDestinationsMatch": "No destinations match.",
+  "savedTitle": "Saved",
+  "savedIntro": "Trips you bookmark appear here, ready to check again.",
+  "savedEmpty": "Tap the bookmark on a result to save it.",
+  "savedChanged": "{count, plural, =1{1 saved trip has new rules since the last data update. Tap it to see what changed.} other{{count} saved trips have new rules since the last data update. Tap them to see what changed.}}",
+  "@savedChanged": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "changedBadge": "Changed",
+  "settingsTitle": "Settings",
+  "appearance": "Appearance",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "language": "Language",
+  "passportExpiryDate": "Passport expiry date",
+  "expiresOn": "Expires {date}",
+  "@expiresOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "expiryEmptyAdvice": "Add your expiry date to check it against the common 6-month rule. It stays on this device.",
+  "changeDate": "Change date",
+  "remove": "Remove",
+  "visaData": "Visa data",
+  "dataCountries": "Countries covered: {count}",
+  "@dataCountries": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataBuiltIn": "built into the app",
+  "dataDownloaded": "downloaded update",
+  "dataExplain": "Stamply works offline. Tap below to download the latest visa data file from GitHub. No account, and no personal data is sent.",
+  "updateData": "Update data",
+  "updating": "Updating…",
+  "dataUpdated": "Visa data updated to {version}.",
+  "@dataUpdated": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "dataUpToDate": "You already have the latest visa data.",
+  "dataFailed": "Could not update. Check your internet connection and try again.",
+  "about": "About",
+  "appVersion": "Version {version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "checkForUpdates": "Check for updates",
+  "privacy": "Privacy",
+  "privacySummary": "No ads, no tracking, no account. Your checks stay on this device.",
+  "licensesAndData": "Licenses and data source",
+  "disclaimerSettings": "Stamply gives general guidance only. Visa rules change often — always confirm with the embassy or official government website before you travel.",
+  "updChecking": "Checking for updates...",
+  "updLatest": "You are on the latest version ({version}).",
+  "@updLatest": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updAvailable": "Update available: {tag}",
+  "@updAvailable": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      }
+    }
+  },
+  "updCurrent": "Current version: {version}",
+  "@updCurrent": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updReady": "A new version is ready to install.",
+  "updLater": "Later",
+  "updUpdate": "Update",
+  "updCheckFailed": "Could not check for updates. Check your internet connection.",
+  "updDownloading": "Downloading update",
+  "updStarting": "Starting...",
+  "updInstallerFailed": "Could not open installer: {message}",
+  "@updInstallerFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "updDownloadFailed": "Download failed. Please try again.",
+  "welcomeTitle": "Welcome to Stamply",
+  "welcomeTagline": "Check visa rules for any passport. Works offline, no account.",
+  "chooseLanguage": "Choose your language",
+  "welcomePassportTitle": "Which passport do you hold?",
+  "welcomePassportHint": "You can change this later. It stays on your device.",
+  "next": "Next",
+  "getStarted": "Get started",
+  "skip": "Skip"
+}
