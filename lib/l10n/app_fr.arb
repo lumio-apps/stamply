@@ -137,5 +137,21 @@
   "welcomePassportHint": "Vous pourrez le changer plus tard. Il reste sur votre appareil.",
   "next": "Suivant",
   "getStarted": "Commencer",
-  "skip": "Passer"
+  "skip": "Passer",
+  "passportPower": "Puissance du passeport",
+  "rankOf": "Rang {rank} sur {total}",
+  "rankingTitle": "Classement mondial des passeports",
+  "rankingIntro": "Classé selon le nombre de destinations accessibles sans visa préalable (sans visa, visa à l’arrivée ou AVE).",
+  "addSecondPassport": "Ajouter un second passeport",
+  "secondPassport": "Second passeport",
+  "useThisPassport": "Utiliser ce passeport",
+  "removeSecondPassport": "Retirer le second passeport",
+  "betterWithOther": "Plus simple avec votre passeport {country} : {status}",
+  "comparePassports": "Comparer les passeports",
+  "compareHint": "Choisissez deux passeports pour voir où leurs règles diffèrent.",
+  "compareFirst": "Premier passeport",
+  "compareSecond": "Second passeport",
+  "compareDiffer": "{count, plural, =1{1 destination où les règles diffèrent} other{{count} destinations où les règles diffèrent}}",
+  "compareSame": "Ces deux passeports ont les mêmes règles partout.",
+  "compareEasier": "Plus simple avec {country} : {count}"
 }

@@ -137,5 +137,21 @@
   "welcomePassportHint": "Você pode mudar depois. Ele fica no seu dispositivo.",
   "next": "Próximo",
   "getStarted": "Começar",
-  "skip": "Pular"
+  "skip": "Pular",
+  "passportPower": "Poder do passaporte",
+  "rankOf": "Posição {rank} de {total}",
+  "rankingTitle": "Ranking mundial de passaportes",
+  "rankingIntro": "Classificado por quantos destinos você pode visitar sem visto prévio (sem visto, visto na chegada ou ETA).",
+  "addSecondPassport": "Adicionar um segundo passaporte",
+  "secondPassport": "Segundo passaporte",
+  "useThisPassport": "Usar este passaporte",
+  "removeSecondPassport": "Remover o segundo passaporte",
+  "betterWithOther": "Mais fácil com seu passaporte de {country}: {status}",
+  "comparePassports": "Comparar passaportes",
+  "compareHint": "Escolha dois passaportes para ver onde as regras deles diferem.",
+  "compareFirst": "Primeiro passaporte",
+  "compareSecond": "Segundo passaporte",
+  "compareDiffer": "{count, plural, =1{1 destino em que as regras diferem} other{{count} destinos em que as regras diferem}}",
+  "compareSame": "Estes dois passaportes têm as mesmas regras em todo lugar.",
+  "compareEasier": "Mais fácil com {country}: {count}"
 }

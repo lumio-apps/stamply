@@ -137,5 +137,21 @@
   "welcomePassportHint": "તમે તેને પછી બદલી શકો છો. તે તમારા ડિવાઇસ પર જ રહે છે.",
   "next": "આગળ",
   "getStarted": "શરૂ કરો",
-  "skip": "છોડો"
+  "skip": "છોડો",
+  "passportPower": "પાસપોર્ટની તાકાત",
+  "rankOf": "{total}માંથી {rank} ક્રમ",
+  "rankingTitle": "વિશ્વ પાસપોર્ટ ક્રમાંકન",
+  "rankingIntro": "અગાઉથી વિઝા વિના કેટલાં ગંતવ્યોમાં જઈ શકાય તેના આધારે ક્રમ (વિઝા-મુક્ત, આગમન પર વિઝા અથવા ETA).",
+  "addSecondPassport": "બીજો પાસપોર્ટ ઉમેરો",
+  "secondPassport": "બીજો પાસપોર્ટ",
+  "useThisPassport": "આ પાસપોર્ટ વાપરો",
+  "removeSecondPassport": "બીજો પાસપોર્ટ હટાવો",
+  "betterWithOther": "તમારા {country} પાસપોર્ટથી સરળ: {status}",
+  "comparePassports": "પાસપોર્ટની સરખામણી કરો",
+  "compareHint": "બે પાસપોર્ટ પસંદ કરો અને જુઓ કે તેમના નિયમો ક્યાં અલગ છે.",
+  "compareFirst": "પહેલો પાસપોર્ટ",
+  "compareSecond": "બીજો પાસપોર્ટ",
+  "compareDiffer": "{count, plural, =1{1 ગંતવ્ય જ્યાં નિયમો અલગ છે} other{{count} ગંતવ્ય જ્યાં નિયમો અલગ છે}}",
+  "compareSame": "આ બંને પાસપોર્ટના નિયમો બધે એકસરખા છે.",
+  "compareEasier": "{country}થી સરળ: {count}"
 }

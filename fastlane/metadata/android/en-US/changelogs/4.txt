@@ -1,0 +1,4 @@
+• Passport power score and world ranking
+• Add a second passport and switch between them
+• Compare two passports side by side
+• Result shows when your other passport is easier

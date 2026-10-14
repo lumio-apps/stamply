@@ -137,5 +137,21 @@
   "welcomePassportHint": "آپ اسے بعد میں بدل سکتے ہیں۔ یہ آپ کی ڈیوائس پر ہی رہتا ہے۔",
   "next": "اگلا",
   "getStarted": "شروع کریں",
-  "skip": "چھوڑیں"
+  "skip": "چھوڑیں",
+  "passportPower": "پاسپورٹ کی طاقت",
+  "rankOf": "{total} میں سے رینک {rank}",
+  "rankingTitle": "دنیا کے پاسپورٹ کی درجہ بندی",
+  "rankingIntro": "اس بنیاد پر ترتیب کہ آپ کتنی منزلوں میں پیشگی ویزا کے بغیر جا سکتے ہیں (ویزا فری، آمد پر ویزا یا ETA)۔",
+  "addSecondPassport": "دوسرا پاسپورٹ شامل کریں",
+  "secondPassport": "دوسرا پاسپورٹ",
+  "useThisPassport": "یہ پاسپورٹ استعمال کریں",
+  "removeSecondPassport": "دوسرا پاسپورٹ ہٹائیں",
+  "betterWithOther": "آپ کے {country} پاسپورٹ سے آسان: {status}",
+  "comparePassports": "پاسپورٹ کا موازنہ کریں",
+  "compareHint": "دو پاسپورٹ چنیں اور دیکھیں کہ ان کے اصول کہاں مختلف ہیں۔",
+  "compareFirst": "پہلا پاسپورٹ",
+  "compareSecond": "دوسرا پاسپورٹ",
+  "compareDiffer": "{count, plural, =1{1 منزل جہاں اصول مختلف ہیں} other{{count} منزلیں جہاں اصول مختلف ہیں}}",
+  "compareSame": "ان دونوں پاسپورٹ کے اصول ہر جگہ ایک جیسے ہیں۔",
+  "compareEasier": "{country} سے آسان: {count}"
 }

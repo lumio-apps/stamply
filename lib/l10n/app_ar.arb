@@ -137,5 +137,21 @@
   "welcomePassportHint": "يمكنك تغيير هذا لاحقًا. يبقى على جهازك.",
   "next": "التالي",
   "getStarted": "ابدأ",
-  "skip": "تخطّي"
+  "skip": "تخطّي",
+  "passportPower": "قوة جواز السفر",
+  "rankOf": "المرتبة {rank} من {total}",
+  "rankingTitle": "الترتيب العالمي لجوازات السفر",
+  "rankingIntro": "مرتّبة حسب عدد الوجهات التي يمكنك دخولها دون تأشيرة مسبقة (بدون تأشيرة، تأشيرة عند الوصول أو ETA).",
+  "addSecondPassport": "إضافة جواز سفر ثانٍ",
+  "secondPassport": "جواز السفر الثاني",
+  "useThisPassport": "استخدم هذا الجواز",
+  "removeSecondPassport": "إزالة جواز السفر الثاني",
+  "betterWithOther": "أسهل بجواز سفرك ({country}): {status}",
+  "comparePassports": "مقارنة جوازات السفر",
+  "compareHint": "اختر جوازين لترى أين تختلف قواعدهما.",
+  "compareFirst": "جواز السفر الأول",
+  "compareSecond": "جواز السفر الثاني",
+  "compareDiffer": "{count, plural, =1{وجهة واحدة تختلف فيها القواعد} other{{count} وجهة تختلف فيها القواعد}}",
+  "compareSame": "لهذين الجوازين القواعد نفسها في كل مكان.",
+  "compareEasier": "أسهل بجواز ({country}): {count}"
 }

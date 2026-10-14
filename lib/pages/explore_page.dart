@@ -6,7 +6,9 @@ import '../models.dart';
 import '../status_text.dart';
 import '../theme.dart';
 import '../widgets.dart';
+import 'compare_page.dart';
 import 'country_picker_page.dart';
+import 'ranking_page.dart';
 import 'result_page.dart';
 
 /// "Explore" tab: every destination for the user's passport, grouped by status.
@@ -76,7 +78,8 @@ class _ExplorePageState extends State<ExplorePage> {
             data.nameOf(e.key).toLowerCase().contains(q))
         .toList()
       ..sort((a, b) => scope.nameOf(a.key).toLowerCase().compareTo(scope.nameOf(b.key).toLowerCase()));
-    final easy = (counts[EntryStatus.visaFree] ?? 0) + (counts[EntryStatus.visaOnArrival] ?? 0);
+    final score = data.score(passport);
+    final second = state.passport2;
 
     return SafeArea(
       child: CustomScrollView(
@@ -87,16 +90,62 @@ class _ExplorePageState extends State<ExplorePage> {
               children: [
                 Text(l.exploreTitle, style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: 16),
+                if (second != null) ...[
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      for (final code in [passport, second])
+                        ChoiceChip(
+                          avatar: Text(flagEmoji(code)),
+                          label: Text(scope.nameOf(code)),
+                          selected: code == passport,
+                          onSelected: (_) {
+                            if (code != passport) state.swapPassports();
+                          },
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                ],
+                SectionLabel(l.passportPower),
                 CardBox(
                   child: ListTile(
                     onTap: choosePassport,
                     leading: CountryBadge(code: passport),
                     title: Text(scope.nameOf(passport),
                         style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
-                    subtitle: Text(l.destinationsNoVisa(easy),
-                        style: TextStyle(color: extra.muted)),
+                    subtitle: Text(
+                      '${l.rankOf(data.rank(passport), data.rankedCount)}\n'
+                      '${l.destinationsNoVisa(score)}',
+                      style: TextStyle(color: extra.muted, height: 1.4),
+                    ),
+                    isThreeLine: true,
                     trailing: const Icon(Icons.edit_outlined),
                   ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => const RankingPage())),
+                        icon: const Icon(Icons.leaderboard_outlined),
+                        label: Text(l.rankingTitle, textAlign: TextAlign.center),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => ComparePage(first: passport, second: second))),
+                        icon: const Icon(Icons.compare_arrows),
+                        label: Text(l.comparePassports, textAlign: TextAlign.center),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
                 TextField(

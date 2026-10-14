@@ -137,5 +137,21 @@
   "welcomePassportHint": "あとから変更できます。端末内にのみ保存されます。",
   "next": "次へ",
   "getStarted": "はじめる",
-  "skip": "スキップ"
+  "skip": "スキップ",
+  "passportPower": "パスポートの強さ",
+  "rankOf": "{total} 中 {rank} 位",
+  "rankingTitle": "世界パスポートランキング",
+  "rankingIntro": "事前のビザなしで入国できる渡航先の数で順位付けしています（ビザ不要、到着時ビザ、ETA）。",
+  "addSecondPassport": "2 冊目のパスポートを追加",
+  "secondPassport": "2 冊目のパスポート",
+  "useThisPassport": "このパスポートを使う",
+  "removeSecondPassport": "2 冊目のパスポートを削除",
+  "betterWithOther": "{country}のパスポートの方が簡単：{status}",
+  "comparePassports": "パスポートを比較",
+  "compareHint": "2 冊のパスポートを選んで、ルールの違いを確認しましょう。",
+  "compareFirst": "1 冊目のパスポート",
+  "compareSecond": "2 冊目のパスポート",
+  "compareDiffer": "{count, plural, =1{ルールが異なる渡航先：1} other{ルールが異なる渡航先：{count}}}",
+  "compareSame": "この 2 冊のパスポートは、どこでもルールが同じです。",
+  "compareEasier": "{country}の方が簡単：{count}"
 }

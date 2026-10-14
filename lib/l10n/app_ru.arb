@@ -137,5 +137,21 @@
   "welcomePassportHint": "Это можно изменить позже. Данные остаются на вашем устройстве.",
   "next": "Далее",
   "getStarted": "Начать",
-  "skip": "Пропустить"
+  "skip": "Пропустить",
+  "passportPower": "Сила паспорта",
+  "rankOf": "Место {rank} из {total}",
+  "rankingTitle": "Мировой рейтинг паспортов",
+  "rankingIntro": "Рейтинг по числу направлений, куда можно поехать без предварительной визы (без визы, виза по прибытии или ETA).",
+  "addSecondPassport": "Добавить второй паспорт",
+  "secondPassport": "Второй паспорт",
+  "useThisPassport": "Использовать этот паспорт",
+  "removeSecondPassport": "Убрать второй паспорт",
+  "betterWithOther": "Проще с вашим паспортом ({country}): {status}",
+  "comparePassports": "Сравнить паспорта",
+  "compareHint": "Выберите два паспорта, чтобы увидеть, где различаются их правила.",
+  "compareFirst": "Первый паспорт",
+  "compareSecond": "Второй паспорт",
+  "compareDiffer": "{count, plural, =1{1 направление с разными правилами} other{Направлений с разными правилами: {count}}}",
+  "compareSame": "У этих двух паспортов везде одинаковые правила.",
+  "compareEasier": "Проще с паспортом ({country}): {count}"
 }

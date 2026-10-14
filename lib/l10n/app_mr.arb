@@ -137,5 +137,21 @@
   "welcomePassportHint": "हे तुम्ही नंतर बदलू शकता. ते तुमच्या डिव्हाइसवरच राहते.",
   "next": "पुढे",
   "getStarted": "सुरू करा",
-  "skip": "वगळा"
+  "skip": "वगळा",
+  "passportPower": "पासपोर्टची ताकद",
+  "rankOf": "{total} पैकी {rank} वा क्रमांक",
+  "rankingTitle": "जागतिक पासपोर्ट क्रमवारी",
+  "rankingIntro": "आधी व्हिसा न घेता किती गंतव्यांत जाता येते त्यानुसार क्रमवारी (व्हिसा-मुक्त, आगमनावर व्हिसा किंवा ETA).",
+  "addSecondPassport": "दुसरा पासपोर्ट जोडा",
+  "secondPassport": "दुसरा पासपोर्ट",
+  "useThisPassport": "हा पासपोर्ट वापरा",
+  "removeSecondPassport": "दुसरा पासपोर्ट काढा",
+  "betterWithOther": "तुमच्या {country} पासपोर्टने सोपे: {status}",
+  "comparePassports": "पासपोर्टची तुलना करा",
+  "compareHint": "दोन पासपोर्ट निवडा आणि त्यांचे नियम कुठे वेगळे आहेत ते पाहा.",
+  "compareFirst": "पहिला पासपोर्ट",
+  "compareSecond": "दुसरा पासपोर्ट",
+  "compareDiffer": "{count, plural, =1{1 गंतव्य जिथे नियम वेगळे आहेत} other{{count} गंतव्ये जिथे नियम वेगळे आहेत}}",
+  "compareSame": "या दोन्ही पासपोर्टचे नियम सर्वत्र सारखे आहेत.",
+  "compareEasier": "{country} ने सोपे: {count}"
 }

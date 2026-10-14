@@ -137,5 +137,21 @@
   "welcomePassportHint": "之后可以更改。数据只保存在你的设备上。",
   "next": "下一个",
   "getStarted": "开始使用",
-  "skip": "跳过"
+  "skip": "跳过",
+  "passportPower": "护照实力",
+  "rankOf": "第 {rank} 名，共 {total} 个",
+  "rankingTitle": "世界护照排名",
+  "rankingIntro": "按无需提前办签证即可前往的目的地数量排名（免签、落地签或电子旅行许可）。",
+  "addSecondPassport": "添加第二本护照",
+  "secondPassport": "第二本护照",
+  "useThisPassport": "使用这本护照",
+  "removeSecondPassport": "移除第二本护照",
+  "betterWithOther": "用你的{country}护照更容易：{status}",
+  "comparePassports": "比较护照",
+  "compareHint": "选择两本护照，看看它们的规则在哪些地方不同。",
+  "compareFirst": "第一本护照",
+  "compareSecond": "第二本护照",
+  "compareDiffer": "{count, plural, =1{1 个目的地的规则不同} other{{count} 个目的地的规则不同}}",
+  "compareSame": "这两本护照在所有地方的规则都相同。",
+  "compareEasier": "用{country}护照更容易：{count}"
 }

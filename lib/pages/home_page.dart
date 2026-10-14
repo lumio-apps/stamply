@@ -31,6 +31,11 @@ class HomePage extends StatelessWidget {
       if (code != null) state.setDestination(code);
     }
 
+    Future<void> chooseSecondPassport() async {
+      final code = await pickCountry(context, title: l.secondPassport, selected: state.passport2);
+      if (code != null) state.setPassport2(code);
+    }
+
     void openResult(TripCheck check) {
       state.addRecent(check);
       Navigator.push(context, MaterialPageRoute(builder: (_) => ResultPage(check: check)));
@@ -92,6 +97,47 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
+          if (passport != null) ...[
+            const SizedBox(height: 8),
+            if (state.passport2 == null)
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: TextButton.icon(
+                  onPressed: chooseSecondPassport,
+                  icon: const Icon(Icons.add),
+                  label: Text(l.addSecondPassport),
+                ),
+              )
+            else
+              CardBox(
+                child: Column(
+                  children: [
+                    ListTile(
+                      onTap: chooseSecondPassport,
+                      leading: CountryBadge(code: state.passport2!, size: 40),
+                      title: Text(scope.nameOf(state.passport2!),
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                      subtitle: Text(l.secondPassport, style: TextStyle(color: extra.muted)),
+                      trailing: IconButton(
+                        tooltip: l.removeSecondPassport,
+                        icon: const Icon(Icons.close),
+                        onPressed: () => state.setPassport2(null),
+                      ),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.only(end: 8, bottom: 4),
+                        child: TextButton(
+                          onPressed: state.swapPassports,
+                          child: Text(l.useThisPassport),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
           const SizedBox(height: 16),
           FilledButton(
             onPressed: passport != null && destination != null

@@ -77,6 +77,16 @@ class _ResultPageState extends State<ResultPage> {
     final expiry = scope.state.passportExpiry;
     final validity = expiry == null ? null : PassportValidity.check(expiry, DateTime.now());
 
+    final state = scope.state;
+    // With two passports: is the other one better for this trip?
+    final otherCode = check.passport == state.passport
+        ? state.passport2
+        : (check.passport == state.passport2 ? state.passport : null);
+    final otherRule = otherCode == null ? null : data.rule(otherCode, check.destination);
+    final otherBetter = rule != null &&
+        otherCode != null &&
+        otherRule != null &&
+        otherRule.status.index < rule.status.index;
     final stay = rule?.stayText(l);
     final shareText = rule == null
         ? ''
@@ -141,6 +151,36 @@ class _ResultPageState extends State<ResultPage> {
             ),
             const SizedBox(height: 8),
             Text(rule.status.explanation(l), style: TextStyle(fontSize: 15, height: 1.5, color: extra.muted)),
+            if (otherBetter) ...[
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: otherRule.status.background(Theme.of(context).brightness),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Row(
+                  children: [
+                    Icon(otherRule.status.icon,
+                        color: otherRule.status.foreground(Theme.of(context).brightness)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        l.betterWithOther(
+                          scope.nameOf(otherCode),
+                          otherRule.status.headline(l),
+                        ),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: otherRule.status.foreground(Theme.of(context).brightness),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             SectionLabel(l.beforeYouFly),
             CardBox(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),

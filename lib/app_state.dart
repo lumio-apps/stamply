@@ -19,6 +19,7 @@ class AppState extends ChangeNotifier {
   static const _kTheme = 'theme';
   static const _kExpiry = 'passport_expiry';
   static const _kSeen = 'seen_rules';
+  static const _kPassport2 = 'passport2';
   static const _kLanguage = 'language';
   static const _kOnboarded = 'onboarded';
   static const _maxRecent = 10;
@@ -27,6 +28,9 @@ class AppState extends ChangeNotifier {
 
   String? passport;
   String? destination;
+
+  /// Second passport, for people with dual citizenship (optional).
+  String? passport2;
   List<TripCheck> recent = [];
   List<TripCheck> saved = [];
   ThemeMode themeMode = ThemeMode.system;
@@ -73,6 +77,7 @@ class AppState extends ChangeNotifier {
     final s = AppState._(prefs);
     s.passport = prefs.getString(_kPassport);
     s.destination = prefs.getString(_kDestination);
+    s.passport2 = prefs.getString(_kPassport2);
     s.onboarded = prefs.getBool(_kOnboarded) ?? (s.passport != null);
     s.recent = _readChecks(prefs, _kRecent);
     s.saved = _readChecks(prefs, _kSaved);
@@ -99,6 +104,7 @@ class AppState extends ChangeNotifier {
     bool known(String? c) => c == null || data.countries.containsKey(c);
     if (!known(passport)) setPassport(null);
     if (!known(destination)) setDestination(null);
+    if (!known(passport2)) setPassport2(null);
     bool valid(TripCheck t) =>
         data.countries.containsKey(t.passport) && data.countries.containsKey(t.destination);
     recent = recent.where(valid).toList();
@@ -110,8 +116,31 @@ class AppState extends ChangeNotifier {
   }
 
   void setPassport(String? code) {
+    if (code != null && code == passport2) {
+      passport2 = null;
+      _prefs.remove(_kPassport2);
+    }
     passport = code;
     code == null ? _prefs.remove(_kPassport) : _prefs.setString(_kPassport, code);
+    notifyListeners();
+  }
+
+  void setPassport2(String? code) {
+    if (code != null && code == passport) return;
+    passport2 = code;
+    code == null ? _prefs.remove(_kPassport2) : _prefs.setString(_kPassport2, code);
+    notifyListeners();
+  }
+
+  /// Makes the second passport the main one (and the other way round).
+  void swapPassports() {
+    final a = passport;
+    final b = passport2;
+    if (a == null || b == null) return;
+    passport = b;
+    passport2 = a;
+    _prefs.setString(_kPassport, b);
+    _prefs.setString(_kPassport2, a);
     notifyListeners();
   }
 

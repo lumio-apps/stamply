@@ -41,6 +41,12 @@ No ads. No tracking. No account. Free and open source.
 - **Passport expiry check**: add your expiry date and see if you meet the common 6-month rule
 - **Recent checks** with their status at a glance
 
+### 🛂 Passports
+- **Passport power**: how many destinations you reach without a visa in advance, and your **rank** among 199 passports
+- **World ranking** of all passports
+- **Second passport** for dual citizens: switch with one tap, and the result tells you when your other passport is easier
+- **Compare two passports** side by side and see exactly where their rules differ
+
 ### 🌐 20 languages
 - English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն
 - **Country names** are translated too, so you can search in your own language

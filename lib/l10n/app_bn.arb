@@ -137,5 +137,21 @@
   "welcomePassportHint": "পরে বদলাতে পারবেন। এটি আপনার ডিভাইসেই থাকে।",
   "next": "পরবর্তী",
   "getStarted": "শুরু করুন",
-  "skip": "এড়িয়ে যান"
+  "skip": "এড়িয়ে যান",
+  "passportPower": "পাসপোর্টের শক্তি",
+  "rankOf": "{total}-এর মধ্যে {rank} নম্বর",
+  "rankingTitle": "বিশ্ব পাসপোর্ট র‍্যাঙ্কিং",
+  "rankingIntro": "আগে থেকে ভিসা ছাড়া কতগুলো গন্তব্যে ঢোকা যায় তার ভিত্তিতে সাজানো (ভিসা-মুক্ত, পৌঁছে ভিসা বা ETA)।",
+  "addSecondPassport": "দ্বিতীয় পাসপোর্ট যোগ করুন",
+  "secondPassport": "দ্বিতীয় পাসপোর্ট",
+  "useThisPassport": "এই পাসপোর্ট ব্যবহার করুন",
+  "removeSecondPassport": "দ্বিতীয় পাসপোর্ট সরান",
+  "betterWithOther": "আপনার {country} পাসপোর্টে সহজ: {status}",
+  "comparePassports": "পাসপোর্ট তুলনা করুন",
+  "compareHint": "দুটি পাসপোর্ট বেছে নিয়ে দেখুন কোথায় তাদের নিয়ম আলাদা।",
+  "compareFirst": "প্রথম পাসপোর্ট",
+  "compareSecond": "দ্বিতীয় পাসপোর্ট",
+  "compareDiffer": "{count, plural, =1{১টি গন্তব্যে নিয়ম আলাদা} other{{count}টি গন্তব্যে নিয়ম আলাদা}}",
+  "compareSame": "এই দুটি পাসপোর্টের নিয়ম সব জায়গায় একই।",
+  "compareEasier": "{country}-এ সহজ: {count}"
 }

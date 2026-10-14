@@ -27,6 +27,16 @@ void main() {
     expect(rule.status, EntryStatus.visaFree);
   });
 
+  test('ranking is sorted and ranks start at 1', () {
+    final list = data.ranking();
+    expect(list.length, data.rankedCount);
+    expect(list.first.rank, 1);
+    for (var i = 1; i < list.length; i++) {
+      expect(list[i].score, lessThanOrEqualTo(list[i - 1].score));
+    }
+    expect(data.score(list.first.code), list.first.score);
+  });
+
   test('rejects broken files', () {
     expect(() => VisaData.parse('{"schema": 2}'), throwsFormatException);
     expect(() => VisaData.parse('not json'), throwsFormatException);

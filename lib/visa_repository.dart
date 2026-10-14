@@ -58,6 +58,41 @@ class VisaData {
 
   String nameOf(String code) => countries[code] ?? code;
 
+  Map<String, int>? _scores;
+
+  /// Passport power: how many destinations a passport reaches without a visa
+  /// in advance (visa-free, visa on arrival or ETA).
+  Map<String, int> get scores => _scores ??= {
+        for (final p in _rules.keys)
+          p: _rules[p]!.values.where((v) {
+            if (v is int) return true;
+            final s = EntryStatus.fromCode(v as String);
+            return s == EntryStatus.visaFree ||
+                s == EntryStatus.visaOnArrival ||
+                s == EntryStatus.eta;
+          }).length,
+      };
+
+  int score(String passport) => scores[passport] ?? 0;
+
+  /// Position among all passports; equal scores share a rank.
+  int rank(String passport) {
+    final s = score(passport);
+    return 1 + scores.values.where((x) => x > s).length;
+  }
+
+  int get rankedCount => scores.length;
+
+  /// All passports, strongest first, with their rank.
+  List<({String code, int score, int rank})> ranking() {
+    final list = scores.entries.toList()
+      ..sort((a, b) {
+        final c = b.value.compareTo(a.value);
+        return c != 0 ? c : nameOf(a.key).compareTo(nameOf(b.key));
+      });
+    return [for (final e in list) (code: e.key, score: e.value, rank: rank(e.key))];
+  }
+
   /// Requirement for [passport] holders entering [destination].
   /// Returns null when the pair is unknown or both are the same country.
   VisaRule? rule(String passport, String destination) {

@@ -137,5 +137,21 @@
   "welcomePassportHint": "Anda bisa mengubahnya nanti. Data ini tetap di perangkat Anda.",
   "next": "Berikutnya",
   "getStarted": "Mulai",
-  "skip": "Lewati"
+  "skip": "Lewati",
+  "passportPower": "Kekuatan paspor",
+  "rankOf": "Peringkat {rank} dari {total}",
+  "rankingTitle": "Peringkat paspor dunia",
+  "rankingIntro": "Diurutkan berdasarkan jumlah tujuan yang bisa dimasuki tanpa visa terlebih dahulu (bebas visa, visa saat kedatangan, atau ETA).",
+  "addSecondPassport": "Tambah paspor kedua",
+  "secondPassport": "Paspor kedua",
+  "useThisPassport": "Pakai paspor ini",
+  "removeSecondPassport": "Hapus paspor kedua",
+  "betterWithOther": "Lebih mudah dengan paspor {country} Anda: {status}",
+  "comparePassports": "Bandingkan paspor",
+  "compareHint": "Pilih dua paspor untuk melihat di mana aturannya berbeda.",
+  "compareFirst": "Paspor pertama",
+  "compareSecond": "Paspor kedua",
+  "compareDiffer": "{count, plural, =1{1 tujuan dengan aturan berbeda} other{{count} tujuan dengan aturan berbeda}}",
+  "compareSame": "Kedua paspor ini punya aturan yang sama di mana-mana.",
+  "compareEasier": "Lebih mudah dengan {country}: {count}"
 }

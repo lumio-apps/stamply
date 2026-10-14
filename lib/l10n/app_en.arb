@@ -324,5 +324,58 @@
   "welcomePassportHint": "You can change this later. It stays on your device.",
   "next": "Next",
   "getStarted": "Get started",
-  "skip": "Skip"
+  "skip": "Skip",
+  "passportPower": "Passport power",
+  "rankOf": "Rank {rank} of {total}",
+  "@rankOf": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "rankingTitle": "World passport ranking",
+  "rankingIntro": "Ranked by how many destinations you can enter without a visa in advance (visa-free, visa on arrival or ETA).",
+  "addSecondPassport": "Add a second passport",
+  "secondPassport": "Second passport",
+  "useThisPassport": "Use this passport",
+  "removeSecondPassport": "Remove second passport",
+  "betterWithOther": "Easier with your {country} passport: {status}",
+  "@betterWithOther": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePassports": "Compare passports",
+  "compareHint": "Choose two passports to see where their rules differ.",
+  "compareFirst": "First passport",
+  "compareSecond": "Second passport",
+  "compareDiffer": "{count, plural, =1{1 destination where the rules differ} other{{count} destinations where the rules differ}}",
+  "@compareDiffer": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareSame": "These two passports have the same rules everywhere.",
+  "compareEasier": "Easier with {country}: {count}",
+  "@compareEasier": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

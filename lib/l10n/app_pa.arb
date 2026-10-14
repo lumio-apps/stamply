@@ -137,5 +137,21 @@
   "welcomePassportHint": "ਤੁਸੀਂ ਇਸਨੂੰ ਬਾਅਦ ਵਿੱਚ ਬਦਲ ਸਕਦੇ ਹੋ। ਇਹ ਤੁਹਾਡੀ ਡਿਵਾਈਸ ’ਤੇ ਹੀ ਰਹਿੰਦਾ ਹੈ।",
   "next": "ਅੱਗੇ",
   "getStarted": "ਸ਼ੁਰੂ ਕਰੋ",
-  "skip": "ਛੱਡੋ"
+  "skip": "ਛੱਡੋ",
+  "passportPower": "ਪਾਸਪੋਰਟ ਦੀ ਤਾਕਤ",
+  "rankOf": "{total} ਵਿੱਚੋਂ {rank} ਨੰਬਰ",
+  "rankingTitle": "ਦੁਨੀਆ ਦੇ ਪਾਸਪੋਰਟਾਂ ਦੀ ਦਰਜਾਬੰਦੀ",
+  "rankingIntro": "ਪਹਿਲਾਂ ਤੋਂ ਵੀਜ਼ੇ ਤੋਂ ਬਿਨਾਂ ਕਿੰਨੀਆਂ ਮੰਜ਼ਿਲਾਂ ਵਿੱਚ ਜਾ ਸਕਦੇ ਹੋ, ਉਸ ਅਨੁਸਾਰ ਤਰਤੀਬ (ਵੀਜ਼ਾ-ਮੁਕਤ, ਪਹੁੰਚਣ ’ਤੇ ਵੀਜ਼ਾ ਜਾਂ ETA)।",
+  "addSecondPassport": "ਦੂਜਾ ਪਾਸਪੋਰਟ ਜੋੜੋ",
+  "secondPassport": "ਦੂਜਾ ਪਾਸਪੋਰਟ",
+  "useThisPassport": "ਇਹ ਪਾਸਪੋਰਟ ਵਰਤੋ",
+  "removeSecondPassport": "ਦੂਜਾ ਪਾਸਪੋਰਟ ਹਟਾਓ",
+  "betterWithOther": "ਤੁਹਾਡੇ {country} ਪਾਸਪੋਰਟ ਨਾਲ ਸੌਖਾ: {status}",
+  "comparePassports": "ਪਾਸਪੋਰਟਾਂ ਦੀ ਤੁਲਨਾ ਕਰੋ",
+  "compareHint": "ਦੋ ਪਾਸਪੋਰਟ ਚੁਣੋ ਅਤੇ ਵੇਖੋ ਕਿ ਉਨ੍ਹਾਂ ਦੇ ਨਿਯਮ ਕਿੱਥੇ ਵੱਖਰੇ ਹਨ।",
+  "compareFirst": "ਪਹਿਲਾ ਪਾਸਪੋਰਟ",
+  "compareSecond": "ਦੂਜਾ ਪਾਸਪੋਰਟ",
+  "compareDiffer": "{count, plural, =1{1 ਮੰਜ਼ਿਲ ਜਿੱਥੇ ਨਿਯਮ ਵੱਖਰੇ ਹਨ} other{{count} ਮੰਜ਼ਿਲਾਂ ਜਿੱਥੇ ਨਿਯਮ ਵੱਖਰੇ ਹਨ}}",
+  "compareSame": "ਇਨ੍ਹਾਂ ਦੋਵਾਂ ਪਾਸਪੋਰਟਾਂ ਦੇ ਨਿਯਮ ਹਰ ਥਾਂ ਇੱਕੋ ਜਿਹੇ ਹਨ।",
+  "compareEasier": "{country} ਨਾਲ ਸੌਖਾ: {count}"
 }
