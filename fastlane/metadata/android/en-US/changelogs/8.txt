@@ -1,0 +1,3 @@
+• New Liquid Glass look: frosted cards, floating navigation bar and a glowing result screen
+• Result screen redesigned with a stamp-style poster
+• Shared images keep a clean solid background
