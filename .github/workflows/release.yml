@@ -37,10 +37,12 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
           echo "BUILD_TOOLS=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)" >> "$GITHUB_ENV"
 
-      # GitHub APK: includes the in-app "Check for updates".
-      # (F-Droid builds the app itself from source, without the updater.)
-      - name: Build GitHub APK
+      - name: Build APK (GitHub release)
         run: flutter build apk --release
+
+      # App bundle for Google Play (upload it in Play Console).
+      - name: Build app bundle (Google Play)
+        run: flutter build appbundle --release
 
       - name: Sign GitHub APK
         env:
@@ -57,6 +59,27 @@ jobs:
             build/app/outputs/flutter-apk/app-release.apk
           "$BUILD_TOOLS/apksigner" verify --print-certs "Stamply-${{ github.ref_name }}.apk"
 
+      # Sign the bundle with the same Lumio key (the Play upload key).
+      - name: Sign app bundle
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          cp build/app/outputs/bundle/release/app-release.aab "Stamply-${{ github.ref_name }}.aab"
+          jarsigner -keystore "$RUNNER_TEMP/release.jks" \
+            -storepass "$KEYSTORE_PASSWORD" -keypass "$KEY_PASSWORD" \
+            -sigalg SHA256withRSA -digestalg SHA-256 \
+            "Stamply-${{ github.ref_name }}.aab" "$KEY_ALIAS"
+          jarsigner -verify "Stamply-${{ github.ref_name }}.aab"
+
+      - name: Keep the app bundle for Play Console
+        uses: actions/upload-artifact@v4
+        with:
+          name: Stamply-${{ github.ref_name }}-aab
+          path: Stamply-${{ github.ref_name }}.aab
+          retention-days: 30
+
       - name: Remove signing key
         if: always()
         run: rm -f "$RUNNER_TEMP/release.jks"
@@ -66,36 +89,3 @@ jobs:
         with:
           files: Stamply-${{ github.ref_name }}.apk
           generate_release_notes: true
-
-  # Windows app: a portable zip. Unzip it and run stamply.exe.
-  # Needs the windows/ folder in the repo (created once with
-  # `flutter create --platforms=windows .`).
-  windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - run: flutter pub get
-
-      # Window title and app icon for the .exe
-      - name: Brand the Windows app
-        shell: bash
-        run: |
-          sed -i 's/L"stamply"/L"Stamply – Visa Checker"/' windows/runner/main.cpp
-          cp tool/windows/app_icon.ico windows/runner/resources/app_icon.ico
-
-      - run: flutter build windows --release
-
-      - name: Zip the app
-        shell: pwsh
-        run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath "Stamply-${{ github.ref_name }}-windows.zip"
-
-      - name: Publish GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: Stamply-${{ github.ref_name }}-windows.zip

@@ -7,7 +7,6 @@ import '../l10n/l10n.dart';
 import '../passport_validity.dart';
 import '../reminder_service.dart';
 import '../theme.dart';
-import '../update_service.dart';
 import '../visa_repository.dart';
 import '../widgets.dart';
 import 'language_list.dart';
@@ -236,14 +235,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: TextStyle(fontWeight: FontWeight.w600)),
                   subtitle: Text(_appVersion.isEmpty ? 'Lumio Apps' : '${l.appVersion(_appVersion)} · Lumio Apps'),
                 ),
-                if (kSelfUpdate) ...[
-                  Divider(height: 1, color: extra.divider),
-                  ListTile(
-                    leading: const Icon(Icons.system_update_outlined),
-                    title: Text(l.checkForUpdates),
-                    onTap: () => UpdateService.checkForUpdates(context),
-                  ),
-                ],
                 Divider(height: 1, color: extra.divider),
                 ListTile(
                   leading: const Icon(Icons.privacy_tip_outlined),

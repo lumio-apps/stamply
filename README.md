@@ -83,7 +83,6 @@ No ads. No tracking. No account. Free and open source.
 - **Language** picker (20 languages)
 - Light, dark or system theme
 - **Update data**: download the latest visa data with one tap
-- In-app **Check for updates** (GitHub APK)
 
 ## How the data works
 
@@ -108,28 +107,16 @@ python3 tool/build_data.py
 - ❌ No analytics, crash reporting or tracking
 - ❌ No account or sign-in
 - ✅ Your passport, saved trips and recent checks stay on your device
-- 🌐 Internet is used **only** when you tap **Update data** or **Check for updates**
+- 🌐 Internet is used **only** when you tap **Update data**
 
 Full policy: [PRIVACY.md](PRIVACY.md)
 
 ## Download
 
-Get the latest build from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)**:
+- **Google Play**: coming soon.
+- **GitHub**: get the signed APK from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)** (`Stamply-<version>.apk`). Updates come from Google Play or from a new APK here; the app does not update itself.
 
-- **Android**: `Stamply-<version>.apk`
-- **Windows 10/11**: `Stamply-<version>-windows.zip`. Unzip it and run `stamply.exe`. No installer, no admin rights needed.
-
-An **F-Droid** version is planned. Stamply is distributed only through GitHub and F-Droid, never through Google Play.
-
-## Windows
-
-The same app runs on Windows with the same offline data. Sharing a result copies the text and opens the picture in your image viewer. The in-app updater is Android only; on Windows, download the new zip from Releases.
-
-```
-flutter create --platforms=windows .   # once, creates the windows/ folder
-flutter run -d windows
-flutter build windows --release
-```
+Stamply is an **Android** app. It is not published on F-Droid.
 
 ## Translations
 
@@ -147,15 +134,9 @@ flutter analyze
 flutter build apk --release
 ```
 
-F-Droid build (without the in-app updater, as F-Droid updates apps itself):
-
-```bash
-flutter build apk --release --dart-define=SELF_UPDATE=false
-```
-
 ### Releases
 
-Pushing a version tag (for example `v0.1.0`) makes GitHub Actions build, sign and publish the APK.
+Pushing a version tag (for example `v0.1.0`) makes GitHub Actions build and sign the APK (published on the GitHub release) and a signed app bundle (`.aab`, kept as a workflow artifact for upload to Google Play).
 
 Required repository secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
 
@@ -176,7 +157,6 @@ lib/
 ├── models.dart             Entry status, visa rule, trip
 ├── visa_repository.dart    Bundled data + optional download
 ├── app_state.dart          Saved trips, recent checks, settings
-├── update_service.dart     In-app updater (GitHub APK)
 ├── widgets.dart            Shared UI pieces and the logo
 └── pages/                  Check, Explore, Saved, Settings, Result, Trip, Schengen, Ranking, Compare
 tool/build_data.py          Builds visa_data.json from Passport Index Data

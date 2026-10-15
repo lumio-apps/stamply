@@ -1,0 +1,3 @@
+• Stamply is now Android-only and ready for Google Play
+• Removed the in-app updater; updates come from Google Play or GitHub Releases
+• Privacy policy updated for reminders and the home-screen widget

@@ -87,7 +87,7 @@ class StamplyApp extends StatelessWidget {
             themeMode: state.themeMode,
             theme: buildTheme(Brightness.light),
             darkTheme: buildTheme(Brightness.dark),
-            // On a wide window (Windows) keep the phone-style layout centered.
+            // On tablets and foldables keep the phone-style layout centered.
             builder: (context, child) => GlassBackground(
               child: Center(
                 child: ConstrainedBox(
