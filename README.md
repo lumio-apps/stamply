@@ -19,14 +19,35 @@ No ads. No tracking. No account. Free and open source.
 
 </div>
 
+<p align="center">
+  <a href="#features">Features</a> ·
+  <a href="#download">Download</a> ·
+  <a href="#how-the-data-works">Data</a> ·
+  <a href="#privacy">Privacy</a> ·
+  <a href="#translations">Translations</a> ·
+  <a href="#build-from-source">Build</a>
+</p>
+
+## Why Stamply
+
+- **Fast:** two taps and you see the rule for any passport and destination.
+- **Offline:** all data is inside the app. It works at the airport with no signal.
+- **Private:** no ads, no tracking, no account. Your passport and trips never leave your phone.
+- **Useful beyond one answer:** compare passports, plan a trip, track your Schengen 90/180 days, and get passport-expiry reminders.
+- **Yours:** open source under the MIT license, in 20 languages.
+
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/home.jpg" alt="Check screen: pick your passport and destination" width="200">
-  <img src="screenshots/explore.jpg" alt="Explore screen: every destination for your passport" width="200">
-  <img src="screenshots/settings.jpg" alt="Settings: theme and visa data updates" width="200">
-  <img src="screenshots/about.jpg" alt="About, privacy and data source" width="200">
+  <img src="screenshots/check.jpg" alt="Check: pick your passport and destination" width="150">
+  <img src="screenshots/explore.jpg" alt="Explore: passport power and every destination" width="150">
+  <img src="screenshots/ranking.jpg" alt="World passport ranking" width="150">
+  <img src="screenshots/map.jpg" alt="Offline world map colored by your passport" width="150">
+  <img src="screenshots/compare.jpg" alt="Compare two passports" width="150">
+  <img src="screenshots/settings.jpg" alt="Settings: update data, privacy and licenses" width="150">
 </p>
+
+<p align="center"><sub>Dark glass theme shown. A light theme is built in too.</sub></p>
 
 ## Features
 
@@ -113,10 +134,12 @@ Full policy: [PRIVACY.md](PRIVACY.md)
 
 ## Download
 
-- **Google Play**: coming soon.
-- **GitHub**: get the signed APK from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)** (`Stamply-<version>.apk`). Updates come from Google Play or from a new APK here; the app does not update itself.
+| Where | How |
+| --- | --- |
+| **Google Play** | Coming soon. |
+| **GitHub** | Get the signed APK from [Releases](https://github.com/lumio-apps/stamply/releases/latest) (`Stamply-<version>.apk`). Allow "install from this source" when Android asks. |
 
-Stamply is an **Android** app. It is not published on F-Droid.
+Stamply is an **Android** app. It does not update itself: Google Play updates Play installs, and GitHub installs update by installing a newer APK. It is not published on F-Droid.
 
 ## Translations
 
@@ -163,6 +186,23 @@ tool/build_data.py          Builds visa_data.json from Passport Index Data
 tool/build_map.py           Builds world_map.json from Natural Earth (run once, needs internet)
 assets/data/country_names.json  Country names in 19 languages (Unicode CLDR)
 ```
+
+## FAQ
+
+**Is the data always correct?**
+No source is perfect. Visa rules change often, so Stamply shows general guidance and the data date in Settings. Always confirm with the embassy or the official government website.
+
+**Where does the data come from?**
+From the open [Passport Index Data](https://github.com/imorte/passport-index-data) project, rebuilt monthly. See [How the data works](#how-the-data-works).
+
+**Does it need internet?**
+No. The internet is used only if you tap **Update data**.
+
+**Why are some small countries missing on the map?**
+Very small countries are too small to draw. Find them in **Explore**.
+
+**Can I help translate?**
+Yes. See [Translations](#translations).
 
 ## Credits
 
