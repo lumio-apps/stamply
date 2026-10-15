@@ -193,5 +193,9 @@
   "reminderSwitchHint": "Une notification 6, 3 et 1 mois avant la date. Elle est programmée sur cet appareil uniquement.",
   "reminderTitle": "Rappel d’expiration du passeport",
   "reminderBody": "{count, plural, =1{Votre passeport expire dans 1 mois, le {date}.} other{Votre passeport expire dans {count} mois, le {date}.}}",
-  "reminderDenied": "Les notifications de Stamply sont bloquées. Autorisez-les dans les réglages du téléphone."
+  "reminderDenied": "Les notifications de Stamply sont bloquées. Autorisez-les dans les réglages du téléphone.",
+  "mapTitle": "Carte du monde",
+  "mapHint": "Touchez un pays pour voir sa règle. Pincez pour zoomer.",
+  "mapSmallNote": "Les très petits pays ne sont pas dessinés. Trouvez-les dans Explorer.",
+  "mapUnavailable": "La carte n’est pas disponible dans cette version."
 }

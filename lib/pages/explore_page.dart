@@ -9,6 +9,7 @@ import '../widgets.dart';
 import 'compare_page.dart';
 import 'country_picker_page.dart';
 import 'ranking_page.dart';
+import 'map_page.dart';
 import 'result_page.dart';
 import 'schengen_page.dart';
 import 'trip_page.dart';
@@ -170,6 +171,13 @@ class _ExplorePageState extends State<ExplorePage> {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => const MapPage())),
+                  icon: const Icon(Icons.public),
+                  label: Text(l.mapTitle),
                 ),
                 const SizedBox(height: 16),
                 TextField(

@@ -193,5 +193,9 @@
   "reminderSwitchHint": "Uma notificação 6, 3 e 1 mês antes da data. Ela é agendada somente neste dispositivo.",
   "reminderTitle": "Lembrete de vencimento do passaporte",
   "reminderBody": "{count, plural, =1{Seu passaporte vence em 1 mês, em {date}.} other{Seu passaporte vence em {count} meses, em {date}.}}",
-  "reminderDenied": "As notificações do Stamply estão bloqueadas. Permita-as nas configurações do telefone."
+  "reminderDenied": "As notificações do Stamply estão bloqueadas. Permita-as nas configurações do telefone.",
+  "mapTitle": "Mapa-múndi",
+  "mapHint": "Toque num país para ver a regra. Faça o gesto de pinça para ampliar.",
+  "mapSmallNote": "Países muito pequenos não são desenhados. Encontre-os em Explorar.",
+  "mapUnavailable": "O mapa não está disponível nesta versão."
 }

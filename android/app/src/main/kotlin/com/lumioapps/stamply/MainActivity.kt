@@ -5,6 +5,9 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import org.json.JSONArray
 import androidx.core.content.FileProvider
 import io.flutter.embedding.android.FlutterActivity
@@ -14,6 +17,19 @@ import java.io.File
 
 class MainActivity : FlutterActivity() {
     private var pendingPermission: MethodChannel.Result? = null
+
+    /// Set when the app is opened from an app shortcut; the Dart side asks for it.
+    private var pendingShortcut: String? = null
+
+    override fun onCreate(savedInstanceState: android.os.Bundle?) {
+        super.onCreate(savedInstanceState)
+        pendingShortcut = intent?.getStringExtra("shortcut")
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.getStringExtra("shortcut")?.let { pendingShortcut = it }
+    }
 
     private fun notificationsAllowed(): Boolean {
         if (Build.VERSION.SDK_INT >= 33) {
@@ -36,6 +52,49 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+
+        // Home-screen widget text and long-press app shortcuts.
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "lumio/integration")
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "updateWidget" -> {
+                        PassportWidget.save(
+                            this,
+                            call.argument<String>("title") ?: "Stamply",
+                            call.argument<String>("line1") ?: "",
+                            call.argument<String>("line2") ?: ""
+                        )
+                        result.success(null)
+                    }
+                    "setShortcuts" -> {
+                        val list = call.argument<List<Map<String, Any>>>("items") ?: emptyList()
+                        val shortcuts = list.map { item ->
+                            val target = item["action"] as String
+                            ShortcutInfoCompat.Builder(this, target)
+                                .setShortLabel(item["label"] as String)
+                                .setIcon(IconCompat.createWithResource(this, R.mipmap.ic_launcher))
+                                .setIntent(
+                                    Intent(this, MainActivity::class.java).apply {
+                                        this.action = Intent.ACTION_VIEW
+                                        putExtra("shortcut", target)
+                                    }
+                                )
+                                .build()
+                        }
+                        try {
+                            ShortcutManagerCompat.setDynamicShortcuts(this, shortcuts)
+                        } catch (_: Exception) {
+                        }
+                        result.success(null)
+                    }
+                    "consumeShortcut" -> {
+                        val value = pendingShortcut
+                        pendingShortcut = null
+                        result.success(value)
+                    }
+                    else -> result.notImplemented()
+                }
+            }
 
         // Passport expiry reminders (alarms and notifications, see Reminders.kt).
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "lumio/reminders")

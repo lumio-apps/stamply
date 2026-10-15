@@ -193,5 +193,9 @@
   "reminderSwitchHint": "Notifikasi 6, 3, dan 1 bulan sebelum tanggalnya. Hanya diatur di perangkat ini.",
   "reminderTitle": "Pengingat paspor kedaluwarsa",
   "reminderBody": "{count, plural, =1{Paspor Anda kedaluwarsa dalam 1 bulan, pada {date}.} other{Paspor Anda kedaluwarsa dalam {count} bulan, pada {date}.}}",
-  "reminderDenied": "Notifikasi Stamply diblokir. Izinkan di pengaturan ponsel."
+  "reminderDenied": "Notifikasi Stamply diblokir. Izinkan di pengaturan ponsel.",
+  "mapTitle": "Peta dunia",
+  "mapHint": "Ketuk sebuah negara untuk melihat aturannya. Cubit untuk memperbesar.",
+  "mapSmallNote": "Negara yang sangat kecil tidak digambar. Temukan di Jelajahi.",
+  "mapUnavailable": "Peta tidak tersedia di versi ini."
 }

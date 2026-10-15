@@ -1,0 +1,3 @@
+• Offline world map colored by your passport, tap a country for its rule
+• Home-screen widget with your passport and how far it travels
+• Long-press the app icon for shortcuts: Check, Explore, World map, Schengen

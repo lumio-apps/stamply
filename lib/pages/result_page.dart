@@ -46,6 +46,8 @@ class _ResultPageState extends State<ResultPage> {
     final failed = context.l10n.couldNotShare;
     setState(() => _sharing = true);
     try {
+      // Let the card repaint with a solid background before taking the picture.
+      await WidgetsBinding.instance.endOfFrame;
       final boundary = _shareKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
       if (boundary == null) throw StateError('Card is not ready');
       final image = await boundary.toImage(pixelRatio: 3);
@@ -165,6 +167,7 @@ class _ResultPageState extends State<ResultPage> {
                 to: to,
                 rule: rule,
                 dataVersion: data.version,
+                solid: _sharing,
               ),
             ),
             const SizedBox(height: 8),
@@ -255,7 +258,11 @@ class _ShareCard extends StatelessWidget {
     required this.to,
     required this.rule,
     required this.dataVersion,
+    required this.solid,
   });
+
+  /// True while the card is turned into a picture: needs a solid background.
+  final bool solid;
 
   final TripCheck check;
   final String from;
@@ -268,9 +275,11 @@ class _ShareCard extends StatelessWidget {
     final extra = StamplyColors.of(context);
     final l = context.l10n;
     return Container(
-      // Same color as the page, so on screen it looks like plain content and
-      // the shared picture gets a clean margin around it.
-      color: Theme.of(context).scaffoldBackgroundColor,
+      // See-through on screen (the glass background shows), solid in the
+      // shared picture so it gets a clean margin around it.
+      color: solid
+          ? (Theme.of(context).brightness == Brightness.dark ? Brand.nightBase : Brand.paperBase)
+          : Colors.transparent,
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,9 +321,23 @@ class _Hero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
+    // A dark glass poster: the status color glows from the corner. It stays
+    // dark in the light theme too, so the text on it is always readable.
+    final glow = stamp?.onHero ?? const Color(0xFF3563D6);
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(color: extra.hero, borderRadius: BorderRadius.circular(24)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        gradient: RadialGradient(
+          center: const Alignment(-0.9, -0.9),
+          radius: 1.6,
+          colors: [glow.withValues(alpha: 0.6), Brand.nightBase],
+        ),
+        border: Border.all(color: const Color(0x38FFFFFF)),
+        boxShadow: [
+          BoxShadow(color: glow.withValues(alpha: 0.3), blurRadius: 36, spreadRadius: -10),
+        ],
+      ),
       child: Row(
         children: [
           if (stamp != null) ...[
@@ -375,7 +398,9 @@ class _Stamp extends StatelessWidget {
           height: 96,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
+            color: Colors.white.withValues(alpha: 0.1),
             border: Border.all(color: color, width: 4),
+            boxShadow: [BoxShadow(color: color.withValues(alpha: 0.45), blurRadius: 28)],
           ),
           padding: const EdgeInsets.all(6),
           child: Container(

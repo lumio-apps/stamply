@@ -47,11 +47,19 @@ No ads. No tracking. No account. Free and open source.
 - **Second passport** for dual citizens: switch with one tap, and the result tells you when your other passport is easier
 - **Compare two passports** side by side and see exactly where their rules differ
 
+### 🗺️ Map, widget and shortcuts
+- **Offline world map**: every country colored by what your passport needs. Tap a country for its rule, pinch to zoom
+- **Home-screen widget** (Android): your passport and how many destinations it reaches without a visa in advance
+- **App shortcuts** (Android): long-press the icon for Check, Explore, World map and Schengen
+
 ### 🧳 Trips
 - **Trip planner**: add several countries to one trip and see the rule for each, plus how many need something before you fly
 - **Schengen 90/180 calculator**: add past and planned stays, see days used and left, when a day frees up, and how long you can stay if you enter on a given date. Works fully offline
 - Add a country to your trip from any result screen
 - Share the whole trip as text
+
+### 🎨 Look
+- **Glass design**: frosted cards over a soft color glow, a floating navigation bar, and a glowing stamp on the result. Works in light and dark
 
 ### 🌐 20 languages
 - English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն
@@ -160,6 +168,8 @@ lib/
 ├── status_text.dart        Translated texts for statuses and rules
 ├── theme.dart              Colors, fonts, light and dark themes
 ├── passport_validity.dart  Passport expiry and the 6-month rule
+├── world_map.dart          Offline world map shapes
+├── platform_integration.dart  Android widget and app shortcuts
 ├── schengen.dart           Schengen 90/180-day maths
 ├── reminder_service.dart   Passport expiry reminders (Android)
 ├── share.dart              Share sheet bridge (text and image)
@@ -170,6 +180,7 @@ lib/
 ├── widgets.dart            Shared UI pieces and the logo
 └── pages/                  Check, Explore, Saved, Settings, Result, Trip, Schengen, Ranking, Compare
 tool/build_data.py          Builds visa_data.json from Passport Index Data
+tool/build_map.py           Builds world_map.json from Natural Earth (run once, needs internet)
 assets/data/country_names.json  Country names in 19 languages (Unicode CLDR)
 ```
 
@@ -177,6 +188,7 @@ assets/data/country_names.json  Country names in 19 languages (Unicode CLDR)
 
 - Visa data: [Passport Index Data](https://github.com/imorte/passport-index-data), MIT License
 - Country names: [Unicode CLDR](https://cldr.unicode.org/), Unicode License v3
+- Map shapes: [Natural Earth](https://www.naturalearthdata.com/), public domain
 - Fonts: [Space Grotesk](https://github.com/floriankarsten/space-grotesk) and [IBM Plex Sans](https://github.com/IBM/plex), SIL Open Font License
 
 ## More from Lumio Apps

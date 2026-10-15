@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 
 import 'app_state.dart';
@@ -128,7 +130,7 @@ class SectionLabel extends StatelessWidget {
   }
 }
 
-/// White (or dark) rounded card used for grouped rows.
+/// Frosted-glass rounded card used for grouped rows.
 class CardBox extends StatelessWidget {
   const CardBox({super.key, required this.child, this.padding = EdgeInsets.zero});
 
@@ -137,11 +139,81 @@ class CardBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: StamplyColors.of(context).card,
-      borderRadius: BorderRadius.circular(18),
-      clipBehavior: Clip.antiAlias,
-      child: Padding(padding: padding, child: child),
+    final extra = StamplyColors.of(context);
+    final radius = BorderRadius.circular(22);
+    return ClipRRect(
+      borderRadius: radius,
+      child: BackdropFilter(
+        filter: ui.ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+        child: Material(
+          color: extra.card,
+          shape: RoundedRectangleBorder(
+            borderRadius: radius,
+            side: BorderSide(color: extra.glassBorder),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Padding(padding: padding, child: child),
+        ),
+      ),
+    );
+  }
+}
+
+/// The soft colored glow behind every screen. The glass cards blur it.
+class GlassBackground extends StatelessWidget {
+  const GlassBackground({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final strength = dark ? 0.85 : 0.7;
+    return Stack(
+      alignment: Alignment.topLeft,
+      fit: StackFit.expand,
+      children: [
+        ColoredBox(color: dark ? Brand.nightBase : Brand.paperBase),
+        _Glow(
+          alignment: const Alignment(-1.0, -1.05),
+          color: dark ? const Color(0xFF3563D6) : const Color(0xFF9DB9FF),
+          alpha: strength,
+        ),
+        _Glow(
+          alignment: const Alignment(1.1, 0.1),
+          color: dark ? const Color(0xFF12A58E) : const Color(0xFF8FE0CC),
+          alpha: strength,
+        ),
+        _Glow(
+          alignment: const Alignment(-0.6, 1.15),
+          color: dark ? const Color(0xFFC2441E) : const Color(0xFFFFB79A),
+          alpha: strength,
+        ),
+        child,
+      ],
+    );
+  }
+}
+
+class _Glow extends StatelessWidget {
+  const _Glow({required this.alignment, required this.color, required this.alpha});
+
+  final Alignment alignment;
+  final Color color;
+  final double alpha;
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: alignment,
+            radius: 0.95,
+            colors: [color.withValues(alpha: alpha), color.withValues(alpha: 0)],
+          ),
+        ),
+      ),
     );
   }
 }

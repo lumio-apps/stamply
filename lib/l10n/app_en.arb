@@ -499,5 +499,9 @@
       }
     }
   },
-  "reminderDenied": "Notifications are blocked for Stamply. Allow them in your phone settings."
+  "reminderDenied": "Notifications are blocked for Stamply. Allow them in your phone settings.",
+  "mapTitle": "World map",
+  "mapHint": "Tap a country to see its rule. Pinch to zoom.",
+  "mapSmallNote": "Very small countries are not drawn. Find them in Explore.",
+  "mapUnavailable": "The map is not available in this version."
 }

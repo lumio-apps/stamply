@@ -1,3 +1,4 @@
+• New glass look: frosted cards, soft color glow and a floating navigation bar, in light and dark
 • Trip planner: add several countries and see each one’s rule
 • Schengen 90/180-day calculator, fully offline
 • Passport expiry reminders (6, 3 and 1 month before, Android)

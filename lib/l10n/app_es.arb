@@ -193,5 +193,9 @@
   "reminderSwitchHint": "Una notificación 6, 3 y 1 mes antes de la fecha. Se programa solo en este dispositivo.",
   "reminderTitle": "Aviso de caducidad del pasaporte",
   "reminderBody": "{count, plural, =1{Tu pasaporte caduca en 1 mes, el {date}.} other{Tu pasaporte caduca en {count} meses, el {date}.}}",
-  "reminderDenied": "Las notificaciones de Stamply están bloqueadas. Actívalas en los ajustes del teléfono."
+  "reminderDenied": "Las notificaciones de Stamply están bloqueadas. Actívalas en los ajustes del teléfono.",
+  "mapTitle": "Mapamundi",
+  "mapHint": "Toca un país para ver su regla. Pellizca para hacer zoom.",
+  "mapSmallNote": "Los países muy pequeños no se dibujan. Búscalos en Explorar.",
+  "mapUnavailable": "El mapa no está disponible en esta versión."
 }

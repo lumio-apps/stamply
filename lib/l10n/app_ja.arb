@@ -193,5 +193,9 @@
   "reminderSwitchHint": "期限日の6か月前、3か月前、1か月前に通知します。この端末内でのみ設定されます。",
   "reminderTitle": "パスポート期限のお知らせ",
   "reminderBody": "{count, plural, =1{パスポートの有効期限は1か月後の{date}です。} other{パスポートの有効期限は{count}か月後の{date}です。}}",
-  "reminderDenied": "Stamplyの通知がブロックされています。端末の設定で許可してください。"
+  "reminderDenied": "Stamplyの通知がブロックされています。端末の設定で許可してください。",
+  "mapTitle": "世界地図",
+  "mapHint": "国をタップするとルールが表示されます。ピンチで拡大できます。",
+  "mapSmallNote": "ごく小さな国は描かれていません。「探索」で探してください。",
+  "mapUnavailable": "このバージョンでは地図を利用できません。"
 }

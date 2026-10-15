@@ -193,5 +193,9 @@
   "reminderSwitchHint": "在到期日前 6 个月、3 个月和 1 个月发送通知。仅在本设备上设置。",
   "reminderTitle": "护照到期提醒",
   "reminderBody": "{count, plural, =1{你的护照将在 1 个月后（{date}）到期。} other{你的护照将在 {count} 个月后（{date}）到期。}}",
-  "reminderDenied": "Stamply 的通知已被关闭。请在手机设置中允许。"
+  "reminderDenied": "Stamply 的通知已被关闭。请在手机设置中允许。",
+  "mapTitle": "世界地图",
+  "mapHint": "点按国家查看规则。双指缩放。",
+  "mapSmallNote": "非常小的国家没有绘制，请在“探索”中查找。",
+  "mapUnavailable": "此版本暂无地图。"
 }

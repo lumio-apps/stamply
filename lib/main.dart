@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,11 +10,15 @@ import 'app_state.dart';
 import 'l10n/l10n.dart';
 import 'pages/explore_page.dart';
 import 'pages/home_page.dart';
+import 'pages/map_page.dart';
 import 'pages/saved_page.dart';
+import 'pages/schengen_page.dart';
 import 'pages/settings_page.dart';
 import 'pages/welcome_page.dart';
+import 'platform_integration.dart';
 import 'reminder_service.dart';
 import 'theme.dart';
+import 'widgets.dart';
 import 'visa_repository.dart';
 
 Future<void> main() async {
@@ -22,6 +28,7 @@ Future<void> main() async {
   final state = await AppState.load();
   state.cleanUp(repo.data);
   ReminderService.attach(state);
+  PlatformIntegration.attach(state, repo);
   runApp(StamplyApp(state: state, repo: repo));
 }
 
@@ -81,8 +88,7 @@ class StamplyApp extends StatelessWidget {
             theme: buildTheme(Brightness.light),
             darkTheme: buildTheme(Brightness.dark),
             // On a wide window (Windows) keep the phone-style layout centered.
-            builder: (context, child) => ColoredBox(
-              color: Theme.of(context).scaffoldBackgroundColor,
+            builder: (context, child) => GlassBackground(
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 640),
@@ -106,8 +112,42 @@ class HomeShell extends StatefulWidget {
   State<HomeShell> createState() => _HomeShellState();
 }
 
-class _HomeShellState extends State<HomeShell> {
+class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
   int _index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _openShortcut();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _openShortcut();
+  }
+
+  /// Opens the screen chosen with a long-press app shortcut, if any.
+  Future<void> _openShortcut() async {
+    final shortcut = await PlatformIntegration.consumeShortcut();
+    if (!mounted || shortcut == null) return;
+    switch (shortcut) {
+      case PlatformIntegration.shortcutCheck:
+        setState(() => _index = 0);
+      case PlatformIntegration.shortcutExplore:
+        setState(() => _index = 1);
+      case PlatformIntegration.shortcutMap:
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const MapPage()));
+      case PlatformIntegration.shortcutSchengen:
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const SchengenPage()));
+    }
+  }
 
   static const _pages = [HomePage(), ExplorePage(), SavedPage(), SettingsPage()];
 
@@ -116,31 +156,56 @@ class _HomeShellState extends State<HomeShell> {
     final l = context.l10n;
     return Scaffold(
       body: IndexedStack(index: _index, children: _pages),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.task_alt_outlined),
-            selectedIcon: const Icon(Icons.task_alt),
-            label: l.navCheck,
+      bottomNavigationBar: SafeArea(
+        top: false,
+        minimum: const EdgeInsets.only(bottom: 12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(34),
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: StamplyColors.of(context).card,
+                  borderRadius: BorderRadius.circular(34),
+                  border: Border.all(color: StamplyColors.of(context).glassBorder),
+                ),
+                // The pill already sits above the safe area.
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeBottom: true,
+                  child: NavigationBar(
+                          selectedIndex: _index,
+                          onDestinationSelected: (i) => setState(() => _index = i),
+                          destinations: [
+                            NavigationDestination(
+                              icon: const Icon(Icons.task_alt_outlined),
+                              selectedIcon: const Icon(Icons.task_alt),
+                              label: l.navCheck,
+                            ),
+                            NavigationDestination(
+                              icon: const Icon(Icons.travel_explore_outlined),
+                              selectedIcon: const Icon(Icons.travel_explore),
+                              label: l.navExplore,
+                            ),
+                            NavigationDestination(
+                              icon: const Icon(Icons.bookmark_border),
+                              selectedIcon: const Icon(Icons.bookmark),
+                              label: l.navSaved,
+                            ),
+                            NavigationDestination(
+                              icon: const Icon(Icons.settings_outlined),
+                              selectedIcon: const Icon(Icons.settings),
+                              label: l.navSettings,
+                            ),
+                          ],
+                        ),
+                ),
+              ),
+            ),
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.travel_explore_outlined),
-            selectedIcon: const Icon(Icons.travel_explore),
-            label: l.navExplore,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.bookmark_border),
-            selectedIcon: const Icon(Icons.bookmark),
-            label: l.navSaved,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.settings_outlined),
-            selectedIcon: const Icon(Icons.settings),
-            label: l.navSettings,
-          ),
-        ],
+        ),
       ),
     );
   }
