@@ -377,5 +377,127 @@
         "type": "int"
       }
     }
-  }
+  },
+  "tripPlanner": "Trip planner",
+  "tripAddCountry": "Add a country",
+  "tripEmpty": "No countries yet. Add every place you plan to visit and see what each one asks for.",
+  "tripNeedPassport": "Choose your passport first, on the Check tab.",
+  "tripAllClear": "Nothing to apply for in advance. Every stop is visa-free or visa on arrival.",
+  "tripNeedsAction": "{count, plural, =1{1 stop needs something before you fly} other{{count} stops need something before you fly}}",
+  "@tripNeedsAction": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tripNoAdmission": "{count, plural, =1{1 stop is closed to your passport} other{{count} stops are closed to your passport}}",
+  "@tripNoAdmission": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tripSchengenNote": "Several stops are in the Schengen area. They share one 90/180-day allowance.",
+  "tripOpenSchengen": "Open the Schengen calculator",
+  "tripClear": "Clear trip",
+  "tripShare": "Share trip",
+  "tripShareHeader": "My trip with a {passport} passport",
+  "@tripShareHeader": {
+    "placeholders": {
+      "passport": {
+        "type": "String"
+      }
+    }
+  },
+  "tripAdd": "Add to trip",
+  "tripRemove": "Remove from trip",
+  "tripAdded": "Added to your trip",
+  "tripRemoved": "Removed from your trip",
+  "schengenTitle": "Schengen 90/180 calculator",
+  "schengenShort": "Schengen 90/180",
+  "schengenIntro": "In the Schengen area you can stay 90 days in any 180-day period. Add your past and planned stays to see how many days you have left. Everything stays on this device.",
+  "schengenAsOf": "As of {date}",
+  "@schengenAsOf": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "schengenRemaining": "{days, plural, =0{No days left} =1{1 day left} other{{days} days left}}",
+  "@schengenRemaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "schengenOver": "Over the 90-day limit",
+  "schengenDaysUsed": "{count} of {total} days used in the last 180 days",
+  "@schengenDaysUsed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "schengenFreeAgain": "A day frees up on {date}.",
+  "@schengenFreeAgain": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "schengenStays": "Your stays",
+  "schengenNoStays": "No stays added yet.",
+  "schengenAddStay": "Add a stay",
+  "schengenStayDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@schengenStayDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "schengenRangeHelp": "First and last day in the Schengen area",
+  "schengenPlan": "Plan a trip",
+  "schengenPlanHint": "Pick the day you want to enter and see how long you can stay.",
+  "schengenPickEntry": "Pick entry date",
+  "schengenCanStay": "{count, plural, =0{You cannot enter on {date}: all 90 days are used.} =1{Entering on {date}, you can stay 1 day (until {end}).} other{Entering on {date}, you can stay up to {count} days (until {end}).}}",
+  "@schengenCanStay": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "schengenWhichCountries": "Which countries count?",
+  "schengenRules": "The day you enter and the day you leave both count. Ireland and Cyprus are not in the Schengen area. This is a guide only: the border officer makes the final decision.",
+  "reminderSwitch": "Remind me before it expires",
+  "reminderSwitchHint": "A notification 6, 3 and 1 month before the date. It is set on this device only.",
+  "reminderTitle": "Passport expiry reminder",
+  "reminderBody": "{count, plural, =1{Your passport expires in 1 month, on {date}.} other{Your passport expires in {count} months, on {date}.}}",
+  "@reminderBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderDenied": "Notifications are blocked for Stamply. Allow them in your phone settings."
 }

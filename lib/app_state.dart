@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'l10n/l10n.dart';
 import 'models.dart';
+import 'schengen.dart';
 import 'visa_repository.dart';
 
 /// User choices saved on the device only: passport, last destination,
@@ -22,6 +23,9 @@ class AppState extends ChangeNotifier {
   static const _kPassport2 = 'passport2';
   static const _kLanguage = 'language';
   static const _kOnboarded = 'onboarded';
+  static const _kTrip = 'trip';
+  static const _kStays = 'schengen_stays';
+  static const _kReminder = 'expiry_reminder';
   static const _maxRecent = 10;
 
   final SharedPreferences _prefs;
@@ -37,6 +41,15 @@ class AppState extends ChangeNotifier {
 
   /// Expiry date of the user's passport (optional).
   DateTime? passportExpiry;
+
+  /// Countries of the multi-country trip being planned (ISO codes, in order).
+  List<String> trip = [];
+
+  /// Past and planned stays in the Schengen area, for the 90/180-day calculator.
+  List<SchengenStay> stays = [];
+
+  /// Whether to remind the user before the passport expires (Android).
+  bool expiryReminder = false;
 
   /// Saved trip key → the rule the user last saw, to spot changes after data updates.
   Map<String, String> seen = {};
@@ -88,6 +101,12 @@ class AppState extends ChangeNotifier {
       if (i > 0 && i < line.length - 1) seen[line.substring(0, i)] = line.substring(i + 1);
     }
     s.seen = seen;
+    s.trip = prefs.getStringList(_kTrip) ?? [];
+    s.stays = (prefs.getStringList(_kStays) ?? [])
+        .map(SchengenStay.fromKey)
+        .whereType<SchengenStay>()
+        .toList();
+    s.expiryReminder = prefs.getBool(_kReminder) ?? false;
     s.themeMode = switch (prefs.getString(_kTheme)) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
@@ -107,6 +126,7 @@ class AppState extends ChangeNotifier {
     if (!known(passport2)) setPassport2(null);
     bool valid(TripCheck t) =>
         data.countries.containsKey(t.passport) && data.countries.containsKey(t.destination);
+    trip = trip.where(data.countries.containsKey).toList();
     recent = recent.where(valid).toList();
     saved = saved.where(valid).toList();
     seen = {
@@ -215,6 +235,48 @@ class AppState extends ChangeNotifier {
       final dd = d.day.toString().padLeft(2, '0');
       _prefs.setString(_kExpiry, '${d.year.toString().padLeft(4, '0')}-$mm-$dd');
     }
+    notifyListeners();
+  }
+
+  bool inTrip(String code) => trip.contains(code);
+
+  void addToTrip(String code) {
+    if (trip.contains(code)) return;
+    trip = [...trip, code];
+    _prefs.setStringList(_kTrip, trip);
+    notifyListeners();
+  }
+
+  void removeFromTrip(String code) {
+    trip = trip.where((c) => c != code).toList();
+    _prefs.setStringList(_kTrip, trip);
+    notifyListeners();
+  }
+
+  void clearTrip() {
+    trip = [];
+    _prefs.remove(_kTrip);
+    notifyListeners();
+  }
+
+  void addStay(SchengenStay stay) {
+    if (stays.contains(stay)) return;
+    stays = [...stays, stay]..sort((a, b) => a.start.compareTo(b.start));
+    _saveStays();
+    notifyListeners();
+  }
+
+  void removeStay(SchengenStay stay) {
+    stays = stays.where((s) => s != stay).toList();
+    _saveStays();
+    notifyListeners();
+  }
+
+  void _saveStays() => _prefs.setStringList(_kStays, stays.map((s) => s.key).toList());
+
+  void setExpiryReminder(bool on) {
+    expiryReminder = on;
+    _prefs.setBool(_kReminder, on);
     notifyListeners();
   }
 

@@ -11,6 +11,7 @@ import 'pages/home_page.dart';
 import 'pages/saved_page.dart';
 import 'pages/settings_page.dart';
 import 'pages/welcome_page.dart';
+import 'reminder_service.dart';
 import 'theme.dart';
 import 'visa_repository.dart';
 
@@ -20,6 +21,7 @@ Future<void> main() async {
   final repo = await VisaRepository.load();
   final state = await AppState.load();
   state.cleanUp(repo.data);
+  ReminderService.attach(state);
   runApp(StamplyApp(state: state, repo: repo));
 }
 

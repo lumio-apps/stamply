@@ -10,6 +10,8 @@ import 'compare_page.dart';
 import 'country_picker_page.dart';
 import 'ranking_page.dart';
 import 'result_page.dart';
+import 'schengen_page.dart';
+import 'trip_page.dart';
 
 /// "Explore" tab: every destination for the user's passport, grouped by status.
 class ExplorePage extends StatefulWidget {
@@ -143,6 +145,28 @@ class _ExplorePageState extends State<ExplorePage> {
                                 builder: (_) => ComparePage(first: passport, second: second))),
                         icon: const Icon(Icons.compare_arrows),
                         label: Text(l.comparePassports, textAlign: TextAlign.center),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => const TripPage())),
+                        icon: const Icon(Icons.luggage_outlined),
+                        label: Text(l.tripPlanner, textAlign: TextAlign.center),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => const SchengenPage())),
+                        icon: const Icon(Icons.calendar_month_outlined),
+                        label: Text(l.schengenShort, textAlign: TextAlign.center),
                       ),
                     ),
                   ],

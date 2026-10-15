@@ -5,6 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../app_state.dart';
 import '../l10n/l10n.dart';
 import '../passport_validity.dart';
+import '../reminder_service.dart';
 import '../theme.dart';
 import '../update_service.dart';
 import '../visa_repository.dart';
@@ -46,6 +47,21 @@ class _SettingsPageState extends State<SettingsPage> {
       DataRefreshResult.failed => l.dataFailed,
     };
     messenger.showSnackBar(SnackBar(content: Text(text)));
+  }
+
+  Future<void> _toggleReminder(AppState state, bool on) async {
+    if (!on) {
+      state.setExpiryReminder(false);
+      return;
+    }
+    final messenger = ScaffoldMessenger.of(context);
+    final denied = context.l10n.reminderDenied;
+    final allowed = await ReminderService.requestPermission();
+    if (allowed) {
+      state.setExpiryReminder(true);
+    } else {
+      messenger.showSnackBar(SnackBar(content: Text(denied)));
+    }
   }
 
   @override
@@ -133,6 +149,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   validity?.advice(l) ?? l.expiryEmptyAdvice,
                   style: TextStyle(fontSize: 14, height: 1.5, color: extra.muted),
                 ),
+                if (expiry != null && ReminderService.supported) ...[
+                  const SizedBox(height: 8),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    value: state.expiryReminder,
+                    onChanged: (on) => _toggleReminder(state, on),
+                    title: Text(l.reminderSwitch),
+                    subtitle: Text(l.reminderSwitchHint),
+                  ),
+                ],
                 const SizedBox(height: 16),
                 Row(
                   children: [

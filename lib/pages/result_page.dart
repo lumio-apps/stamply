@@ -112,6 +112,24 @@ class _ResultPageState extends State<ResultPage> {
                   : const Icon(Icons.ios_share),
               onPressed: _sharing ? null : () => _share(shareText),
             ),
+          if (check.passport == scope.state.passport)
+            IconButton(
+              tooltip: scope.state.inTrip(check.destination) ? l.tripRemove : l.tripAdd,
+              icon: Icon(scope.state.inTrip(check.destination)
+                  ? Icons.luggage
+                  : Icons.luggage_outlined),
+              onPressed: () {
+                final inTrip = scope.state.inTrip(check.destination);
+                if (inTrip) {
+                  scope.state.removeFromTrip(check.destination);
+                } else {
+                  scope.state.addToTrip(check.destination);
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(inTrip ? l.tripRemoved : l.tripAdded)),
+                );
+              },
+            ),
           IconButton(
             tooltip: saved ? l.removeFromSaved : l.saveThisCheck,
             icon: Icon(saved ? Icons.bookmark : Icons.bookmark_border),

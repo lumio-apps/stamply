@@ -1,0 +1,4 @@
+• Trip planner: add several countries and see each one’s rule
+• Schengen 90/180-day calculator, fully offline
+• Passport expiry reminders (6, 3 and 1 month before, Android)
+• Add a country to your trip from any result

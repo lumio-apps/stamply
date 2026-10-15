@@ -47,6 +47,12 @@ No ads. No tracking. No account. Free and open source.
 - **Second passport** for dual citizens: switch with one tap, and the result tells you when your other passport is easier
 - **Compare two passports** side by side and see exactly where their rules differ
 
+### 🧳 Trips
+- **Trip planner**: add several countries to one trip and see the rule for each, plus how many need something before you fly
+- **Schengen 90/180 calculator**: add past and planned stays, see days used and left, when a day frees up, and how long you can stay if you enter on a given date. Works fully offline
+- Add a country to your trip from any result screen
+- Share the whole trip as text
+
 ### 🌐 20 languages
 - English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն
 - **Country names** are translated too, so you can search in your own language
@@ -65,7 +71,7 @@ No ads. No tracking. No account. Free and open source.
 - Swipe to remove
 
 ### ⚙️ Settings
-- Passport expiry date (stays on your device)
+- Passport expiry date (stays on your device), with optional **expiry reminders** 6, 3 and 1 month before (Android, set on the device with no extra service)
 - **Language** picker (20 languages)
 - Light, dark or system theme
 - **Update data**: download the latest visa data with one tap
@@ -154,13 +160,15 @@ lib/
 ├── status_text.dart        Translated texts for statuses and rules
 ├── theme.dart              Colors, fonts, light and dark themes
 ├── passport_validity.dart  Passport expiry and the 6-month rule
+├── schengen.dart           Schengen 90/180-day maths
+├── reminder_service.dart   Passport expiry reminders (Android)
 ├── share.dart              Share sheet bridge (text and image)
 ├── models.dart             Entry status, visa rule, trip
 ├── visa_repository.dart    Bundled data + optional download
 ├── app_state.dart          Saved trips, recent checks, settings
 ├── update_service.dart     In-app updater (GitHub APK)
 ├── widgets.dart            Shared UI pieces and the logo
-└── pages/                  Check, Explore, Saved, Settings, Result, Country picker
+└── pages/                  Check, Explore, Saved, Settings, Result, Trip, Schengen, Ranking, Compare
 tool/build_data.py          Builds visa_data.json from Passport Index Data
 assets/data/country_names.json  Country names in 19 languages (Unicode CLDR)
 ```
