@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:ui' show Offset;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stamply/world_map.dart';
