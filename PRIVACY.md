@@ -2,7 +2,7 @@
 
 **App:** Stamply – Visa Checker (package `com.lumioapps.stamply`)
 **Developer:** Lumio Apps
-**Last updated:** October 15, 2026
+**Last updated:** October 16, 2026
 
 Stamply is built to respect your privacy.
 
@@ -26,6 +26,7 @@ Stamply works fully offline. Visa data is built into the app.
 The app connects to the internet only when you tap a button:
 
 - **Update data** downloads the latest public visa data file from GitHub (`raw.githubusercontent.com/lumio-apps/stamply`). Nothing about you or your checks is sent.
+- **Check for updates** asks the public GitHub API whether a newer app version exists and, if you agree, downloads the APK from GitHub Releases.
 
 GitHub's own privacy statement applies to these requests: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement
 
@@ -33,7 +34,8 @@ GitHub's own privacy statement applies to these requests: https://docs.github.co
 
 | Permission | Why |
 | --- | --- |
-| Internet | Download the visa data file when you tap **Update data** |
+| Internet | Download the visa data file or an app update when you tap the button |
+| Install packages | Install a downloaded update after you confirm |
 | Notifications | Only if you turn on the passport expiry reminder. Reminders are scheduled on your device; nothing is sent to a server |
 | Receive boot completed | Re-schedule your reminders after the phone restarts |
 

@@ -1,0 +1,3 @@
+• Liquid Glass look
+• "Check for updates" is back: new versions come straight from GitHub
+• Stamply stays open source and GitHub-only

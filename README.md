@@ -104,6 +104,7 @@ No ads. No tracking. No account. Free and open source.
 - **Language** picker (20 languages)
 - Light, dark or system theme
 - **Update data**: download the latest visa data with one tap
+- **Check for updates**: finds a newer APK on GitHub and installs it after you confirm
 
 ## How the data works
 
@@ -128,18 +129,15 @@ python3 tool/build_data.py
 - ❌ No analytics, crash reporting or tracking
 - ❌ No account or sign-in
 - ✅ Your passport, saved trips and recent checks stay on your device
-- 🌐 Internet is used **only** when you tap **Update data**
+- 🌐 Internet is used **only** when you tap **Update data** or **Check for updates**
 
 Full policy: [PRIVACY.md](PRIVACY.md)
 
 ## Download
 
-| Where | How |
-| --- | --- |
-| **Google Play** | Coming soon. |
-| **GitHub** | Get the signed APK from [Releases](https://github.com/lumio-apps/stamply/releases/latest) (`Stamply-<version>.apk`). Allow "install from this source" when Android asks. |
+Get the signed APK from **[Releases](https://github.com/lumio-apps/stamply/releases/latest)** (`Stamply-<version>.apk`). Android will ask you to allow installing from your browser or file manager the first time.
 
-Stamply is an **Android** app. It does not update itself: Google Play updates Play installs, and GitHub installs update by installing a newer APK. It is not published on F-Droid.
+Stamply is an **Android** app and is distributed **only on GitHub**. It is not on Google Play or F-Droid, and that is on purpose: the code, the data and the downloads all stay open and under our control. After the first install, use **Settings → Check for updates** to get new versions.
 
 ## Translations
 
@@ -159,7 +157,7 @@ flutter build apk --release
 
 ### Releases
 
-Pushing a version tag (for example `v0.1.0`) makes GitHub Actions build and sign the APK (published on the GitHub release) and a signed app bundle (`.aab`, kept as a workflow artifact for upload to Google Play).
+Pushing a version tag (for example `v0.1.0`) makes GitHub Actions build and sign the APK and publish it on the GitHub release.
 
 Required repository secrets: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
 
@@ -177,6 +175,7 @@ lib/
 ├── schengen.dart           Schengen 90/180-day maths
 ├── reminder_service.dart   Passport expiry reminders (Android)
 ├── share.dart              Share sheet bridge (text and image)
+├── update_service.dart     In-app updater (GitHub APK)
 ├── models.dart             Entry status, visa rule, trip
 ├── visa_repository.dart    Bundled data + optional download
 ├── app_state.dart          Saved trips, recent checks, settings

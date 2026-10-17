@@ -37,12 +37,8 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
           echo "BUILD_TOOLS=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)" >> "$GITHUB_ENV"
 
-      - name: Build APK (GitHub release)
+      - name: Build APK
         run: flutter build apk --release
-
-      # App bundle for Google Play (upload it in Play Console).
-      - name: Build app bundle (Google Play)
-        run: flutter build appbundle --release
 
       - name: Sign GitHub APK
         env:
@@ -58,27 +54,6 @@ jobs:
             --out "Stamply-${{ github.ref_name }}.apk" \
             build/app/outputs/flutter-apk/app-release.apk
           "$BUILD_TOOLS/apksigner" verify --print-certs "Stamply-${{ github.ref_name }}.apk"
-
-      # Sign the bundle with the same Lumio key (the Play upload key).
-      - name: Sign app bundle
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          cp build/app/outputs/bundle/release/app-release.aab "Stamply-${{ github.ref_name }}.aab"
-          jarsigner -keystore "$RUNNER_TEMP/release.jks" \
-            -storepass "$KEYSTORE_PASSWORD" -keypass "$KEY_PASSWORD" \
-            -sigalg SHA256withRSA -digestalg SHA-256 \
-            "Stamply-${{ github.ref_name }}.aab" "$KEY_ALIAS"
-          jarsigner -verify "Stamply-${{ github.ref_name }}.aab"
-
-      - name: Keep the app bundle for Play Console
-        uses: actions/upload-artifact@v4
-        with:
-          name: Stamply-${{ github.ref_name }}-aab
-          path: Stamply-${{ github.ref_name }}.aab
-          retention-days: 30
 
       - name: Remove signing key
         if: always()

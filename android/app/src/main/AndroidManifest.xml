@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Used only when the user taps "Update data" -->
+    <!-- Used only when the user taps "Update data" or "Check for updates" -->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Install a downloaded update after the user confirms (GitHub APK) -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <!-- Passport expiry reminders (only used if the user turns them on) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
