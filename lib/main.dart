@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -88,7 +86,7 @@ class StamplyApp extends StatelessWidget {
             theme: buildTheme(Brightness.light),
             darkTheme: buildTheme(Brightness.dark),
             // On tablets and foldables keep the phone-style layout centered.
-            builder: (context, child) => GlassBackground(
+            builder: (context, child) => AppBackground(
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 640),
@@ -158,54 +156,103 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
       body: IndexedStack(index: _index, children: _pages),
       bottomNavigationBar: SafeArea(
         top: false,
-        minimum: const EdgeInsets.only(bottom: 12),
+        minimum: const EdgeInsets.only(bottom: 16),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(34),
-            child: BackdropFilter(
-              filter: ui.ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: StamplyColors.of(context).card,
-                  borderRadius: BorderRadius.circular(34),
-                  border: Border.all(color: StamplyColors.of(context).glassBorder),
-                ),
-                // The pill already sits above the safe area.
-                child: MediaQuery.removePadding(
-                  context: context,
-                  removeBottom: true,
-                  child: NavigationBar(
-                          selectedIndex: _index,
-                          onDestinationSelected: (i) => setState(() => _index = i),
-                          destinations: [
-                            NavigationDestination(
-                              icon: const Icon(Icons.task_alt_outlined),
-                              selectedIcon: const Icon(Icons.task_alt),
-                              label: l.navCheck,
-                            ),
-                            NavigationDestination(
-                              icon: const Icon(Icons.travel_explore_outlined),
-                              selectedIcon: const Icon(Icons.travel_explore),
-                              label: l.navExplore,
-                            ),
-                            NavigationDestination(
-                              icon: const Icon(Icons.bookmark_border),
-                              selectedIcon: const Icon(Icons.bookmark),
-                              label: l.navSaved,
-                            ),
-                            NavigationDestination(
-                              icon: const Icon(Icons.settings_outlined),
-                              selectedIcon: const Icon(Icons.settings),
-                              label: l.navSettings,
-                            ),
-                          ],
-                        ),
-                ),
-              ),
-            ),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
+          child: _NavBar(
+            index: _index,
+            onChanged: (i) => setState(() => _index = i),
+            items: [
+              (Icons.task_alt, l.navCheck),
+              (Icons.travel_explore, l.navExplore),
+              (Icons.bookmark_border, l.navSaved),
+              (Icons.tune, l.navSettings),
+            ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Floating soft bottom bar. The open tab sinks into the bar.
+class _NavBar extends StatelessWidget {
+  const _NavBar({required this.index, required this.onChanged, required this.items});
+
+  final int index;
+  final ValueChanged<int> onChanged;
+  final List<(IconData, String)> items;
+
+  @override
+  Widget build(BuildContext context) {
+    final extra = StamplyColors.of(context);
+    final accent = Theme.of(context).colorScheme.primary;
+    final reduce = MediaQuery.of(context).disableAnimations;
+    final duration = reduce ? Duration.zero : const Duration(milliseconds: 320);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: extra.base,
+        borderRadius: BorderRadius.circular(36),
+        boxShadow: Neu.shadows(extra),
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: SizedBox(
+        height: 72,
+        child: Row(
+          children: [
+            for (final (i, item) in items.indexed)
+              Expanded(
+                child: Semantics(
+                  button: true,
+                  selected: i == index,
+                  label: item.$2,
+                  child: Tooltip(
+                    message: item.$2,
+                    child: InkResponse(
+                      onTap: () => onChanged(i),
+                      radius: 34,
+                      child: Center(
+                        child: SizedBox(
+                          width: 54,
+                          height: 54,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              AnimatedScale(
+                                scale: i == index ? 1 : 0.4,
+                                duration: duration,
+                                curve: Curves.easeOutBack,
+                                child: AnimatedOpacity(
+                                  opacity: i == index ? 1 : 0,
+                                  duration: duration,
+                                  child: CustomPaint(
+                                    size: const Size.square(54),
+                                    painter: InsetPainter(colors: extra, radius: 27, depth: 0.8),
+                                  ),
+                                ),
+                              ),
+                              AnimatedScale(
+                                scale: i == index ? 1.08 : 1,
+                                duration: duration,
+                                curve: Curves.easeOutBack,
+                                child: Icon(
+                                  item.$1,
+                                  size: 26,
+                                  color: i == index ? accent : extra.muted,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
       ),
     );
   }

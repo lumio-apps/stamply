@@ -275,11 +275,8 @@ class _ShareCard extends StatelessWidget {
     final extra = StamplyColors.of(context);
     final l = context.l10n;
     return Container(
-      // See-through on screen (the glass background shows), solid in the
-      // shared picture so it gets a clean margin around it.
-      color: solid
-          ? (Theme.of(context).brightness == Brightness.dark ? Brand.nightBase : Brand.paperBase)
-          : Colors.transparent,
+      // Same color as the screen; solid so the shared picture has a clean margin.
+      color: solid ? extra.base : Colors.transparent,
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,116 +318,176 @@ class _Hero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
-    // A dark glass poster: the status color glows from the corner. It stays
-    // dark in the light theme too, so the text on it is always readable.
-    final glow = stamp?.onHero ?? const Color(0xFF3563D6);
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        gradient: RadialGradient(
-          center: const Alignment(-0.9, -0.9),
-          radius: 1.6,
-          colors: [glow.withValues(alpha: 0.6), Brand.nightBase],
+    final texts = Column(
+      children: [
+        Text(
+          context.l10n.entryStatusLabel.toUpperCase(),
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 12, letterSpacing: 1.2, color: extra.muted),
         ),
-        border: Border.all(color: const Color(0x38FFFFFF)),
-        boxShadow: [
-          BoxShadow(color: glow.withValues(alpha: 0.3), blurRadius: 36, spreadRadius: -10),
-        ],
-      ),
-      child: Row(
-        children: [
-          if (stamp != null) ...[
-            _Stamp(status: stamp!),
-            const SizedBox(width: 20),
-          ],
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  context.l10n.entryStatusLabel,
-                  style: TextStyle(
-                    fontSize: 12,
-                    letterSpacing: 1.0,
-                    color: extra.onHero.withValues(alpha: 0.75),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontFamily: Brand.displayFont,
-                    fontSize: 26,
-                    height: 1.1,
-                    fontWeight: FontWeight.w700,
-                    color: extra.onHero,
-                  ),
-                ),
-                if (subtitle != null) ...[
-                  const SizedBox(height: 6),
-                  Text(subtitle!, style: TextStyle(fontSize: 15, color: extra.onHero.withValues(alpha: 0.9))),
-                ],
-              ],
-            ),
+        const SizedBox(height: 8),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontFamily: Brand.displayFont,
+            fontSize: 28,
+            height: 1.12,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
           ),
+        ),
+        if (subtitle != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            subtitle!,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, color: extra.muted),
+          ),
+        ],
+      ],
+    );
+    if (stamp == null) {
+      return CardBox(
+        radius: 30,
+        padding: const EdgeInsets.all(24),
+        child: SizedBox(width: double.infinity, child: texts),
+      );
+    }
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const SizedBox(height: 12),
+          _Stamp(status: stamp!),
+          const SizedBox(height: 28),
+          texts,
         ],
       ),
     );
   }
 }
 
-/// Round passport stamp, slightly rotated, in the status color.
-class _Stamp extends StatelessWidget {
+/// Round passport stamp that is pressed onto the page, then floats and glows.
+class _Stamp extends StatefulWidget {
   const _Stamp({required this.status});
 
   final EntryStatus status;
 
   @override
+  State<_Stamp> createState() => _StampState();
+}
+
+class _StampState extends State<_Stamp> with TickerProviderStateMixin {
+  late final AnimationController _in;
+  late final AnimationController _idle;
+  bool _started = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _in = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
+    _idle = AnimationController(vsync: this, duration: const Duration(milliseconds: 2600));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_started) return;
+    _started = true;
+    if (MediaQuery.of(context).disableAnimations) {
+      _in.value = 1;
+    } else {
+      _in.forward().whenComplete(() {
+        if (mounted) _idle.repeat(reverse: true);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _in.dispose();
+    _idle.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final color = status.onHero;
+    final extra = StamplyColors.of(context);
+    final status = widget.status;
+    final color = status.foreground(Theme.of(context).brightness);
+    final slam = CurvedAnimation(parent: _in, curve: Curves.easeOutBack);
+    final fade = CurvedAnimation(parent: _in, curve: const Interval(0, 0.35));
+    final float = CurvedAnimation(parent: _idle, curve: Curves.easeInOut);
     return Semantics(
       label: context.l10n.stampSemantics(status.label(context.l10n)),
-      child: Transform.rotate(
-        angle: -10 * math.pi / 180,
-        child: Container(
-          width: 96,
-          height: 96,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white.withValues(alpha: 0.1),
-            border: Border.all(color: color, width: 4),
-            boxShadow: [BoxShadow(color: color.withValues(alpha: 0.45), blurRadius: 28)],
-          ),
-          padding: const EdgeInsets.all(6),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: color.withValues(alpha: 0.6), width: 1.5),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(status.icon, color: color, size: 30),
-                const SizedBox(height: 2),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: FittedBox(
-                    child: Text(
-                      status.stampText(context.l10n),
-                      style: TextStyle(
-                        fontFamily: Brand.displayFont,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 11,
-                        letterSpacing: 1.0,
-                        color: color,
+      child: ExcludeSemantics(
+        child: AnimatedBuilder(
+          animation: Listenable.merge([_in, _idle]),
+          builder: (context, _) {
+            final scale = 1.9 - 0.9 * slam.value;
+            final angle = (-22 + 16 * slam.value) * math.pi / 180;
+            return Opacity(
+              opacity: fade.value.clamp(0.0, 1.0),
+              child: Transform.translate(
+                offset: Offset(0, -6 * float.value),
+                child: Transform.rotate(
+                  angle: angle,
+                  child: Transform.scale(
+                    scale: scale,
+                    child: Container(
+                      width: 188,
+                      height: 188,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: extra.base,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          ...Neu.shadows(extra),
+                          BoxShadow(
+                            color: color.withValues(alpha: 0.10 + 0.20 * float.value),
+                            blurRadius: 40,
+                            spreadRadius: 4,
+                          ),
+                        ],
+                      ),
+                      child: SizedBox(
+                        width: 152,
+                        height: 152,
+                        child: CustomPaint(
+                          painter: InsetPainter(colors: extra, radius: 76),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(status.icon, color: color, size: 40),
+                              const SizedBox(height: 4),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 18),
+                                child: FittedBox(
+                                  child: Text(
+                                    status.stampText(context.l10n),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: Brand.displayFont,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 24,
+                                      height: 1.05,
+                                      letterSpacing: 1.2,
+                                      color: color,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

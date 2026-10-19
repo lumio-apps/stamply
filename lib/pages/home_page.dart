@@ -45,12 +45,14 @@ class HomePage extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         children: [
-          Row(
-            children: [
-              const StamplyLogo(size: 32),
-              const SizedBox(width: 10),
-              Text('Stamply', style: Theme.of(context).textTheme.titleLarge),
-            ],
+          Rise(
+            child: Row(
+              children: [
+                const StamplyLogo(size: 32),
+                const SizedBox(width: 10),
+                Text('Stamply', style: Theme.of(context).textTheme.titleLarge),
+              ],
+            ),
           ),
           const SizedBox(height: 24),
           Text(l.homeTitle, style: Theme.of(context).textTheme.headlineMedium),
@@ -60,41 +62,40 @@ class HomePage extends StatelessWidget {
             style: TextStyle(fontSize: 15, height: 1.5, color: extra.muted),
           ),
           const SizedBox(height: 24),
-          CardBox(
-            padding: const EdgeInsets.all(8),
-            child: Stack(
-              alignment: AlignmentDirectional.centerEnd,
-              children: [
-                Column(
-                  children: [
-                    _CountryRow(
-                      label: l.myPassport,
-                      code: passport,
-                      name: passport == null ? null : scope.nameOf(passport),
-                      onTap: choosePassport,
-                    ),
-                    Divider(height: 1, indent: 12, endIndent: 12, color: extra.divider),
-                    _CountryRow(
-                      label: l.travellingTo,
-                      code: destination,
-                      name: destination == null ? null : scope.nameOf(destination),
-                      onTap: chooseDestination,
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(end: 44),
-                  child: IconButton.outlined(
-                    tooltip: l.swapTooltip,
-                    style: IconButton.styleFrom(
-                      backgroundColor: extra.card,
-                      side: BorderSide(color: extra.divider),
-                    ),
-                    onPressed: passport == null && destination == null ? null : state.swap,
-                    icon: const Icon(Icons.swap_vert),
+          Rise(
+            delay: const Duration(milliseconds: 120),
+            child: CardBox(
+              radius: 32,
+              padding: const EdgeInsets.all(16),
+              child: Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: [
+                  Column(
+                    children: [
+                      _CountryRow(
+                        label: l.myPassport,
+                        code: passport,
+                        name: passport == null ? null : scope.nameOf(passport),
+                        onTap: choosePassport,
+                      ),
+                      const SizedBox(height: 12),
+                      _CountryRow(
+                        label: l.travellingTo,
+                        code: destination,
+                        name: destination == null ? null : scope.nameOf(destination),
+                        onTap: chooseDestination,
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 44),
+                    child: _SwapButton(
+                      tooltip: l.swapTooltip,
+                      onPressed: passport == null && destination == null ? null : state.swap,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           if (passport != null) ...[
@@ -139,11 +140,14 @@ class HomePage extends StatelessWidget {
               ),
           ],
           const SizedBox(height: 16),
-          FilledButton(
-            onPressed: passport != null && destination != null
-                ? () => openResult(TripCheck(passport, destination))
-                : null,
-            child: Text(l.checkRequirements),
+          Rise(
+            delay: const Duration(milliseconds: 200),
+            child: FilledButton(
+              onPressed: passport != null && destination != null
+                  ? () => openResult(TripCheck(passport, destination))
+                  : null,
+              child: Text(l.checkRequirements),
+            ),
           ),
           if (state.recent.isNotEmpty) ...[
             SectionLabel(
@@ -151,12 +155,15 @@ class HomePage extends StatelessWidget {
               trailing: TextButton(onPressed: state.clearRecent, child: Text(l.clear)),
             ),
             CardBox(
+              inset: true,
+              padding: const EdgeInsets.symmetric(vertical: 6),
               child: Column(
                 children: [
-                  for (final (i, check) in state.recent.indexed) ...[
-                    if (i > 0) Divider(height: 1, color: extra.divider),
-                    CheckTile(check: check, onTap: () => openResult(check)),
-                  ],
+                  for (final (i, check) in state.recent.indexed)
+                    Rise(
+                      delay: Duration(milliseconds: 320 + 90 * i),
+                      child: CheckTile(check: check, onTap: () => openResult(check)),
+                    ),
                 ],
               ),
             ),
@@ -183,49 +190,93 @@ class _CountryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
-    return InkWell(
-      borderRadius: BorderRadius.circular(14),
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-        child: Row(
-          children: [
-            code == null
-                ? Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: extra.divider,
-                      borderRadius: BorderRadius.circular(12),
+    return CardBox(
+      inset: true,
+      radius: 24,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              code == null
+                  ? Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: extra.base,
+                        shape: BoxShape.circle,
+                        boxShadow: Neu.shadows(extra, depth: 0.5),
+                      ),
+                      child: Icon(Icons.add, color: extra.muted),
+                    )
+                  : CountryBadge(code: code!),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(label, style: TextStyle(fontSize: 12, color: extra.muted)),
+                    const SizedBox(height: 2),
+                    Text(
+                      name ?? context.l10n.chooseCountry,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: name == null ? extra.muted : null,
+                      ),
                     ),
-                    child: Icon(Icons.add, color: extra.muted),
-                  )
-                : CountryBadge(code: code!),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(label, style: TextStyle(fontSize: 13, color: extra.muted)),
-                  const SizedBox(height: 2),
-                  Text(
-                    name ?? context.l10n.chooseCountry,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: name == null ? extra.muted : null,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            // Space for the swap button that floats over the rows.
-            const SizedBox(width: 56),
-            Icon(Icons.chevron_right, color: extra.muted),
-          ],
+              // Space for the swap button that floats over the rows.
+              const SizedBox(width: 56),
+              Icon(Icons.chevron_right, color: extra.muted),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+/// Round raised button that turns half a circle each time it is pressed.
+class _SwapButton extends StatefulWidget {
+  const _SwapButton({required this.tooltip, required this.onPressed});
+
+  final String tooltip;
+  final VoidCallback? onPressed;
+
+  @override
+  State<_SwapButton> createState() => _SwapButtonState();
+}
+
+class _SwapButtonState extends State<_SwapButton> {
+  double _turns = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final onPressed = widget.onPressed;
+    final reduce = MediaQuery.of(context).disableAnimations;
+    return NeuButton(
+      tooltip: widget.tooltip,
+      width: 44,
+      height: 44,
+      radius: 22,
+      padding: EdgeInsets.zero,
+      onPressed: onPressed == null
+          ? null
+          : () {
+              setState(() => _turns += 0.5);
+              onPressed();
+            },
+      child: AnimatedRotation(
+        turns: _turns,
+        duration: reduce ? Duration.zero : const Duration(milliseconds: 420),
+        curve: Curves.easeInOutBack,
+        child: const Icon(Icons.swap_vert, size: 24),
       ),
     );
   }

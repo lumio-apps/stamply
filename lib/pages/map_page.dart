@@ -103,7 +103,7 @@ class _MapPageState extends State<MapPage> {
                                       map: map,
                                       fills: fills,
                                       noData: extra.divider,
-                                      outline: extra.glassBorder,
+                                      outline: extra.base,
                                       selected: selected,
                                       highlight: scheme.onSurface,
                                     ),

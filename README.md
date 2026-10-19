@@ -47,7 +47,7 @@ No ads. No tracking. No account. Free and open source.
   <img src="screenshots/settings.jpg" alt="Settings: update data, privacy and licenses" width="150">
 </p>
 
-<p align="center"><sub>Dark glass theme shown. A light theme is built in too.</sub></p>
+<p align="center"><sub>Screenshots may show an older look; the app now uses the soft design.</sub></p>
 
 ## Features
 
@@ -80,7 +80,7 @@ No ads. No tracking. No account. Free and open source.
 - Share the whole trip as text
 
 ### 🎨 Look
-- **Glass design**: frosted cards over a soft color glow, a floating navigation bar, and a glowing stamp on the result. Works in light and dark
+- **Soft design**: raised and pressed-in cards with soft light and shadow, a floating navigation bar, and small animations (a stamp pressed onto the result, a ring that fills). Works in light and dark, and respects the reduce-motion setting
 
 ### 🌐 20 languages
 - English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն

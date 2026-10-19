@@ -1,0 +1,3 @@
+• New soft look (neumorphism): raised and pressed-in cards, soft shadows
+• Smooth micro-animations: cards rise in, the stamp is pressed onto the result, the passport power ring fills, buttons sink when pressed
+• Respects the "reduce motion" setting

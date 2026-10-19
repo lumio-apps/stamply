@@ -91,7 +91,7 @@ class _ExplorePageState extends State<ExplorePage> {
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
             sliver: SliverList.list(
               children: [
-                Text(l.exploreTitle, style: Theme.of(context).textTheme.headlineMedium),
+                Rise(child: Text(l.exploreTitle, style: Theme.of(context).textTheme.headlineMedium)),
                 const SizedBox(height: 16),
                 if (second != null) ...[
                   Wrap(
@@ -111,26 +111,61 @@ class _ExplorePageState extends State<ExplorePage> {
                   const SizedBox(height: 12),
                 ],
                 SectionLabel(l.passportPower),
-                CardBox(
-                  child: ListTile(
-                    onTap: choosePassport,
-                    leading: CountryBadge(code: passport),
-                    title: Text(scope.nameOf(passport),
-                        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
-                    subtitle: Text(
-                      '${l.rankOf(data.rank(passport), data.rankedCount)}\n'
-                      '${l.destinationsNoVisa(score)}',
-                      style: TextStyle(color: extra.muted, height: 1.4),
+                Rise(
+                  delay: const Duration(milliseconds: 90),
+                  child: CardBox(
+                    radius: 30,
+                    child: InkWell(
+                      onTap: choosePassport,
+                      child: Padding(
+                        padding: const EdgeInsets.all(18),
+                        child: Row(
+                          children: [
+                            _PowerRing(score: score, total: all.length),
+                            const SizedBox(width: 18),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(flagEmoji(passport), style: const TextStyle(fontSize: 20)),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          scope.nameOf(passport),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontFamily: Brand.displayFont,
+                                            fontSize: 21,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                      Icon(Icons.edit_outlined, size: 18, color: extra.muted),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    '${l.rankOf(data.rank(passport), data.rankedCount)}\n'
+                                    '${l.destinationsNoVisa(score)}',
+                                    style: TextStyle(color: extra.muted, height: 1.4, fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    isThreeLine: true,
-                    trailing: const Icon(Icons.edit_outlined),
                   ),
                 ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton.icon(
+                      child: NeuButton.icon(
                         onPressed: () => Navigator.push(context,
                             MaterialPageRoute(builder: (_) => const RankingPage())),
                         icon: const Icon(Icons.leaderboard_outlined),
@@ -139,7 +174,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: OutlinedButton.icon(
+                      child: NeuButton.icon(
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -154,7 +189,7 @@ class _ExplorePageState extends State<ExplorePage> {
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton.icon(
+                      child: NeuButton.icon(
                         onPressed: () => Navigator.push(
                             context, MaterialPageRoute(builder: (_) => const TripPage())),
                         icon: const Icon(Icons.luggage_outlined),
@@ -163,7 +198,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: OutlinedButton.icon(
+                      child: NeuButton.icon(
                         onPressed: () => Navigator.push(
                             context, MaterialPageRoute(builder: (_) => const SchengenPage())),
                         icon: const Icon(Icons.calendar_month_outlined),
@@ -173,7 +208,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                OutlinedButton.icon(
+                NeuButton.icon(
                   onPressed: () => Navigator.push(
                       context, MaterialPageRoute(builder: (_) => const MapPage())),
                   icon: const Icon(Icons.public),
@@ -186,9 +221,9 @@ class _ExplorePageState extends State<ExplorePage> {
                     labelText: l.searchDestination,
                     prefixIcon: const Icon(Icons.search),
                     filled: true,
-                    fillColor: extra.card,
+                    fillColor: extra.field,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(22),
                       borderSide: BorderSide.none,
                     ),
                   ),
@@ -233,8 +268,8 @@ class _ExplorePageState extends State<ExplorePage> {
                 itemBuilder: (context, i) {
                   final e = shown[i];
                   final check = TripCheck(passport, e.key);
-                  return ListTile(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  final tile = ListTile(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                     leading: CountryBadge(code: e.key, size: 40),
                     title: Text(scope.nameOf(e.key), maxLines: 1, overflow: TextOverflow.ellipsis),
                     trailing: StatusPill(rule: e.value),
@@ -246,6 +281,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       );
                     },
                   );
+                  return i < 10 ? Rise(delay: Duration(milliseconds: 300 + 70 * i), child: tile) : tile;
                 },
               ),
             ),
@@ -253,4 +289,76 @@ class _ExplorePageState extends State<ExplorePage> {
       ),
     );
   }
+}
+
+/// Round meter: how much of the world this passport reaches without a visa.
+class _PowerRing extends StatelessWidget {
+  const _PowerRing({required this.score, required this.total});
+
+  final int score;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    final extra = StamplyColors.of(context);
+    final fraction = total == 0 ? 0.0 : (score / total).clamp(0.0, 1.0);
+    final reduce = MediaQuery.of(context).disableAnimations;
+    return SizedBox(
+      width: 96,
+      height: 96,
+      child: CustomPaint(
+        painter: InsetPainter(colors: extra, radius: 48, depth: 0.8),
+        child: TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0, end: fraction),
+          duration: reduce ? Duration.zero : const Duration(milliseconds: 1500),
+          curve: Curves.easeOutCubic,
+          builder: (context, value, _) => CustomPaint(
+            painter: _RingPainter(
+              fraction: value,
+              track: extra.shadowDark.withValues(alpha: 0.5),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF5EE0A8)
+                  : const Color(0xFF1F9D6B),
+            ),
+            child: Center(
+              child: Text(
+                '$score',
+                style: const TextStyle(
+                  fontFamily: Brand.displayFont,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RingPainter extends CustomPainter {
+  _RingPainter({required this.fraction, required this.track, required this.color});
+
+  final double fraction;
+  final Color track;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final arc = rect.deflate(9);
+    final base = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 9
+      ..strokeCap = StrokeCap.round;
+    canvas.drawArc(arc, 0, 6.2831853, false, base..color = track);
+    if (fraction > 0) {
+      canvas.drawArc(arc, -1.5707963, 6.2831853 * fraction, false, base..color = color);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_RingPainter old) =>
+      old.fraction != fraction || old.track != track || old.color != color;
 }

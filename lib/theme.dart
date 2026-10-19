@@ -6,52 +6,70 @@ class Brand {
   static const paper = Color(0xFFF6F4EE);
   static const stamp = Color(0xFFC2441E);
   static const stampDark = Color(0xFFE2683F);
-  static const night = Color(0xFF10192E);
 
-  /// Base colors under the glass background glows.
-  static const nightBase = Color(0xFF0B1228);
-  static const paperBase = Color(0xFFF1EEE6);
+  /// Text color on the soft light surface.
+  static const softInk = Color(0xFF26324A);
+
+  /// Text color on the soft dark surface.
+  static const softPaper = Color(0xFFE8ECF4);
 
   static const displayFont = 'SpaceGrotesk';
   static const bodyFont = 'IBMPlexSans';
 }
 
 /// Extra colors the Material scheme does not cover.
+///
+/// The look is "soft UI" (neumorphism): every surface has the same color as
+/// the background and is shaped only by a light and a dark shadow.
 class StamplyColors extends ThemeExtension<StamplyColors> {
   const StamplyColors({
+    required this.base,
+    required this.shadowLight,
+    required this.shadowDark,
     required this.muted,
     required this.divider,
-    required this.card,
+    required this.field,
     required this.hero,
     required this.onHero,
-    required this.glassBorder,
   });
+
+  /// Background and surface color (they are the same on purpose).
+  final Color base;
+
+  /// Shadow toward the light source (top left).
+  final Color shadowLight;
+
+  /// Shadow away from the light source (bottom right).
+  final Color shadowDark;
 
   final Color muted;
   final Color divider;
-  final Color card;
+
+  /// Fill of text fields (a little darker than [base]).
+  final Color field;
   final Color hero;
   final Color onHero;
 
-  /// Thin bright edge of the glass cards.
-  final Color glassBorder;
-
   static const light = StamplyColors(
-    muted: Color(0xFF4A5468),
-    divider: Color(0x1F1B2A4A),
-    card: Color(0x99FFFFFF),
+    base: Color(0xFFE4E9F1),
+    shadowLight: Color(0xFFFFFFFF),
+    shadowDark: Color(0xFFBAC3D1),
+    muted: Color(0xFF59647D),
+    divider: Color(0x2226324A),
+    field: Color(0xFFD9DFEA),
     hero: Brand.ink,
     onHero: Brand.paper,
-    glassBorder: Color(0xCCFFFFFF),
   );
 
   static const dark = StamplyColors(
-    muted: Color(0xFFC3CBDD),
-    divider: Color(0x24FFFFFF),
-    card: Color(0x1AFFFFFF),
+    base: Color(0xFF262B36),
+    shadowLight: Color(0xFF323948),
+    shadowDark: Color(0xFF191D25),
+    muted: Color(0xFFB4BDD0),
+    divider: Color(0x2AFFFFFF),
+    field: Color(0xFF20242E),
     hero: Color(0xFF22355C),
     onHero: Brand.paper,
-    glassBorder: Color(0x38FFFFFF),
   );
 
   static StamplyColors of(BuildContext context) =>
@@ -59,20 +77,24 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
 
   @override
   StamplyColors copyWith({
+    Color? base,
+    Color? shadowLight,
+    Color? shadowDark,
     Color? muted,
     Color? divider,
-    Color? card,
+    Color? field,
     Color? hero,
     Color? onHero,
-    Color? glassBorder,
   }) {
     return StamplyColors(
+      base: base ?? this.base,
+      shadowLight: shadowLight ?? this.shadowLight,
+      shadowDark: shadowDark ?? this.shadowDark,
       muted: muted ?? this.muted,
       divider: divider ?? this.divider,
-      card: card ?? this.card,
+      field: field ?? this.field,
       hero: hero ?? this.hero,
       onHero: onHero ?? this.onHero,
-      glassBorder: glassBorder ?? this.glassBorder,
     );
   }
 
@@ -80,12 +102,14 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
   StamplyColors lerp(ThemeExtension<StamplyColors>? other, double t) {
     if (other is! StamplyColors) return this;
     return StamplyColors(
+      base: Color.lerp(base, other.base, t)!,
+      shadowLight: Color.lerp(shadowLight, other.shadowLight, t)!,
+      shadowDark: Color.lerp(shadowDark, other.shadowDark, t)!,
       muted: Color.lerp(muted, other.muted, t)!,
       divider: Color.lerp(divider, other.divider, t)!,
-      card: Color.lerp(card, other.card, t)!,
+      field: Color.lerp(field, other.field, t)!,
       hero: Color.lerp(hero, other.hero, t)!,
       onHero: Color.lerp(onHero, other.onHero, t)!,
-      glassBorder: Color.lerp(glassBorder, other.glassBorder, t)!,
     );
   }
 }
@@ -93,8 +117,7 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
 ThemeData buildTheme(Brightness brightness) {
   final dark = brightness == Brightness.dark;
   final extra = dark ? StamplyColors.dark : StamplyColors.light;
-  final ink = dark ? Brand.paper : Brand.ink;
-  final background = dark ? Brand.night : Brand.paper;
+  final ink = dark ? Brand.softPaper : Brand.softInk;
   final accent = dark ? Brand.stampDark : Brand.stamp;
 
   final scheme = ColorScheme.fromSeed(
@@ -102,10 +125,11 @@ ThemeData buildTheme(Brightness brightness) {
     brightness: brightness,
   ).copyWith(
     primary: accent,
-    onPrimary: dark ? Brand.night : Colors.white,
+    onPrimary: dark ? const Color(0xFF1B1209) : Colors.white,
     secondary: ink,
-    surface: background,
+    surface: extra.base,
     onSurface: ink,
+    surfaceTint: Colors.transparent,
     outlineVariant: extra.divider,
   );
 
@@ -113,8 +137,8 @@ ThemeData buildTheme(Brightness brightness) {
     useMaterial3: true,
     brightness: brightness,
     colorScheme: scheme,
-    // Transparent: the glass background is drawn once, behind every screen.
-    scaffoldBackgroundColor: Colors.transparent,
+    scaffoldBackgroundColor: extra.base,
+    canvasColor: extra.base,
     fontFamily: Brand.bodyFont,
     extensions: [extra],
   );
@@ -126,7 +150,8 @@ ThemeData buildTheme(Brightness brightness) {
       headlineMedium: text.headlineMedium?.copyWith(
         fontFamily: Brand.displayFont,
         fontWeight: FontWeight.w700,
-        height: 1.15,
+        height: 1.1,
+        letterSpacing: -0.4,
       ),
       headlineSmall: text.headlineSmall?.copyWith(
         fontFamily: Brand.displayFont,
@@ -138,10 +163,11 @@ ThemeData buildTheme(Brightness brightness) {
       ),
     ),
     appBarTheme: AppBarThemeData(
-      backgroundColor: Colors.transparent,
+      backgroundColor: extra.base,
       foregroundColor: ink,
       elevation: 0,
       scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       titleTextStyle: TextStyle(
         fontFamily: Brand.displayFont,
         fontWeight: FontWeight.w700,
@@ -149,22 +175,41 @@ ThemeData buildTheme(Brightness brightness) {
         color: ink,
       ),
     ),
-    navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      height: 68,
-      indicatorColor: accent.withValues(alpha: 0.2),
+    dividerTheme: DividerThemeData(color: extra.divider, space: 1, thickness: 1),
+    dialogTheme: DialogThemeData(
+      backgroundColor: extra.base,
       surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: extra.base,
+      surfaceTintColor: Colors.transparent,
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: extra.base,
+      selectedColor: extra.field,
+      disabledColor: extra.base,
+      elevation: 4,
+      pressElevation: 1,
+      shadowColor: extra.shadowDark,
+      surfaceTintColor: Colors.transparent,
+      side: BorderSide.none,
+      showCheckmark: false,
+      shape: const StadiumBorder(),
+      labelStyle: TextStyle(fontFamily: Brand.bodyFont, fontWeight: FontWeight.w600, color: ink),
+      secondaryLabelStyle: TextStyle(fontFamily: Brand.bodyFont, fontWeight: FontWeight.w600, color: accent),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        minimumSize: const Size.fromHeight(56),
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        minimumSize: const Size.fromHeight(58),
+        elevation: 8,
+        shadowColor: accent.withValues(alpha: 0.55),
+        shape: const StadiumBorder(),
         textStyle: const TextStyle(
-          fontFamily: Brand.bodyFont,
+          fontFamily: Brand.displayFont,
           fontSize: 17,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.2,
         ),
       ),
     ),
@@ -172,16 +217,23 @@ ThemeData buildTheme(Brightness brightness) {
       style: OutlinedButton.styleFrom(
         minimumSize: const Size.fromHeight(52),
         foregroundColor: ink,
-        side: BorderSide(color: extra.glassBorder, width: 1.5),
-        backgroundColor: extra.card,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        backgroundColor: extra.base,
+        elevation: 4,
+        shadowColor: extra.shadowDark,
+        side: BorderSide.none,
+        shape: const StadiumBorder(),
         textStyle: const TextStyle(
           fontFamily: Brand.bodyFont,
-          fontSize: 16,
+          fontSize: 15,
           fontWeight: FontWeight.w600,
         ),
       ),
     ),
-    snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: dark ? extra.shadowLight : Brand.softInk,
+      contentTextStyle: const TextStyle(color: Colors.white, fontFamily: Brand.bodyFont),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    ),
   );
 }

@@ -72,9 +72,9 @@ class _CountryPickerPageState extends State<CountryPickerPage> {
                         }),
                       ),
                 filled: true,
-                fillColor: extra.card,
+                fillColor: extra.field,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(22),
                   borderSide: BorderSide.none,
                 ),
               ),
