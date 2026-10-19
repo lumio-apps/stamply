@@ -1,0 +1,1 @@
+New: filter destinations by region (Africa, Americas, Asia, Europe, Oceania) and a "Surprise me" button that picks a random place you can visit without applying for a visa first.

@@ -199,5 +199,11 @@
   "mapSmallNote": "Los países muy pequeños no se dibujan. Búscalos en Explorar.",
   "mapUnavailable": "El mapa no está disponible en esta versión.",
   "reduceEffects": "Reducir efectos",
-  "reduceEffectsHint": "Paneles planos, sin sombras suaves ni animaciones. Puede ir más fluido en móviles antiguos."
+  "reduceEffectsHint": "Paneles planos, sin sombras suaves ni animaciones. Puede ir más fluido en móviles antiguos.",
+  "regionAfrica": "África",
+  "regionAmericas": "América",
+  "regionAsia": "Asia",
+  "regionEurope": "Europa",
+  "regionOceania": "Oceanía",
+  "surpriseMe": "Sorpréndeme"
 }

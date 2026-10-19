@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../app_state.dart';
 import '../l10n/l10n.dart';
 import '../models.dart';
+import '../regions.dart';
 import '../status_text.dart';
 import '../theme.dart';
 import '../widgets.dart';
@@ -24,6 +27,7 @@ class ExplorePage extends StatefulWidget {
 
 class _ExplorePageState extends State<ExplorePage> {
   EntryStatus? _filter;
+  Region? _region;
   String _query = '';
 
   @override
@@ -75,6 +79,7 @@ class _ExplorePageState extends State<ExplorePage> {
     final q = _query.trim().toLowerCase();
     final shown = all
         .where((e) => _filter == null || e.value.status == _filter)
+        .where((e) => _region == null || regionOf(e.key) == _region)
         .where((e) =>
             q.isEmpty ||
             scope.nameOf(e.key).toLowerCase().contains(q) ||
@@ -83,6 +88,22 @@ class _ExplorePageState extends State<ExplorePage> {
       ..sort((a, b) => scope.nameOf(a.key).toLowerCase().compareTo(scope.nameOf(b.key).toLowerCase()));
     final score = data.score(passport);
     final second = state.passport2;
+
+    // "Surprise me": a random place you can enter without applying first,
+    // within the chosen region.
+    final surprisePool = all.where((e) {
+      final s = e.value.status;
+      return (s == EntryStatus.visaFree ||
+              s == EntryStatus.visaOnArrival ||
+              s == EntryStatus.eta) &&
+          (_region == null || regionOf(e.key) == _region);
+    }).toList();
+    void surprise() {
+      final pick = surprisePool[Random().nextInt(surprisePool.length)];
+      final check = TripCheck(passport, pick.key);
+      state.addRecent(check);
+      Navigator.push(context, MaterialPageRoute(builder: (_) => ResultPage(check: check)));
+    }
 
     return SafeArea(
       child: CustomScrollView(
@@ -247,6 +268,25 @@ class _ExplorePageState extends State<ExplorePage> {
                           onSelected: (on) => setState(() => _filter = on ? s : null),
                         ),
                   ],
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final r in Region.values)
+                      ChoiceChip(
+                        label: Text(r.label(l)),
+                        selected: _region == r,
+                        onSelected: (on) => setState(() => _region = on ? r : null),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                NeuButton.icon(
+                  onPressed: surprisePool.isEmpty ? null : surprise,
+                  icon: const Icon(Icons.casino_outlined),
+                  label: Text(l.surpriseMe),
                 ),
                 const SizedBox(height: 12),
               ],

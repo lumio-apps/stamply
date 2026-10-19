@@ -505,5 +505,11 @@
   "mapSmallNote": "Very small countries are not drawn. Find them in Explore.",
   "mapUnavailable": "The map is not available in this version.",
   "reduceEffects": "Reduce effects",
-  "reduceEffectsHint": "Flat panels, no soft shadows or animations. Can feel smoother on older phones."
+  "reduceEffectsHint": "Flat panels, no soft shadows or animations. Can feel smoother on older phones.",
+  "regionAfrica": "Africa",
+  "regionAmericas": "Americas",
+  "regionAsia": "Asia",
+  "regionEurope": "Europe",
+  "regionOceania": "Oceania",
+  "surpriseMe": "Surprise me"
 }
