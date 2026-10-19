@@ -204,7 +204,7 @@ class _CountryRow extends StatelessWidget {
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: extra.base,
+                        color: Neu.raised(extra),
                         shape: BoxShape.circle,
                         boxShadow: Neu.shadows(extra, depth: 0.5),
                       ),
@@ -259,7 +259,7 @@ class _SwapButtonState extends State<_SwapButton> {
   @override
   Widget build(BuildContext context) {
     final onPressed = widget.onPressed;
-    final reduce = MediaQuery.of(context).disableAnimations;
+    final reduce = motionOff(context);
     return NeuButton(
       tooltip: widget.tooltip,
       width: 44,

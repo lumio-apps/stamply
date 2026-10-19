@@ -395,7 +395,7 @@ class _StampState extends State<_Stamp> with TickerProviderStateMixin {
     super.didChangeDependencies();
     if (_started) return;
     _started = true;
-    if (MediaQuery.of(context).disableAnimations) {
+    if (motionOff(context)) {
       _in.value = 1;
     } else {
       _in.forward().whenComplete(() {
@@ -440,15 +440,16 @@ class _StampState extends State<_Stamp> with TickerProviderStateMixin {
                       height: 188,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: extra.base,
+                        color: Neu.raised(extra),
                         shape: BoxShape.circle,
                         boxShadow: [
                           ...Neu.shadows(extra),
-                          BoxShadow(
-                            color: color.withValues(alpha: 0.10 + 0.20 * float.value),
-                            blurRadius: 40,
-                            spreadRadius: 4,
-                          ),
+                          if (!extra.flat)
+                            BoxShadow(
+                              color: color.withValues(alpha: 0.10 + 0.20 * float.value),
+                              blurRadius: 40,
+                              spreadRadius: 4,
+                            ),
                         ],
                       ),
                       child: SizedBox(

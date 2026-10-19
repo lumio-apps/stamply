@@ -18,6 +18,7 @@ class AppState extends ChangeNotifier {
   static const _kRecent = 'recent';
   static const _kSaved = 'saved';
   static const _kTheme = 'theme';
+  static const _kReduceEffects = 'reduceEffects';
   static const _kExpiry = 'passport_expiry';
   static const _kSeen = 'seen_rules';
   static const _kPassport2 = 'passport2';
@@ -38,6 +39,7 @@ class AppState extends ChangeNotifier {
   List<TripCheck> recent = [];
   List<TripCheck> saved = [];
   ThemeMode themeMode = ThemeMode.system;
+  bool reduceEffects = false;
 
   /// Expiry date of the user's passport (optional).
   DateTime? passportExpiry;
@@ -107,6 +109,7 @@ class AppState extends ChangeNotifier {
         .whereType<SchengenStay>()
         .toList();
     s.expiryReminder = prefs.getBool(_kReminder) ?? false;
+    s.reduceEffects = prefs.getBool(_kReduceEffects) ?? false;
     s.themeMode = switch (prefs.getString(_kTheme)) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
@@ -277,6 +280,12 @@ class AppState extends ChangeNotifier {
   void setExpiryReminder(bool on) {
     expiryReminder = on;
     _prefs.setBool(_kReminder, on);
+    notifyListeners();
+  }
+
+  void setReduceEffects(bool on) {
+    reduceEffects = on;
+    _prefs.setBool(_kReduceEffects, on);
     notifyListeners();
   }
 

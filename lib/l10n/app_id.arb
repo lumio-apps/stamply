@@ -197,5 +197,7 @@
   "mapTitle": "Peta dunia",
   "mapHint": "Ketuk sebuah negara untuk melihat aturannya. Cubit untuk memperbesar.",
   "mapSmallNote": "Negara yang sangat kecil tidak digambar. Temukan di Jelajahi.",
-  "mapUnavailable": "Peta tidak tersedia di versi ini."
+  "mapUnavailable": "Peta tidak tersedia di versi ini.",
+  "reduceEffects": "Kurangi efek",
+  "reduceEffectsHint": "Panel datar tanpa bayangan lembut atau animasi. Bisa terasa lebih mulus di ponsel lama."
 }

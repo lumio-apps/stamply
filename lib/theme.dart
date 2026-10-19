@@ -31,6 +31,7 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
     required this.field,
     required this.hero,
     required this.onHero,
+    this.flat = false,
   });
 
   /// Background and surface color (they are the same on purpose).
@@ -49,6 +50,9 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
   final Color field;
   final Color hero;
   final Color onHero;
+
+  /// "Reduce effects": flat panels, no soft shadows, no animations.
+  final bool flat;
 
   static const light = StamplyColors(
     base: Color(0xFFE4E9F1),
@@ -85,6 +89,7 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
     Color? field,
     Color? hero,
     Color? onHero,
+    bool? flat,
   }) {
     return StamplyColors(
       base: base ?? this.base,
@@ -95,6 +100,7 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
       field: field ?? this.field,
       hero: hero ?? this.hero,
       onHero: onHero ?? this.onHero,
+      flat: flat ?? this.flat,
     );
   }
 
@@ -110,13 +116,14 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
       field: Color.lerp(field, other.field, t)!,
       hero: Color.lerp(hero, other.hero, t)!,
       onHero: Color.lerp(onHero, other.onHero, t)!,
+      flat: t < 0.5 ? flat : other.flat,
     );
   }
 }
 
-ThemeData buildTheme(Brightness brightness) {
+ThemeData buildTheme(Brightness brightness, {bool flat = false}) {
   final dark = brightness == Brightness.dark;
-  final extra = dark ? StamplyColors.dark : StamplyColors.light;
+  final extra = (dark ? StamplyColors.dark : StamplyColors.light).copyWith(flat: flat);
   final ink = dark ? Brand.softPaper : Brand.softInk;
   final accent = dark ? Brand.stampDark : Brand.stamp;
 
@@ -189,7 +196,7 @@ ThemeData buildTheme(Brightness brightness) {
       backgroundColor: extra.base,
       selectedColor: extra.field,
       disabledColor: extra.base,
-      elevation: 4,
+      elevation: flat ? 0 : 4,
       pressElevation: 1,
       shadowColor: extra.shadowDark,
       surfaceTintColor: Colors.transparent,
@@ -202,7 +209,7 @@ ThemeData buildTheme(Brightness brightness) {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(58),
-        elevation: 8,
+        elevation: flat ? 0 : 8,
         shadowColor: accent.withValues(alpha: 0.55),
         shape: const StadiumBorder(),
         textStyle: const TextStyle(
@@ -218,9 +225,9 @@ ThemeData buildTheme(Brightness brightness) {
         minimumSize: const Size.fromHeight(52),
         foregroundColor: ink,
         backgroundColor: extra.base,
-        elevation: 4,
+        elevation: flat ? 0 : 4,
         shadowColor: extra.shadowDark,
-        side: BorderSide.none,
+        side: flat ? BorderSide(color: extra.divider) : BorderSide.none,
         shape: const StadiumBorder(),
         textStyle: const TextStyle(
           fontFamily: Brand.bodyFont,

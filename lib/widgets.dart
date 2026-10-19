@@ -32,7 +32,7 @@ class CountryBadge extends StatelessWidget {
       height: size,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: extra.base,
+        color: Neu.raised(extra),
         shape: BoxShape.circle,
         boxShadow: Neu.shadows(extra, depth: 0.5),
       ),
@@ -85,7 +85,7 @@ class StatusPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: extra.base,
+        color: Neu.raised(extra),
         borderRadius: BorderRadius.circular(999),
         boxShadow: Neu.shadows(extra, depth: 0.45),
       ),
@@ -135,7 +135,10 @@ class SectionLabel extends StatelessWidget {
 /// Soft-UI shadows: a light one toward the top left, a dark one toward the
 /// bottom right. [depth] 1 is a big card, 0.5 a small chip.
 class Neu {
-  static List<BoxShadow> shadows(StamplyColors c, {double depth = 1}) => [
+  /// Color of a raised surface: the background color, or a flat panel color.
+  static Color raised(StamplyColors c) => c.flat ? c.field : c.base;
+
+  static List<BoxShadow> shadows(StamplyColors c, {double depth = 1}) => c.flat ? const [] : [
         BoxShadow(
           color: c.shadowDark,
           offset: Offset(9 * depth, 9 * depth),
@@ -148,6 +151,11 @@ class Neu {
         ),
       ];
 }
+
+/// True when animations should not run: the phone asks for reduced motion or
+/// the user turned on "Reduce effects".
+bool motionOff(BuildContext context) =>
+    MediaQuery.of(context).disableAnimations || StamplyColors.of(context).flat;
 
 /// A card pressed into the surface (the opposite of a raised card).
 class InsetPainter extends CustomPainter {
@@ -164,6 +172,13 @@ class InsetPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final rrect = RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(radius));
+    if (colors.flat) {
+      canvas.drawRRect(
+        rrect,
+        Paint()..color = Color.alphaBlend(colors.shadowDark.withValues(alpha: 0.45), colors.base),
+      );
+      return;
+    }
     canvas.drawRRect(rrect, Paint()..color = colors.base);
     canvas.save();
     canvas.clipRRect(rrect);
@@ -226,7 +241,7 @@ class CardBox extends StatelessWidget {
     }
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: extra.base,
+        color: Neu.raised(extra),
         borderRadius: shape,
         boxShadow: Neu.shadows(extra),
       ),
@@ -286,7 +301,7 @@ class _NeuButtonState extends State<NeuButton> {
     final extra = StamplyColors.of(context);
     final enabled = widget.onPressed != null;
     final r = BorderRadius.circular(widget.radius ?? widget.height / 2);
-    final reduce = MediaQuery.of(context).disableAnimations;
+    final reduce = motionOff(context);
     final button = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTapDown: enabled ? (_) => setState(() => _down = true) : null,
@@ -304,7 +319,7 @@ class _NeuButtonState extends State<NeuButton> {
           padding: widget.padding,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: extra.base,
+            color: Neu.raised(extra),
             borderRadius: r,
             boxShadow: _down
                 ? Neu.shadows(extra, depth: 0.15)
@@ -368,7 +383,7 @@ class _RiseState extends State<Rise> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).disableAnimations) return widget.child;
+    if (motionOff(context)) return widget.child;
     return AnimatedBuilder(
       animation: _t,
       child: widget.child,

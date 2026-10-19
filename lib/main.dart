@@ -83,8 +83,8 @@ class StamplyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             themeMode: state.themeMode,
-            theme: buildTheme(Brightness.light),
-            darkTheme: buildTheme(Brightness.dark),
+            theme: buildTheme(Brightness.light, flat: state.reduceEffects),
+            darkTheme: buildTheme(Brightness.dark, flat: state.reduceEffects),
             // On tablets and foldables keep the phone-style layout centered.
             builder: (context, child) => AppBackground(
               child: Center(
@@ -187,11 +187,11 @@ class _NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
     final accent = Theme.of(context).colorScheme.primary;
-    final reduce = MediaQuery.of(context).disableAnimations;
+    final reduce = motionOff(context);
     final duration = reduce ? Duration.zero : const Duration(milliseconds: 320);
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: extra.base,
+        color: Neu.raised(extra),
         borderRadius: BorderRadius.circular(36),
         boxShadow: Neu.shadows(extra),
       ),

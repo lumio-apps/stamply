@@ -302,7 +302,7 @@ class _PowerRing extends StatelessWidget {
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
     final fraction = total == 0 ? 0.0 : (score / total).clamp(0.0, 1.0);
-    final reduce = MediaQuery.of(context).disableAnimations;
+    final reduce = motionOff(context);
     return SizedBox(
       width: 96,
       height: 96,
