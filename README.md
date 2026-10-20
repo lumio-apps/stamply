@@ -33,7 +33,7 @@ No ads. No tracking. No account. Free and open source.
 - **Fast:** two taps and you see the rule for any passport and destination.
 - **Offline:** all data is inside the app. It works at the airport with no signal.
 - **Private:** no ads, no tracking, no account. Your passport and trips never leave your phone.
-- **Useful beyond one answer:** compare passports, plan a trip, track your Schengen 90/180 days, and get passport-expiry reminders.
+- **Useful beyond one answer:** compare passports, plan a trip, track your Schengen 90/180 days, get passport-expiry reminders, and back up everything you saved.
 - **Yours:** open source under the MIT license, in 20 languages.
 
 ## Screenshots
@@ -80,9 +80,9 @@ No ads. No tracking. No account. Free and open source.
 - Share the whole trip as text
 
 ### 🎨 Look
-- **Soft design**: raised and pressed-in cards with soft light and shadow, a floating navigation bar, and small animations (a stamp pressed onto the result, a ring that fills). Works in light and dark, and respects the reduce-motion setting. A Reduce effects switch in Settings makes everything flat
-- **Regions and Surprise me**: filter the Explore list by Africa, Americas, Asia, Europe or Oceania, or let the app pick a random place you can visit without applying for a visa first
-- **Backup and restore**: copy or share everything you saved as plain text and restore it on another phone. Nothing is uploaded anywhere
+- **Soft design**: raised and pressed-in cards with soft light and shadow, a floating navigation bar, and small animations (a stamp pressed onto the result, a ring that fills)
+- Works in **light and dark**, and respects the phone's reduce-motion setting
+- **Reduce effects** switch in Settings: flat panels, no soft shadows or animations. Can feel smoother on older phones
 
 ### 🌐 20 languages
 - English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն
@@ -94,6 +94,8 @@ No ads. No tracking. No account. Free and open source.
 - Every destination for your passport in one list
 - See how many countries you can visit **without a visa in advance**
 - Filter by status: Visa-free, Visa on arrival, ETA, e-Visa, Visa required
+- Filter by **region**: Africa, Americas, Asia, Europe or Oceania
+- **Surprise me**: picks a random place you can visit without applying for a visa first (within the region you chose)
 - Search any destination
 
 ### 🔖 Saved
@@ -104,7 +106,8 @@ No ads. No tracking. No account. Free and open source.
 ### ⚙️ Settings
 - Passport expiry date (stays on your device), with optional **expiry reminders** 6, 3 and 1 month before (Android, set on the device with no extra service)
 - **Language** picker (20 languages)
-- Light, dark or system theme
+- Light, dark or system theme, and the **Reduce effects** switch
+- **Backup and restore**: copy or share your passports, saved checks, recent checks, trip, Schengen stays and settings as plain text, then restore them on another phone from the clipboard. Nothing is uploaded anywhere. Language and the expiry-reminder switch are not part of the backup
 - **Update data**: download the latest visa data with one tap
 - **Check for updates**: finds a newer APK on GitHub and installs it after you confirm
 
@@ -131,6 +134,7 @@ python3 tool/build_data.py
 - ❌ No analytics, crash reporting or tracking
 - ❌ No account or sign-in
 - ✅ Your passport, saved trips and recent checks stay on your device
+- ✅ Backups are plain text that only you copy or share
 - 🌐 Internet is used **only** when you tap **Update data** or **Check for updates**
 
 Full policy: [PRIVACY.md](PRIVACY.md)
@@ -143,7 +147,7 @@ Stamply is an **Android** app and is distributed **only on GitHub**. It is not o
 
 ## Translations
 
-Texts live in `lib/l10n/app_<code>.arb`; `app_en.arb` is the template. To fix or add a translation, edit the matching `.arb` file and open a pull request. `flutter pub get` regenerates the Dart code.
+Texts live in `lib/l10n/app_<code>.arb`; `app_en.arb` is the template. To fix or add a translation, edit the matching `.arb` file and open a pull request. Run `flutter gen-l10n` (or `flutter pub get`) to regenerate the Dart code. Native-speaker review of the translations is very welcome.
 
 ## Build from source
 
@@ -153,7 +157,9 @@ Requirements: [Flutter](https://flutter.dev) (stable channel) and Java 17.
 git clone https://github.com/lumio-apps/stamply.git
 cd stamply
 flutter pub get
+flutter gen-l10n
 flutter analyze
+flutter test
 flutter build apk --release
 ```
 
@@ -170,8 +176,9 @@ lib/
 ├── main.dart               App entry and bottom navigation
 ├── l10n/                   20 translation files (.arb) and the language list
 ├── status_text.dart        Translated texts for statuses and rules
-├── theme.dart              Colors, fonts, light and dark themes
+├── theme.dart              Soft-design colors, fonts, light, dark and flat themes
 ├── passport_validity.dart  Passport expiry and the 6-month rule
+├── regions.dart            Africa, Americas, Asia, Europe, Oceania for the Explore filter
 ├── world_map.dart          Offline world map shapes
 ├── platform_integration.dart  Android widget and app shortcuts
 ├── schengen.dart           Schengen 90/180-day maths
@@ -180,8 +187,8 @@ lib/
 ├── update_service.dart     In-app updater (GitHub APK)
 ├── models.dart             Entry status, visa rule, trip
 ├── visa_repository.dart    Bundled data + optional download
-├── app_state.dart          Saved trips, recent checks, settings
-├── widgets.dart            Shared UI pieces and the logo
+├── app_state.dart          Saved trips, recent checks, settings, backup and restore
+├── widgets.dart            Soft-design pieces (raised and inset cards, buttons), animations, logo
 └── pages/                  Check, Explore, Saved, Settings, Result, Trip, Schengen, Ranking, Compare
 tool/build_data.py          Builds visa_data.json from Passport Index Data
 tool/build_map.py           Builds world_map.json from Natural Earth (run once, needs internet)
@@ -201,6 +208,9 @@ No. The internet is used only if you tap **Update data**.
 
 **Why are some small countries missing on the map?**
 Very small countries are too small to draw. Find them in **Explore**.
+
+**How do I move my data to a new phone?**
+Settings → Backup → **Copy backup** (or **Share backup**), save the text somewhere, then on the new phone copy it and tap **Restore from clipboard**.
 
 **Can I help translate?**
 Yes. See [Translations](#translations).
