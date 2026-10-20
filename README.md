@@ -82,6 +82,7 @@ No ads. No tracking. No account. Free and open source.
 ### 🎨 Look
 - **Soft design**: raised and pressed-in cards with soft light and shadow, a floating navigation bar, and small animations (a stamp pressed onto the result, a ring that fills). Works in light and dark, and respects the reduce-motion setting. A Reduce effects switch in Settings makes everything flat
 - **Regions and Surprise me**: filter the Explore list by Africa, Americas, Asia, Europe or Oceania, or let the app pick a random place you can visit without applying for a visa first
+- **Backup and restore**: copy or share everything you saved as plain text and restore it on another phone. Nothing is uploaded anywhere
 
 ### 🌐 20 languages
 - English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն

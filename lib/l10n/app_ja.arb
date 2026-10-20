@@ -205,5 +205,16 @@
   "regionAsia": "アジア",
   "regionEurope": "ヨーロッパ",
   "regionOceania": "オセアニア",
-  "surpriseMe": "おまかせ"
+  "surpriseMe": "おまかせ",
+  "backupTitle": "バックアップ",
+  "backupHint": "パスポート、保存したチェック、旅行、シェンゲン滞在をテキストとして保存し、別のスマホで復元できます。共有しない限り、何も送信されません。",
+  "backupCopy": "バックアップをコピー",
+  "backupShare": "バックアップを共有",
+  "backupRestore": "クリップボードから復元",
+  "backupCopied": "バックアップをコピーしました。安全な場所に保管してください。",
+  "backupRestoreTitle": "このバックアップを復元しますか？",
+  "backupRestoreBody": "現在のパスポート、保存したチェック、旅行、滞在はコピーしたバックアップに置き換わります。",
+  "backupReplace": "置き換える",
+  "backupRestored": "バックアップを復元しました。",
+  "backupInvalid": "クリップボードに有効な Stamply のバックアップがありません。"
 }

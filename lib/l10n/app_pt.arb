@@ -205,5 +205,16 @@
   "regionAsia": "Ásia",
   "regionEurope": "Europa",
   "regionOceania": "Oceania",
-  "surpriseMe": "Surpreenda-me"
+  "surpriseMe": "Surpreenda-me",
+  "backupTitle": "Cópia de segurança",
+  "backupHint": "Guarde seus passaportes, verificações salvas, viagem e estadias Schengen como texto e restaure em outro telefone. Nada é enviado a lugar nenhum a menos que você compartilhe.",
+  "backupCopy": "Copiar cópia de segurança",
+  "backupShare": "Compartilhar cópia de segurança",
+  "backupRestore": "Restaurar da área de transferência",
+  "backupCopied": "Cópia copiada. Guarde em um lugar seguro.",
+  "backupRestoreTitle": "Restaurar esta cópia?",
+  "backupRestoreBody": "Seus passaportes, verificações salvas, viagem e estadias atuais serão substituídos pela cópia copiada.",
+  "backupReplace": "Substituir",
+  "backupRestored": "Cópia restaurada.",
+  "backupInvalid": "A área de transferência não contém uma cópia de segurança válida do Stamply."
 }

@@ -205,5 +205,16 @@
   "regionAsia": "Asia",
   "regionEurope": "Eropa",
   "regionOceania": "Oseania",
-  "surpriseMe": "Kejutkan aku"
+  "surpriseMe": "Kejutkan aku",
+  "backupTitle": "Cadangan",
+  "backupHint": "Simpan paspor, pengecekan tersimpan, perjalanan, dan masa tinggal Schengen Anda sebagai teks, lalu pulihkan di ponsel lain. Tidak ada yang dikirim ke mana pun kecuali Anda membagikannya.",
+  "backupCopy": "Salin cadangan",
+  "backupShare": "Bagikan cadangan",
+  "backupRestore": "Pulihkan dari papan klip",
+  "backupCopied": "Cadangan disalin. Simpan di tempat aman.",
+  "backupRestoreTitle": "Pulihkan cadangan ini?",
+  "backupRestoreBody": "Paspor, pengecekan tersimpan, perjalanan, dan masa tinggal Anda saat ini akan diganti dengan cadangan yang disalin.",
+  "backupReplace": "Ganti",
+  "backupRestored": "Cadangan dipulihkan.",
+  "backupInvalid": "Papan klip tidak berisi cadangan Stamply yang valid."
 }

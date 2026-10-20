@@ -205,5 +205,16 @@
   "regionAsia": "Asia",
   "regionEurope": "Europa",
   "regionOceania": "Oceanía",
-  "surpriseMe": "Sorpréndeme"
+  "surpriseMe": "Sorpréndeme",
+  "backupTitle": "Copia de seguridad",
+  "backupHint": "Guarda tus pasaportes, comprobaciones guardadas, viaje y estancias Schengen como texto y restáuralos en otro teléfono. No se envía nada a ningún sitio a menos que lo compartas.",
+  "backupCopy": "Copiar copia de seguridad",
+  "backupShare": "Compartir copia de seguridad",
+  "backupRestore": "Restaurar desde el portapapeles",
+  "backupCopied": "Copia copiada. Guárdala en un lugar seguro.",
+  "backupRestoreTitle": "¿Restaurar esta copia?",
+  "backupRestoreBody": "Tus pasaportes, comprobaciones guardadas, viaje y estancias actuales se reemplazarán por la copia copiada.",
+  "backupReplace": "Reemplazar",
+  "backupRestored": "Copia restaurada.",
+  "backupInvalid": "El portapapeles no contiene una copia de seguridad válida de Stamply."
 }

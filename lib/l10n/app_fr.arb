@@ -205,5 +205,16 @@
   "regionAsia": "Asie",
   "regionEurope": "Europe",
   "regionOceania": "Océanie",
-  "surpriseMe": "Surprends-moi"
+  "surpriseMe": "Surprends-moi",
+  "backupTitle": "Sauvegarde",
+  "backupHint": "Enregistrez vos passeports, vérifications enregistrées, voyage et séjours Schengen sous forme de texte, puis restaurez-les sur un autre téléphone. Rien n’est envoyé nulle part sans que vous le partagiez.",
+  "backupCopy": "Copier la sauvegarde",
+  "backupShare": "Partager la sauvegarde",
+  "backupRestore": "Restaurer depuis le presse-papiers",
+  "backupCopied": "Sauvegarde copiée. Gardez-la en lieu sûr.",
+  "backupRestoreTitle": "Restaurer cette sauvegarde ?",
+  "backupRestoreBody": "Vos passeports, vérifications enregistrées, voyage et séjours actuels seront remplacés par la sauvegarde copiée.",
+  "backupReplace": "Remplacer",
+  "backupRestored": "Sauvegarde restaurée.",
+  "backupInvalid": "Le presse-papiers ne contient pas de sauvegarde Stamply valide."
 }

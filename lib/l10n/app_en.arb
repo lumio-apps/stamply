@@ -511,5 +511,16 @@
   "regionAsia": "Asia",
   "regionEurope": "Europe",
   "regionOceania": "Oceania",
-  "surpriseMe": "Surprise me"
+  "surpriseMe": "Surprise me",
+  "backupTitle": "Backup",
+  "backupHint": "Save your passports, saved checks, trip and Schengen stays as text, and restore them on another phone. Nothing is sent anywhere unless you share it.",
+  "backupCopy": "Copy backup",
+  "backupShare": "Share backup",
+  "backupRestore": "Restore from clipboard",
+  "backupCopied": "Backup copied. Keep it somewhere safe.",
+  "backupRestoreTitle": "Restore this backup?",
+  "backupRestoreBody": "Your current passports, saved checks, trip and stays will be replaced by the copied backup.",
+  "backupReplace": "Replace",
+  "backupRestored": "Backup restored.",
+  "backupInvalid": "The clipboard does not contain a valid Stamply backup."
 }

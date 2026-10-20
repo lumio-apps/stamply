@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flutter/material.dart';
@@ -281,6 +282,94 @@ class AppState extends ChangeNotifier {
     expiryReminder = on;
     _prefs.setBool(_kReminder, on);
     notifyListeners();
+  }
+
+  /// Everything the user saved, as one text (JSON) they can keep or move
+  /// to another phone. Language and onboarding are not part of it.
+  String exportBackup() => const JsonEncoder.withIndent('  ').convert({
+        'app': 'stamply',
+        'schema': 1,
+        if (passport != null) 'passport': passport,
+        if (passport2 != null) 'passport2': passport2,
+        if (passportExpiry != null) 'passport_expiry': _kExpiryText(passportExpiry!),
+        'saved': saved.map((t) => t.key).toList(),
+        'recent': recent.map((t) => t.key).toList(),
+        'seen': seen.entries.map((e) => '${e.key}|${e.value}').toList(),
+        'trip': trip,
+        'stays': stays.map((s) => s.key).toList(),
+        'theme': themeMode.name,
+        'reduce_effects': reduceEffects,
+      });
+
+  static String _kExpiryText(DateTime d) =>
+      '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+  /// Replaces the saved data with a backup made by [exportBackup].
+  /// Returns false (and changes nothing) if the text is not a valid backup.
+  bool importBackup(String text) {
+    final Object? json;
+    try {
+      json = jsonDecode(text.trim());
+    } on FormatException {
+      return false;
+    }
+    if (json is! Map<String, dynamic> || json['app'] != 'stamply' || json['schema'] != 1) {
+      return false;
+    }
+    final code = RegExp(r'^[A-Z]{2}$');
+    String? country(Object? v) => v is String && code.hasMatch(v) ? v : null;
+    List<String> strings(Object? v) => v is List ? v.whereType<String>().toList() : <String>[];
+
+    final newSaved = strings(json['saved']).map(TripCheck.fromKey).whereType<TripCheck>().toList();
+    final newRecent = strings(json['recent'])
+        .map(TripCheck.fromKey)
+        .whereType<TripCheck>()
+        .take(_maxRecent)
+        .toList();
+    final newStays = strings(json['stays']).map(SchengenStay.fromKey).whereType<SchengenStay>().toList();
+    final newTrip = strings(json['trip']).where(code.hasMatch).toList();
+    final newSeen = <String, String>{};
+    for (final line in strings(json['seen'])) {
+      final i = line.lastIndexOf('|');
+      if (i > 0 && i < line.length - 1) newSeen[line.substring(0, i)] = line.substring(i + 1);
+    }
+    final expiryText = json['passport_expiry'];
+    final newExpiry = expiryText is String ? DateTime.tryParse(expiryText) : null;
+
+    passport = country(json['passport']);
+    passport2 = country(json['passport2']);
+    if (passport == null || passport2 == passport) passport2 = null;
+    passportExpiry = passport == null ? null : newExpiry;
+    saved = newSaved;
+    recent = newRecent;
+    seen = {
+      for (final e in newSeen.entries)
+        if (newSaved.any((t) => t.key == e.key)) e.key: e.value,
+    };
+    trip = newTrip;
+    stays = newStays;
+    themeMode = switch (json['theme']) {
+      'light' => ThemeMode.light,
+      'dark' => ThemeMode.dark,
+      _ => ThemeMode.system,
+    };
+    reduceEffects = json['reduce_effects'] == true;
+    if (passport != null) onboarded = true;
+
+    void put(String key, String? v) => v == null ? _prefs.remove(key) : _prefs.setString(key, v);
+    put(_kPassport, passport);
+    put(_kPassport2, passport2);
+    put(_kExpiry, passportExpiry == null ? null : _kExpiryText(passportExpiry!));
+    _prefs.setStringList(_kSaved, saved.map((t) => t.key).toList());
+    _prefs.setStringList(_kRecent, recent.map((t) => t.key).toList());
+    _saveSeen();
+    _prefs.setStringList(_kTrip, trip);
+    _saveStays();
+    _prefs.setString(_kTheme, themeMode.name);
+    _prefs.setBool(_kReduceEffects, reduceEffects);
+    if (passport != null) _prefs.setBool(_kOnboarded, true);
+    notifyListeners();
+    return true;
   }
 
   void setReduceEffects(bool on) {

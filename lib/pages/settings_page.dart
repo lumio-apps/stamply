@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -6,6 +7,7 @@ import '../app_state.dart';
 import '../l10n/l10n.dart';
 import '../passport_validity.dart';
 import '../reminder_service.dart';
+import '../share.dart';
 import '../theme.dart';
 import '../update_service.dart';
 import '../visa_repository.dart';
@@ -23,6 +25,46 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool _updating = false;
   String _appVersion = '';
+
+  void _say(String text) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(text)));
+  }
+
+  Future<void> _copyBackup(AppState state) async {
+    final l = context.l10n;
+    await Clipboard.setData(ClipboardData(text: state.exportBackup()));
+    if (mounted) _say(l.backupCopied);
+  }
+
+  Future<void> _restoreBackup(AppState state) async {
+    final l = context.l10n;
+    final text = (await Clipboard.getData(Clipboard.kTextPlain))?.text ?? '';
+    if (!mounted) return;
+    // Check first, so a wrong clipboard never asks to replace anything.
+    final probe = text.contains('"app"') && text.contains('stamply');
+    if (!probe) {
+      _say(l.backupInvalid);
+      return;
+    }
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l.backupRestoreTitle),
+        content: Text(l.backupRestoreBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          ),
+          TextButton(onPressed: () => Navigator.pop(context, true), child: Text(l.backupReplace)),
+        ],
+      ),
+    );
+    if (ok != true || !mounted) return;
+    _say(state.importBackup(text) ? l.backupRestored : l.backupInvalid);
+  }
 
   @override
   void initState() {
@@ -229,6 +271,42 @@ class _SettingsPageState extends State<SettingsPage> {
                         )
                       : const Icon(Icons.download_outlined),
                   label: Text(_updating ? l.updating : l.updateData),
+                ),
+              ],
+            ),
+          ),
+          SectionLabel(l.backupTitle),
+          CardBox(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l.backupHint, style: TextStyle(fontSize: 14, height: 1.5, color: extra.muted)),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    Expanded(
+                      child: NeuButton.icon(
+                        onPressed: () => _copyBackup(state),
+                        icon: const Icon(Icons.copy_outlined),
+                        label: Text(l.backupCopy, textAlign: TextAlign.center),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: NeuButton.icon(
+                        onPressed: () => ShareService.shareText(state.exportBackup()),
+                        icon: const Icon(Icons.ios_share),
+                        label: Text(l.backupShare, textAlign: TextAlign.center),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                NeuButton.icon(
+                  onPressed: () => _restoreBackup(state),
+                  icon: const Icon(Icons.restore),
+                  label: Text(l.backupRestore),
                 ),
               ],
             ),

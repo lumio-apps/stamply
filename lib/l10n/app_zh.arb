@@ -205,5 +205,16 @@
   "regionAsia": "亚洲",
   "regionEurope": "欧洲",
   "regionOceania": "大洋洲",
-  "surpriseMe": "给我惊喜"
+  "surpriseMe": "给我惊喜",
+  "backupTitle": "备份",
+  "backupHint": "将护照、已保存的查询、行程和申根停留记录保存为文本，并可在另一部手机上恢复。除非你主动分享，否则不会发送到任何地方。",
+  "backupCopy": "复制备份",
+  "backupShare": "分享备份",
+  "backupRestore": "从剪贴板恢复",
+  "backupCopied": "备份已复制。请妥善保管。",
+  "backupRestoreTitle": "恢复此备份？",
+  "backupRestoreBody": "当前的护照、已保存的查询、行程和停留记录将被复制的备份替换。",
+  "backupReplace": "替换",
+  "backupRestored": "备份已恢复。",
+  "backupInvalid": "剪贴板中没有有效的 Stamply 备份。"
 }
