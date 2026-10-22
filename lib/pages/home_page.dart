@@ -204,9 +204,8 @@ class _CountryRow extends StatelessWidget {
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: Neu.raised(extra),
+                        color: extra.surface,
                         shape: BoxShape.circle,
-                        boxShadow: Neu.shadows(extra, depth: 0.5),
                       ),
                       child: Icon(Icons.add, color: extra.muted),
                     )
@@ -274,8 +273,8 @@ class _SwapButtonState extends State<_SwapButton> {
             },
       child: AnimatedRotation(
         turns: _turns,
-        duration: reduce ? Duration.zero : const Duration(milliseconds: 420),
-        curve: Curves.easeInOutBack,
+        duration: reduce ? Duration.zero : const Duration(milliseconds: 240),
+        curve: Curves.easeInOut,
         child: const Icon(Icons.swap_vert, size: 24),
       ),
     );

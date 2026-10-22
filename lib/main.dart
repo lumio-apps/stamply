@@ -83,8 +83,8 @@ class StamplyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             themeMode: state.themeMode,
-            theme: buildTheme(Brightness.light, flat: state.reduceEffects),
-            darkTheme: buildTheme(Brightness.dark, flat: state.reduceEffects),
+            theme: buildTheme(Brightness.light, reduceMotion: state.reduceEffects),
+            darkTheme: buildTheme(Brightness.dark, reduceMotion: state.reduceEffects),
             // On tablets and foldables keep the phone-style layout centered.
             builder: (context, child) => AppBackground(
               child: Center(
@@ -154,28 +154,22 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
     final l = context.l10n;
     return Scaffold(
       body: IndexedStack(index: _index, children: _pages),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        minimum: const EdgeInsets.only(bottom: 16),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
-          child: _NavBar(
-            index: _index,
-            onChanged: (i) => setState(() => _index = i),
-            items: [
-              (Icons.task_alt, l.navCheck),
-              (Icons.travel_explore, l.navExplore),
-              (Icons.bookmark_border, l.navSaved),
-              (Icons.tune, l.navSettings),
-            ],
-          ),
-        ),
+      bottomNavigationBar: _NavBar(
+        index: _index,
+        onChanged: (i) => setState(() => _index = i),
+        items: [
+          (Icons.task_alt, l.navCheck),
+          (Icons.travel_explore, l.navExplore),
+          (Icons.bookmark_border, l.navSaved),
+          (Icons.tune, l.navSettings),
+        ],
       ),
     );
   }
 }
 
-/// Floating soft bottom bar. The open tab sinks into the bar.
+/// Flat bottom bar: icon and label for each tab. The open tab is marked
+/// with the accent color and a line on top.
 class _NavBar extends StatelessWidget {
   const _NavBar({required this.index, required this.onChanged, required this.items});
 
@@ -187,72 +181,63 @@ class _NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
     final accent = Theme.of(context).colorScheme.primary;
-    final reduce = motionOff(context);
-    final duration = reduce ? Duration.zero : const Duration(milliseconds: 320);
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Neu.raised(extra),
-        borderRadius: BorderRadius.circular(36),
-        boxShadow: Neu.shadows(extra),
+        color: extra.surface,
+        border: Border(top: BorderSide(color: extra.divider)),
       ),
-      child: Material(
-        type: MaterialType.transparency,
+      child: SafeArea(
+        top: false,
         child: SizedBox(
-        height: 72,
-        child: Row(
-          children: [
-            for (final (i, item) in items.indexed)
-              Expanded(
-                child: Semantics(
-                  button: true,
-                  selected: i == index,
-                  label: item.$2,
-                  child: Tooltip(
-                    message: item.$2,
-                    child: InkResponse(
-                      onTap: () => onChanged(i),
-                      radius: 34,
-                      child: Center(
-                        child: SizedBox(
-                          width: 54,
-                          height: 54,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              AnimatedScale(
-                                scale: i == index ? 1 : 0.4,
-                                duration: duration,
-                                curve: Curves.easeOutBack,
-                                child: AnimatedOpacity(
-                                  opacity: i == index ? 1 : 0,
-                                  duration: duration,
-                                  child: CustomPaint(
-                                    size: const Size.square(54),
-                                    painter: InsetPainter(colors: extra, radius: 27, depth: 0.8),
+          height: 68,
+          child: Row(
+            children: [
+              for (final (i, item) in items.indexed)
+                Expanded(
+                  child: Semantics(
+                    button: true,
+                    selected: i == index,
+                    label: item.$2,
+                    child: ExcludeSemantics(
+                      child: InkWell(
+                        onTap: () => onChanged(i),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 3,
+                              color: i == index ? accent : Colors.transparent,
+                            ),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(item.$1, size: 24, color: i == index ? accent : extra.muted),
+                                  const SizedBox(height: 3),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                                    child: Text(
+                                      item.$2,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                        color: i == index ? accent : extra.muted,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                              AnimatedScale(
-                                scale: i == index ? 1.08 : 1,
-                                duration: duration,
-                                curve: Curves.easeOutBack,
-                                child: Icon(
-                                  item.$1,
-                                  size: 26,
-                                  color: i == index ? accent : extra.muted,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

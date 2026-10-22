@@ -135,7 +135,7 @@ class _ExplorePageState extends State<ExplorePage> {
                 Rise(
                   delay: const Duration(milliseconds: 90),
                   child: CardBox(
-                    radius: 30,
+                    radius: 16,
                     child: InkWell(
                       onTap: choosePassport,
                       child: Padding(
@@ -244,7 +244,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     filled: true,
                     fillColor: extra.field,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(22),
+                      borderRadius: BorderRadius.circular(14),
                       borderSide: BorderSide.none,
                     ),
                   ),
@@ -332,6 +332,7 @@ class _ExplorePageState extends State<ExplorePage> {
 }
 
 /// Round meter: how much of the world this passport reaches without a visa.
+/// Flat and static, so it is cheap to draw.
 class _PowerRing extends StatelessWidget {
   const _PowerRing({required this.score, required this.total});
 
@@ -342,33 +343,24 @@ class _PowerRing extends StatelessWidget {
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
     final fraction = total == 0 ? 0.0 : (score / total).clamp(0.0, 1.0);
-    final reduce = motionOff(context);
     return SizedBox(
       width: 96,
       height: 96,
       child: CustomPaint(
-        painter: InsetPainter(colors: extra, radius: 48, depth: 0.8),
-        child: TweenAnimationBuilder<double>(
-          tween: Tween(begin: 0, end: fraction),
-          duration: reduce ? Duration.zero : const Duration(milliseconds: 1500),
-          curve: Curves.easeOutCubic,
-          builder: (context, value, _) => CustomPaint(
-            painter: _RingPainter(
-              fraction: value,
-              track: extra.shadowDark.withValues(alpha: 0.5),
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? const Color(0xFF5EE0A8)
-                  : const Color(0xFF1F9D6B),
-            ),
-            child: Center(
-              child: Text(
-                '$score',
-                style: const TextStyle(
-                  fontFamily: Brand.displayFont,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+        painter: _RingPainter(
+          fraction: fraction,
+          track: extra.divider,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF5EE0A8)
+              : const Color(0xFF1F9D6B),
+        ),
+        child: Center(
+          child: Text(
+            '$score',
+            style: const TextStyle(
+              fontFamily: Brand.displayFont,
+              fontSize: 26,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),

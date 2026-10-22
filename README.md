@@ -47,7 +47,7 @@ No ads. No tracking. No account. Free and open source.
   <img src="screenshots/settings.jpg" alt="Settings: update data, privacy and licenses" width="150">
 </p>
 
-<p align="center"><sub>Screenshots may show an older look; the app now uses the soft design.</sub></p>
+<p align="center"><sub>Screenshots may show an older look; the app now uses the Lite design.</sub></p>
 
 ## Features
 
@@ -80,9 +80,9 @@ No ads. No tracking. No account. Free and open source.
 - Share the whole trip as text
 
 ### 🎨 Look
-- **Soft design**: raised and pressed-in cards with soft light and shadow, a floating navigation bar, and small animations (a stamp pressed onto the result, a ring that fills)
+- **Lite design**: flat, light screens with thin borders, no heavy shadows, and a bottom bar with icons and labels. It is cheap to draw, so the app feels fast even on older phones
 - Works in **light and dark**, and respects the phone's reduce-motion setting
-- **Reduce effects** switch in Settings: flat panels, no soft shadows or animations. Can feel smoother on older phones
+- **Reduce effects** switch in Settings: turns off the small animations. Can feel smoother on older phones
 
 ### 🌐 20 languages
 - English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն
@@ -176,7 +176,7 @@ lib/
 ├── main.dart               App entry and bottom navigation
 ├── l10n/                   20 translation files (.arb) and the language list
 ├── status_text.dart        Translated texts for statuses and rules
-├── theme.dart              Soft-design colors, fonts, light, dark and flat themes
+├── theme.dart              Lite design colors, fonts, light and dark themes
 ├── passport_validity.dart  Passport expiry and the 6-month rule
 ├── regions.dart            Africa, Americas, Asia, Europe, Oceania for the Explore filter
 ├── world_map.dart          Offline world map shapes
@@ -188,7 +188,7 @@ lib/
 ├── models.dart             Entry status, visa rule, trip
 ├── visa_repository.dart    Bundled data + optional download
 ├── app_state.dart          Saved trips, recent checks, settings, backup and restore
-├── widgets.dart            Soft-design pieces (raised and inset cards, buttons), animations, logo
+├── widgets.dart            Lite pieces (flat cards, buttons, status labels), fade-in, logo
 └── pages/                  Check, Explore, Saved, Settings, Result, Trip, Schengen, Ranking, Compare
 tool/build_data.py          Builds visa_data.json from Passport Index Data
 tool/build_map.py           Builds world_map.json from Natural Earth (run once, needs internet)

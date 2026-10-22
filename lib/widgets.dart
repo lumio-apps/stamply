@@ -16,7 +16,7 @@ String flagEmoji(String code) {
   return String.fromCharCodes([0x1F1E6 + a - 0x41, 0x1F1E6 + b - 0x41]);
 }
 
-/// Round raised badge with the country flag (or the code if no flag exists).
+/// Round badge with the country flag (or the code if no flag exists).
 class CountryBadge extends StatelessWidget {
   const CountryBadge({super.key, required this.code, this.size = 44});
 
@@ -32,9 +32,8 @@ class CountryBadge extends StatelessWidget {
       height: size,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Neu.raised(extra),
+        color: extra.field,
         shape: BoxShape.circle,
-        boxShadow: Neu.shadows(extra, depth: 0.5),
       ),
       child: flag.isEmpty
           ? Text(
@@ -72,7 +71,7 @@ class ChangedBadge extends StatelessWidget {
   }
 }
 
-/// Small raised label for a status, e.g. "Visa-free · 60 d".
+/// Small label for a status: a colored dot and text, e.g. "Visa-free · 60 d".
 class StatusPill extends StatelessWidget {
   const StatusPill({super.key, required this.rule});
 
@@ -80,23 +79,25 @@ class StatusPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final b = Theme.of(context).brightness;
-    final extra = StamplyColors.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Neu.raised(extra),
-        borderRadius: BorderRadius.circular(999),
-        boxShadow: Neu.shadows(extra, depth: 0.45),
-      ),
-      child: Text(
-        rule.shortLabel(context.l10n),
-        style: TextStyle(
-          color: rule.status.foreground(b),
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
+    final color = rule.status.foreground(Theme.of(context).brightness);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
-      ),
+        const SizedBox(width: 7),
+        Flexible(
+          child: Text(
+            rule.shortLabel(context.l10n),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w600),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -132,89 +133,29 @@ class SectionLabel extends StatelessWidget {
   }
 }
 
-/// Soft-UI shadows: a light one toward the top left, a dark one toward the
-/// bottom right. [depth] 1 is a big card, 0.5 a small chip.
+/// Helpers for the flat Lite look.
 class Neu {
-  /// Color of a raised surface: the background color, or a flat panel color.
-  static Color raised(StamplyColors c) => c.flat ? c.field : c.base;
+  /// Color of a card or button surface.
+  static Color raised(StamplyColors c) => c.surface;
 
-  static List<BoxShadow> shadows(StamplyColors c, {double depth = 1}) => c.flat ? const [] : [
-        BoxShadow(
-          color: c.shadowDark,
-          offset: Offset(9 * depth, 9 * depth),
-          blurRadius: 20 * depth,
-        ),
-        BoxShadow(
-          color: c.shadowLight,
-          offset: Offset(-9 * depth, -9 * depth),
-          blurRadius: 20 * depth,
-        ),
-      ];
+  /// The Lite look has no shadows; kept so older call sites still compile.
+  static List<BoxShadow> shadows(StamplyColors c, {double depth = 1}) => const [];
 }
 
 /// True when animations should not run: the phone asks for reduced motion or
 /// the user turned on "Reduce effects".
 bool motionOff(BuildContext context) =>
-    MediaQuery.of(context).disableAnimations || StamplyColors.of(context).flat;
+    MediaQuery.of(context).disableAnimations || StamplyColors.of(context).reduceMotion;
 
-/// A card pressed into the surface (the opposite of a raised card).
-class InsetPainter extends CustomPainter {
-  InsetPainter({
-    required this.colors,
-    required this.radius,
-    this.depth = 1,
-  });
-
-  final StamplyColors colors;
-  final double radius;
-  final double depth;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rrect = RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(radius));
-    if (colors.flat) {
-      canvas.drawRRect(
-        rrect,
-        Paint()..color = Color.alphaBlend(colors.shadowDark.withValues(alpha: 0.45), colors.base),
-      );
-      return;
-    }
-    canvas.drawRRect(rrect, Paint()..color = colors.base);
-    canvas.save();
-    canvas.clipRRect(rrect);
-    final hole = Path()..addRRect(rrect);
-    final outer = Path()..addRect(rrect.outerRect.inflate(80));
-    final offset = 6.0 * depth;
-    final sigma = 6.0 * depth;
-    canvas.drawPath(
-      Path.combine(PathOperation.difference, outer, hole.shift(Offset(offset, offset))),
-      Paint()
-        ..color = colors.shadowDark
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, sigma),
-    );
-    canvas.drawPath(
-      Path.combine(PathOperation.difference, outer, hole.shift(Offset(-offset, -offset))),
-      Paint()
-        ..color = colors.shadowLight
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, sigma),
-    );
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(InsetPainter old) =>
-      old.colors != colors || old.radius != radius || old.depth != depth;
-}
-
-/// Soft rounded card used for grouped rows. Raised by default; with
-/// [inset] it looks pressed into the surface.
+/// Flat card with a thin border. With [inset] it uses the field color, which
+/// is used for rows inside a screen.
 class CardBox extends StatelessWidget {
   const CardBox({
     super.key,
     required this.child,
     this.padding = EdgeInsets.zero,
     this.inset = false,
-    this.radius = 26,
+    this.radius = 16,
   });
 
   final Widget child;
@@ -226,31 +167,24 @@ class CardBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final extra = StamplyColors.of(context);
     final shape = BorderRadius.circular(radius);
-    final content = ClipRRect(
-      borderRadius: shape,
-      child: Material(
-        type: MaterialType.transparency,
-        child: Padding(padding: padding, child: child),
-      ),
-    );
-    if (inset) {
-      return CustomPaint(
-        painter: InsetPainter(colors: extra, radius: radius),
-        child: content,
-      );
-    }
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Neu.raised(extra),
+        color: inset ? extra.field : extra.surface,
         borderRadius: shape,
-        boxShadow: Neu.shadows(extra),
+        border: Border.all(color: extra.divider),
       ),
-      child: content,
+      child: ClipRRect(
+        borderRadius: shape,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Padding(padding: padding, child: child),
+        ),
+      ),
     );
   }
 }
 
-/// A round or pill button that sinks in when pressed.
+/// A flat pill or round button with a thin border. It darkens when pressed.
 class NeuButton extends StatefulWidget {
   const NeuButton({
     super.key,
@@ -301,35 +235,26 @@ class _NeuButtonState extends State<NeuButton> {
     final extra = StamplyColors.of(context);
     final enabled = widget.onPressed != null;
     final r = BorderRadius.circular(widget.radius ?? widget.height / 2);
-    final reduce = motionOff(context);
     final button = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTapDown: enabled ? (_) => setState(() => _down = true) : null,
       onTapUp: enabled ? (_) => setState(() => _down = false) : null,
       onTapCancel: () => setState(() => _down = false),
       onTap: widget.onPressed,
-      child: AnimatedScale(
-        scale: _down ? 0.97 : 1,
-        duration: reduce ? Duration.zero : const Duration(milliseconds: 160),
-        curve: Curves.easeOutBack,
-        child: AnimatedContainer(
-          duration: reduce ? Duration.zero : const Duration(milliseconds: 160),
-          width: widget.width,
-          height: widget.height,
-          padding: widget.padding,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Neu.raised(extra),
-            borderRadius: r,
-            boxShadow: _down
-                ? Neu.shadows(extra, depth: 0.15)
-                : Neu.shadows(extra, depth: 0.5),
-          ),
-          child: DefaultTextStyle.merge(
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-            textAlign: TextAlign.center,
-            child: Opacity(opacity: enabled ? 1 : 0.5, child: widget.child),
-          ),
+      child: Container(
+        width: widget.width,
+        height: widget.height,
+        padding: widget.padding,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: _down ? extra.field : extra.surface,
+          borderRadius: r,
+          border: Border.all(color: extra.outline),
+        ),
+        child: DefaultTextStyle.merge(
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          textAlign: TextAlign.center,
+          child: Opacity(opacity: enabled ? 1 : 0.5, child: widget.child),
         ),
       ),
     );
@@ -341,8 +266,8 @@ class _NeuButtonState extends State<NeuButton> {
   }
 }
 
-/// Fades and slides its child in once, [delay] after the screen appears.
-/// Does nothing when the phone asks for reduced motion.
+/// Fades its child in once when the screen appears. Short and cheap; does
+/// nothing when the phone asks for reduced motion or "Reduce effects" is on.
 class Rise extends StatefulWidget {
   const Rise({super.key, required this.child, this.delay = Duration.zero});
 
@@ -357,20 +282,19 @@ class _RiseState extends State<Rise> with SingleTickerProviderStateMixin {
   late final AnimationController _c;
   late final Animation<double> _t;
 
-  static const _length = Duration(milliseconds: 650);
+  static const _length = Duration(milliseconds: 260);
 
   @override
   void initState() {
     super.initState();
-    final total = widget.delay + _length;
+    final delay = widget.delay > const Duration(milliseconds: 240)
+        ? const Duration(milliseconds: 240)
+        : widget.delay;
+    final total = delay + _length;
     _c = AnimationController(vsync: this, duration: total);
     _t = CurvedAnimation(
       parent: _c,
-      curve: Interval(
-        widget.delay.inMilliseconds / total.inMilliseconds,
-        1,
-        curve: Curves.easeOutCubic,
-      ),
+      curve: Interval(delay.inMilliseconds / total.inMilliseconds, 1, curve: Curves.easeOut),
     );
     _c.forward();
   }
@@ -384,14 +308,7 @@ class _RiseState extends State<Rise> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     if (motionOff(context)) return widget.child;
-    return AnimatedBuilder(
-      animation: _t,
-      child: widget.child,
-      builder: (context, child) => Opacity(
-        opacity: _t.value,
-        child: Transform.translate(offset: Offset(0, 18 * (1 - _t.value)), child: child),
-      ),
-    );
+    return FadeTransition(opacity: _t, child: widget.child);
   }
 }
 

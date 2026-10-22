@@ -7,10 +7,10 @@ class Brand {
   static const stamp = Color(0xFFC2441E);
   static const stampDark = Color(0xFFE2683F);
 
-  /// Text color on the soft light surface.
-  static const softInk = Color(0xFF26324A);
+  /// Text color on the light surface.
+  static const softInk = Color(0xFF1B2A4A);
 
-  /// Text color on the soft dark surface.
+  /// Text color on the dark surface.
   static const softPaper = Color(0xFFE8ECF4);
 
   static const displayFont = 'SpaceGrotesk';
@@ -19,59 +19,61 @@ class Brand {
 
 /// Extra colors the Material scheme does not cover.
 ///
-/// The look is "soft UI" (neumorphism): every surface has the same color as
-/// the background and is shaped only by a light and a dark shadow.
+/// The look is "Lite": flat surfaces with a thin border, no shadows, so every
+/// screen is cheap to draw even on older phones.
 class StamplyColors extends ThemeExtension<StamplyColors> {
   const StamplyColors({
     required this.base,
-    required this.shadowLight,
-    required this.shadowDark,
-    required this.muted,
+    required this.surface,
     required this.divider,
+    required this.outline,
+    required this.muted,
     required this.field,
     required this.hero,
     required this.onHero,
-    this.flat = false,
+    this.reduceMotion = false,
   });
 
-  /// Background and surface color (they are the same on purpose).
+  /// Screen background.
   final Color base;
 
-  /// Shadow toward the light source (top left).
-  final Color shadowLight;
+  /// Cards, rows and the bottom bar.
+  final Color surface;
 
-  /// Shadow away from the light source (bottom right).
-  final Color shadowDark;
-
-  final Color muted;
+  /// Thin lines between rows and around cards.
   final Color divider;
 
-  /// Fill of text fields (a little darker than [base]).
+  /// Stronger border for buttons and chips.
+  final Color outline;
+
+  final Color muted;
+
+  /// Fill of text fields, avatars and pressed rows.
   final Color field;
   final Color hero;
   final Color onHero;
 
-  /// "Reduce effects": flat panels, no soft shadows, no animations.
-  final bool flat;
+  /// "Reduce effects": no animations.
+  final bool reduceMotion;
 
   static const light = StamplyColors(
-    base: Color(0xFFE4E9F1),
-    shadowLight: Color(0xFFFFFFFF),
-    shadowDark: Color(0xFFBAC3D1),
-    muted: Color(0xFF59647D),
-    divider: Color(0x2226324A),
-    field: Color(0xFFD9DFEA),
+    base: Color(0xFFF5F7FA),
+    surface: Color(0xFFFFFFFF),
+    divider: Color(0xFFDCE2EC),
+    outline: Color(0xFFC5CDDA),
+    muted: Color(0xFF566176),
+    field: Color(0xFFEDF0F5),
     hero: Brand.ink,
     onHero: Brand.paper,
   );
 
   static const dark = StamplyColors(
-    base: Color(0xFF262B36),
-    shadowLight: Color(0xFF323948),
-    shadowDark: Color(0xFF191D25),
-    muted: Color(0xFFB4BDD0),
-    divider: Color(0x2AFFFFFF),
-    field: Color(0xFF20242E),
+    base: Color(0xFF14181F),
+    surface: Color(0xFF1D222B),
+    divider: Color(0xFF2E3541),
+    outline: Color(0xFF3F4857),
+    muted: Color(0xFFA9B3C6),
+    field: Color(0xFF262C37),
     hero: Color(0xFF22355C),
     onHero: Brand.paper,
   );
@@ -82,25 +84,25 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
   @override
   StamplyColors copyWith({
     Color? base,
-    Color? shadowLight,
-    Color? shadowDark,
-    Color? muted,
+    Color? surface,
     Color? divider,
+    Color? outline,
+    Color? muted,
     Color? field,
     Color? hero,
     Color? onHero,
-    bool? flat,
+    bool? reduceMotion,
   }) {
     return StamplyColors(
       base: base ?? this.base,
-      shadowLight: shadowLight ?? this.shadowLight,
-      shadowDark: shadowDark ?? this.shadowDark,
-      muted: muted ?? this.muted,
+      surface: surface ?? this.surface,
       divider: divider ?? this.divider,
+      outline: outline ?? this.outline,
+      muted: muted ?? this.muted,
       field: field ?? this.field,
       hero: hero ?? this.hero,
       onHero: onHero ?? this.onHero,
-      flat: flat ?? this.flat,
+      reduceMotion: reduceMotion ?? this.reduceMotion,
     );
   }
 
@@ -109,21 +111,21 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
     if (other is! StamplyColors) return this;
     return StamplyColors(
       base: Color.lerp(base, other.base, t)!,
-      shadowLight: Color.lerp(shadowLight, other.shadowLight, t)!,
-      shadowDark: Color.lerp(shadowDark, other.shadowDark, t)!,
-      muted: Color.lerp(muted, other.muted, t)!,
+      surface: Color.lerp(surface, other.surface, t)!,
       divider: Color.lerp(divider, other.divider, t)!,
+      outline: Color.lerp(outline, other.outline, t)!,
+      muted: Color.lerp(muted, other.muted, t)!,
       field: Color.lerp(field, other.field, t)!,
       hero: Color.lerp(hero, other.hero, t)!,
       onHero: Color.lerp(onHero, other.onHero, t)!,
-      flat: t < 0.5 ? flat : other.flat,
+      reduceMotion: t < 0.5 ? reduceMotion : other.reduceMotion,
     );
   }
 }
 
-ThemeData buildTheme(Brightness brightness, {bool flat = false}) {
+ThemeData buildTheme(Brightness brightness, {bool reduceMotion = false}) {
   final dark = brightness == Brightness.dark;
-  final extra = (dark ? StamplyColors.dark : StamplyColors.light).copyWith(flat: flat);
+  final extra = (dark ? StamplyColors.dark : StamplyColors.light).copyWith(reduceMotion: reduceMotion);
   final ink = dark ? Brand.softPaper : Brand.softInk;
   final accent = dark ? Brand.stampDark : Brand.stamp;
 
@@ -147,6 +149,7 @@ ThemeData buildTheme(Brightness brightness, {bool flat = false}) {
     scaffoldBackgroundColor: extra.base,
     canvasColor: extra.base,
     fontFamily: Brand.bodyFont,
+    splashFactory: NoSplash.splashFactory,
     extensions: [extra],
   );
 
@@ -184,23 +187,26 @@ ThemeData buildTheme(Brightness brightness, {bool flat = false}) {
     ),
     dividerTheme: DividerThemeData(color: extra.divider, space: 1, thickness: 1),
     dialogTheme: DialogThemeData(
-      backgroundColor: extra.base,
+      backgroundColor: extra.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
     bottomSheetTheme: BottomSheetThemeData(
-      backgroundColor: extra.base,
+      backgroundColor: extra.surface,
       surfaceTintColor: Colors.transparent,
     ),
+    listTileTheme: ListTileThemeData(
+      tileColor: Colors.transparent,
+      iconColor: extra.muted,
+    ),
     chipTheme: ChipThemeData(
-      backgroundColor: extra.base,
-      selectedColor: extra.field,
-      disabledColor: extra.base,
-      elevation: flat ? 0 : 4,
-      pressElevation: 1,
-      shadowColor: extra.shadowDark,
+      backgroundColor: extra.surface,
+      selectedColor: accent.withValues(alpha: dark ? 0.22 : 0.12),
+      disabledColor: extra.surface,
+      elevation: 0,
+      pressElevation: 0,
       surfaceTintColor: Colors.transparent,
-      side: BorderSide.none,
+      side: BorderSide(color: extra.outline),
       showCheckmark: false,
       shape: const StadiumBorder(),
       labelStyle: TextStyle(fontFamily: Brand.bodyFont, fontWeight: FontWeight.w600, color: ink),
@@ -208,9 +214,8 @@ ThemeData buildTheme(Brightness brightness, {bool flat = false}) {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        minimumSize: const Size.fromHeight(58),
-        elevation: flat ? 0 : 8,
-        shadowColor: accent.withValues(alpha: 0.55),
+        minimumSize: const Size.fromHeight(56),
+        elevation: 0,
         shape: const StadiumBorder(),
         textStyle: const TextStyle(
           fontFamily: Brand.displayFont,
@@ -224,10 +229,9 @@ ThemeData buildTheme(Brightness brightness, {bool flat = false}) {
       style: OutlinedButton.styleFrom(
         minimumSize: const Size.fromHeight(52),
         foregroundColor: ink,
-        backgroundColor: extra.base,
-        elevation: flat ? 0 : 4,
-        shadowColor: extra.shadowDark,
-        side: flat ? BorderSide(color: extra.divider) : BorderSide.none,
+        backgroundColor: extra.surface,
+        elevation: 0,
+        side: BorderSide(color: extra.outline),
         shape: const StadiumBorder(),
         textStyle: const TextStyle(
           fontFamily: Brand.bodyFont,
@@ -238,9 +242,9 @@ ThemeData buildTheme(Brightness brightness, {bool flat = false}) {
     ),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      backgroundColor: dark ? extra.shadowLight : Brand.softInk,
-      contentTextStyle: const TextStyle(color: Colors.white, fontFamily: Brand.bodyFont),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: dark ? extra.field : Brand.softInk,
+      contentTextStyle: TextStyle(color: dark ? Brand.softPaper : Colors.white, fontFamily: Brand.bodyFont),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
     ),
   );
 }

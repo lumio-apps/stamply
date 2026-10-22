@@ -368,7 +368,8 @@ class _Hero extends StatelessWidget {
   }
 }
 
-/// Round passport stamp that is pressed onto the page, then floats and glows.
+/// Round passport stamp: a flat ring in the status color, tilted a little.
+/// It fades in once (unless animations are off).
 class _Stamp extends StatefulWidget {
   const _Stamp({required this.status});
 
@@ -378,16 +379,14 @@ class _Stamp extends StatefulWidget {
   State<_Stamp> createState() => _StampState();
 }
 
-class _StampState extends State<_Stamp> with TickerProviderStateMixin {
+class _StampState extends State<_Stamp> with SingleTickerProviderStateMixin {
   late final AnimationController _in;
-  late final AnimationController _idle;
   bool _started = false;
 
   @override
   void initState() {
     super.initState();
-    _in = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
-    _idle = AnimationController(vsync: this, duration: const Duration(milliseconds: 2600));
+    _in = AnimationController(vsync: this, duration: const Duration(milliseconds: 380));
   }
 
   @override
@@ -398,97 +397,67 @@ class _StampState extends State<_Stamp> with TickerProviderStateMixin {
     if (motionOff(context)) {
       _in.value = 1;
     } else {
-      _in.forward().whenComplete(() {
-        if (mounted) _idle.repeat(reverse: true);
-      });
+      _in.forward();
     }
   }
 
   @override
   void dispose() {
     _in.dispose();
-    _idle.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final extra = StamplyColors.of(context);
     final status = widget.status;
     final color = status.foreground(Theme.of(context).brightness);
-    final slam = CurvedAnimation(parent: _in, curve: Curves.easeOutBack);
-    final fade = CurvedAnimation(parent: _in, curve: const Interval(0, 0.35));
-    final float = CurvedAnimation(parent: _idle, curve: Curves.easeInOut);
+    final pop = CurvedAnimation(parent: _in, curve: Curves.easeOutBack);
     return Semantics(
       label: context.l10n.stampSemantics(status.label(context.l10n)),
       child: ExcludeSemantics(
         child: AnimatedBuilder(
-          animation: Listenable.merge([_in, _idle]),
-          builder: (context, _) {
-            final scale = 1.9 - 0.9 * slam.value;
-            final angle = (-22 + 16 * slam.value) * math.pi / 180;
-            return Opacity(
-              opacity: fade.value.clamp(0.0, 1.0),
-              child: Transform.translate(
-                offset: Offset(0, -6 * float.value),
-                child: Transform.rotate(
-                  angle: angle,
-                  child: Transform.scale(
-                    scale: scale,
-                    child: Container(
-                      width: 188,
-                      height: 188,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Neu.raised(extra),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          ...Neu.shadows(extra),
-                          if (!extra.flat)
-                            BoxShadow(
-                              color: color.withValues(alpha: 0.10 + 0.20 * float.value),
-                              blurRadius: 40,
-                              spreadRadius: 4,
-                            ),
-                        ],
-                      ),
-                      child: SizedBox(
-                        width: 152,
-                        height: 152,
-                        child: CustomPaint(
-                          painter: InsetPainter(colors: extra, radius: 76),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(status.icon, color: color, size: 40),
-                              const SizedBox(height: 4),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 18),
-                                child: FittedBox(
-                                  child: Text(
-                                    status.stampText(context.l10n),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: Brand.displayFont,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 24,
-                                      height: 1.05,
-                                      letterSpacing: 1.2,
-                                      color: color,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+          animation: _in,
+          builder: (context, child) => Opacity(
+            opacity: _in.value.clamp(0.0, 1.0),
+            child: Transform.scale(scale: 1.25 - 0.25 * pop.value, child: child),
+          ),
+          child: Transform.rotate(
+            angle: -6 * math.pi / 180,
+            child: Container(
+              width: 184,
+              height: 184,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.10),
+                shape: BoxShape.circle,
+                border: Border.all(color: color, width: 4),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(status.icon, color: color, size: 40),
+                  const SizedBox(height: 4),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: FittedBox(
+                      child: Text(
+                        status.stampText(context.l10n),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: Brand.displayFont,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24,
+                          height: 1.05,
+                          letterSpacing: 1.2,
+                          color: color,
                         ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );

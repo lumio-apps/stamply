@@ -199,7 +199,7 @@
   "mapSmallNote": "非常小的国家没有绘制，请在“探索”中查找。",
   "mapUnavailable": "此版本暂无地图。",
   "reduceEffects": "减少效果",
-  "reduceEffectsHint": "扁平面板,无柔和阴影和动画。在较旧的手机上可能更流畅。",
+  "reduceEffectsHint": "无动画。在较旧的手机上可能更流畅。",
   "regionAfrica": "非洲",
   "regionAmericas": "美洲",
   "regionAsia": "亚洲",

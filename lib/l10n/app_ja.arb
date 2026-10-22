@@ -199,7 +199,7 @@
   "mapSmallNote": "ごく小さな国は描かれていません。「探索」で探してください。",
   "mapUnavailable": "このバージョンでは地図を利用できません。",
   "reduceEffects": "エフェクトを減らす",
-  "reduceEffectsHint": "フラットなパネルで、やわらかい影やアニメーションを使いません。古いスマートフォンで動作が軽くなる場合があります。",
+  "reduceEffectsHint": "アニメーションなし。古いスマホでより滑らかに動くことがあります。",
   "regionAfrica": "アフリカ",
   "regionAmericas": "アメリカ",
   "regionAsia": "アジア",
