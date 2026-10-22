@@ -83,8 +83,8 @@ class StamplyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             themeMode: state.themeMode,
-            theme: buildTheme(Brightness.light, reduceMotion: state.reduceEffects),
-            darkTheme: buildTheme(Brightness.dark, reduceMotion: state.reduceEffects),
+            theme: buildTheme(Brightness.light),
+            darkTheme: buildTheme(Brightness.dark),
             // On tablets and foldables keep the phone-style layout centered.
             builder: (context, child) => AppBackground(
               child: Center(

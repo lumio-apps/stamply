@@ -504,8 +504,6 @@
   "mapHint": "Tap a country to see its rule. Pinch to zoom.",
   "mapSmallNote": "Very small countries are not drawn. Find them in Explore.",
   "mapUnavailable": "The map is not available in this version.",
-  "reduceEffects": "Reduce effects",
-  "reduceEffectsHint": "No animations. Can feel smoother on older phones.",
   "regionAfrica": "Africa",
   "regionAmericas": "Americas",
   "regionAsia": "Asia",

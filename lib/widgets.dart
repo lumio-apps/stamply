@@ -142,10 +142,8 @@ class Neu {
   static List<BoxShadow> shadows(StamplyColors c, {double depth = 1}) => const [];
 }
 
-/// True when animations should not run: the phone asks for reduced motion or
-/// the user turned on "Reduce effects".
-bool motionOff(BuildContext context) =>
-    MediaQuery.of(context).disableAnimations || StamplyColors.of(context).reduceMotion;
+/// True when animations should not run: the phone asks for reduced motion.
+bool motionOff(BuildContext context) => MediaQuery.of(context).disableAnimations;
 
 /// Flat card with a thin border. With [inset] it uses the field color, which
 /// is used for rows inside a screen.
@@ -267,7 +265,7 @@ class _NeuButtonState extends State<NeuButton> {
 }
 
 /// Fades its child in once when the screen appears. Short and cheap; does
-/// nothing when the phone asks for reduced motion or "Reduce effects" is on.
+/// nothing when the phone asks for reduced motion.
 class Rise extends StatefulWidget {
   const Rise({super.key, required this.child, this.delay = Duration.zero});
 

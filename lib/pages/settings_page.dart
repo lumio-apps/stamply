@@ -141,13 +141,6 @@ class _SettingsPageState extends State<SettingsPage> {
             selected: {state.themeMode},
             onSelectionChanged: (s) => state.setThemeMode(s.first),
           ),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            value: state.reduceEffects,
-            onChanged: state.setReduceEffects,
-            title: Text(l.reduceEffects),
-            subtitle: Text(l.reduceEffectsHint),
-          ),
           SectionLabel(l.language),
           CardBox(child: LanguageTile(state: state)),
           SectionLabel(l.myPassport),

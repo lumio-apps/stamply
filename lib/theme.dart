@@ -31,7 +31,6 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
     required this.field,
     required this.hero,
     required this.onHero,
-    this.reduceMotion = false,
   });
 
   /// Screen background.
@@ -52,9 +51,6 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
   final Color field;
   final Color hero;
   final Color onHero;
-
-  /// "Reduce effects": no animations.
-  final bool reduceMotion;
 
   static const light = StamplyColors(
     base: Color(0xFFF5F7FA),
@@ -91,7 +87,6 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
     Color? field,
     Color? hero,
     Color? onHero,
-    bool? reduceMotion,
   }) {
     return StamplyColors(
       base: base ?? this.base,
@@ -102,7 +97,6 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
       field: field ?? this.field,
       hero: hero ?? this.hero,
       onHero: onHero ?? this.onHero,
-      reduceMotion: reduceMotion ?? this.reduceMotion,
     );
   }
 
@@ -118,14 +112,13 @@ class StamplyColors extends ThemeExtension<StamplyColors> {
       field: Color.lerp(field, other.field, t)!,
       hero: Color.lerp(hero, other.hero, t)!,
       onHero: Color.lerp(onHero, other.onHero, t)!,
-      reduceMotion: t < 0.5 ? reduceMotion : other.reduceMotion,
     );
   }
 }
 
-ThemeData buildTheme(Brightness brightness, {bool reduceMotion = false}) {
+ThemeData buildTheme(Brightness brightness) {
   final dark = brightness == Brightness.dark;
-  final extra = (dark ? StamplyColors.dark : StamplyColors.light).copyWith(reduceMotion: reduceMotion);
+  final extra = dark ? StamplyColors.dark : StamplyColors.light;
   final ink = dark ? Brand.softPaper : Brand.softInk;
   final accent = dark ? Brand.stampDark : Brand.stamp;
 

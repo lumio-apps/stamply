@@ -82,7 +82,6 @@ No ads. No tracking. No account. Free and open source.
 ### 🎨 Look
 - **Lite design**: flat, light screens with thin borders, no heavy shadows, and a bottom bar with icons and labels. It is cheap to draw, so the app feels fast even on older phones
 - Works in **light and dark**, and respects the phone's reduce-motion setting
-- **Reduce effects** switch in Settings: turns off the small animations. Can feel smoother on older phones
 
 ### 🌐 20 languages
 - English, हिन्दी, বাংলা, ગુજરાતી, ಕನ್ನಡ, മലയാളം, मराठी, ਪੰਜਾਬੀ, தமிழ், తెలుగు, اردو, العربية, 中文, 日本語, Español, Français, Português, Русский, Bahasa Indonesia, Հայերեն
@@ -106,8 +105,8 @@ No ads. No tracking. No account. Free and open source.
 ### ⚙️ Settings
 - Passport expiry date (stays on your device), with optional **expiry reminders** 6, 3 and 1 month before (Android, set on the device with no extra service)
 - **Language** picker (20 languages)
-- Light, dark or system theme, and the **Reduce effects** switch
-- **Backup and restore**: copy or share your passports, saved checks, recent checks, trip, Schengen stays and settings as plain text, then restore them on another phone from the clipboard. Nothing is uploaded anywhere. Language and the expiry-reminder switch are not part of the backup
+- Light, dark or system theme
+- **Backup and restore**: copy or share your passports, saved checks, recent checks, trip, Schengen stays and theme as plain text, then restore them on another phone from the clipboard. Nothing is uploaded anywhere. Language and the expiry-reminder switch are not part of the backup
 - **Update data**: download the latest visa data with one tap
 - **Check for updates**: finds a newer APK on GitHub and installs it after you confirm
 

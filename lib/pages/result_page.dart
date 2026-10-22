@@ -369,7 +369,7 @@ class _Hero extends StatelessWidget {
 }
 
 /// Round passport stamp: a flat ring in the status color, tilted a little.
-/// It fades in once (unless animations are off).
+/// It fades in once (unless the phone asks for reduced motion).
 class _Stamp extends StatefulWidget {
   const _Stamp({required this.status});
 

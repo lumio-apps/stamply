@@ -1,0 +1,1 @@
+The Reduce effects switch is gone: the Lite look is already light. Animations still follow your phone reduce-motion setting.

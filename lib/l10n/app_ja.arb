@@ -198,8 +198,6 @@
   "mapHint": "国をタップするとルールが表示されます。ピンチで拡大できます。",
   "mapSmallNote": "ごく小さな国は描かれていません。「探索」で探してください。",
   "mapUnavailable": "このバージョンでは地図を利用できません。",
-  "reduceEffects": "エフェクトを減らす",
-  "reduceEffectsHint": "アニメーションなし。古いスマホでより滑らかに動くことがあります。",
   "regionAfrica": "アフリカ",
   "regionAmericas": "アメリカ",
   "regionAsia": "アジア",
