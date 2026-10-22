@@ -23,6 +23,7 @@ No ads. No tracking. No account. Free and open source.
   <a href="#features">Features</a> ·
   <a href="#download">Download</a> ·
   <a href="#how-the-data-works">Data</a> ·
+  <a href="#roadmap">Roadmap</a> ·
   <a href="#privacy">Privacy</a> ·
   <a href="#translations">Translations</a> ·
   <a href="#build-from-source">Build</a>
@@ -30,7 +31,7 @@ No ads. No tracking. No account. Free and open source.
 
 ## Why Stamply
 
-- **Fast:** two taps and you see the rule for any passport and destination.
+- **Fast:** two taps and you see the rule for any passport and destination. The Lite design is flat and light, so it stays smooth even on older phones.
 - **Offline:** all data is inside the app. It works at the airport with no signal.
 - **Private:** no ads, no tracking, no account. Your passport and trips never leave your phone.
 - **Useful beyond one answer:** compare passports, plan a trip, track your Schengen 90/180 days, get passport-expiry reminders, and back up everything you saved.
@@ -126,6 +127,18 @@ python3 tool/build_data.py
 
 > [!IMPORTANT]
 > Stamply gives **general guidance only**. Visa rules change often. Always confirm with the embassy or the official government website of your destination before you travel.
+
+## Roadmap
+
+Planned next, in this order:
+
+1. **Schengen overstay warning**: a clear warning when a planned stay would go over 90 days in 180
+2. **Group check**: check one destination for several passports at once (family or friends)
+3. **Document checklist**: a tick-off list per trip (passport validity, return ticket, funds, e-Visa or ETA)
+4. **Schengen days on the home-screen widget**
+5. **Trip PDF**: rules, stays and checklist for a whole trip in one file
+
+Ideas and pull requests are welcome.
 
 ## Privacy
 
