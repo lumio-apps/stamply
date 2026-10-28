@@ -219,5 +219,19 @@
   "factCapital": "Столица",
   "factCurrency": "Валюта",
   "factCallingCode": "Телефонный код",
-  "factLanguages": "Языки"
+  "factLanguages": "Языки",
+  "factRate": "Курс обмена",
+  "rateShow": "Показать курс",
+  "rateRefresh": "Обновить курс",
+  "rateUnavailable": "Курс для этой валюты недоступен.",
+  "rateFailed": "Не удалось получить курс. Проверьте интернет и повторите попытку.",
+  "rateDate": "Курсы на {date}",
+  "officialLinkTitle": "Официальный сайт",
+  "officialLinkFor": "Сайт миграционной службы: {country}",
+  "linkOpenTitle": "Открыть сайт?",
+  "linkOpenBody": "Откроется {host} в вашем браузере. Stamply не управляет этим сайтом.",
+  "linkOpenGo": "Открыть",
+  "linkFailed": "Не удалось открыть сайт.",
+  "autoCheckSwitch": "Автоматически проверять новые визовые данные",
+  "autoCheckHint": "При открытии приложения, не чаще раза в сутки. По умолчанию выключено. Использует интернет."
 }

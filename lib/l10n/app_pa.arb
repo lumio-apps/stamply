@@ -219,5 +219,19 @@
   "factCapital": "ਰਾਜਧਾਨੀ",
   "factCurrency": "ਮੁਦਰਾ",
   "factCallingCode": "ਕਾਲਿੰਗ ਕੋਡ",
-  "factLanguages": "ਭਾਸ਼ਾਵਾਂ"
+  "factLanguages": "ਭਾਸ਼ਾਵਾਂ",
+  "factRate": "ਵਟਾਂਦਰਾ ਦਰ",
+  "rateShow": "ਵਟਾਂਦਰਾ ਦਰ ਦਿਖਾਓ",
+  "rateRefresh": "ਦਰ ਤਾਜ਼ਾ ਕਰੋ",
+  "rateUnavailable": "ਇਸ ਮੁਦਰਾ ਦੀ ਦਰ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
+  "rateFailed": "ਦਰ ਨਹੀਂ ਮਿਲ ਸਕੀ। ਇੰਟਰਨੈੱਟ ਜਾਂਚ ਕੇ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+  "rateDate": "{date} ਦੀਆਂ ਦਰਾਂ",
+  "officialLinkTitle": "ਸਰਕਾਰੀ ਵੈੱਬਸਾਈਟ",
+  "officialLinkFor": "{country} ਦੀ ਇਮੀਗ੍ਰੇਸ਼ਨ ਵੈੱਬਸਾਈਟ",
+  "linkOpenTitle": "ਵੈੱਬਸਾਈਟ ਖੋਲ੍ਹਣੀ ਹੈ?",
+  "linkOpenBody": "ਇਹ {host} ਨੂੰ ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਖੋਲ੍ਹੇਗਾ। ਉਸ ਵੈੱਬਸਾਈਟ ਉੱਤੇ Stamply ਦਾ ਕੋਈ ਕਾਬੂ ਨਹੀਂ।",
+  "linkOpenGo": "ਖੋਲ੍ਹੋ",
+  "linkFailed": "ਵੈੱਬਸਾਈਟ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕੀ।",
+  "autoCheckSwitch": "ਨਵਾਂ ਵੀਜ਼ਾ ਡੇਟਾ ਆਪਣੇ-ਆਪ ਜਾਂਚੋ",
+  "autoCheckHint": "ਐਪ ਖੁੱਲ੍ਹਣ ਤੇ, ਦਿਨ ਵਿੱਚ ਵੱਧ ਤੋਂ ਵੱਧ ਇੱਕ ਵਾਰ। ਡਿਫੌਲਟ ਵਜੋਂ ਬੰਦ। ਇੰਟਰਨੈੱਟ ਵਰਤਦਾ ਹੈ।"
 }

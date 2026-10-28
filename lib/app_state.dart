@@ -27,6 +27,8 @@ class AppState extends ChangeNotifier {
   static const _kTrip = 'trip';
   static const _kStays = 'schengen_stays';
   static const _kReminder = 'expiry_reminder';
+  static const _kAutoData = 'auto_data_check';
+  static const _kLastData = 'last_data_check';
   static const _maxRecent = 10;
 
   final SharedPreferences _prefs;
@@ -51,6 +53,9 @@ class AppState extends ChangeNotifier {
 
   /// Whether to remind the user before the passport expires (Android).
   bool expiryReminder = false;
+
+  /// Whether the app looks for new visa data when it opens (off by default).
+  bool autoDataCheck = false;
 
   /// Saved trip key → the rule the user last saw, to spot changes after data updates.
   Map<String, String> seen = {};
@@ -108,6 +113,7 @@ class AppState extends ChangeNotifier {
         .whereType<SchengenStay>()
         .toList();
     s.expiryReminder = prefs.getBool(_kReminder) ?? false;
+    s.autoDataCheck = prefs.getBool(_kAutoData) ?? false;
     s.themeMode = switch (prefs.getString(_kTheme)) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
@@ -274,6 +280,24 @@ class AppState extends ChangeNotifier {
   }
 
   void _saveStays() => _prefs.setStringList(_kStays, stays.map((s) => s.key).toList());
+
+  void setAutoDataCheck(bool on) {
+    autoDataCheck = on;
+    _prefs.setBool(_kAutoData, on);
+    notifyListeners();
+  }
+
+  /// True when the automatic check is on and none ran in the last 20 hours.
+  bool get autoDataCheckDue {
+    if (!autoDataCheck) return false;
+    final last = _prefs.getInt(_kLastData);
+    if (last == null) return true;
+    final age = DateTime.now().millisecondsSinceEpoch - last;
+    return age < 0 || age > const Duration(hours: 20).inMilliseconds;
+  }
+
+  void markDataChecked() =>
+      _prefs.setInt(_kLastData, DateTime.now().millisecondsSinceEpoch);
 
   void setExpiryReminder(bool on) {
     expiryReminder = on;

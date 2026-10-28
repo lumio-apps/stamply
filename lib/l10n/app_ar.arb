@@ -219,5 +219,19 @@
   "factCapital": "العاصمة",
   "factCurrency": "العملة",
   "factCallingCode": "رمز الاتصال",
-  "factLanguages": "اللغات"
+  "factLanguages": "اللغات",
+  "factRate": "سعر الصرف",
+  "rateShow": "عرض سعر الصرف",
+  "rateRefresh": "تحديث السعر",
+  "rateUnavailable": "لا يتوفر سعر لهذه العملة.",
+  "rateFailed": "تعذر الحصول على السعر. تحقق من الإنترنت وحاول مجددًا.",
+  "rateDate": "أسعار {date}",
+  "officialLinkTitle": "الموقع الرسمي",
+  "officialLinkFor": "موقع الهجرة في {country}",
+  "linkOpenTitle": "فتح الموقع؟",
+  "linkOpenBody": "سيفتح هذا {host} في المتصفح. لا يتحكم Stamply في ذلك الموقع.",
+  "linkOpenGo": "فتح",
+  "linkFailed": "تعذر فتح الموقع.",
+  "autoCheckSwitch": "التحقق تلقائيًا من بيانات التأشيرات الجديدة",
+  "autoCheckHint": "عند فتح التطبيق، مرة واحدة يوميًا كحد أقصى. متوقف افتراضيًا. يستخدم الإنترنت."
 }

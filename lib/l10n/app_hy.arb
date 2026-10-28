@@ -219,5 +219,19 @@
   "factCapital": "Մայրաքաղաք",
   "factCurrency": "Արժույթ",
   "factCallingCode": "Հեռախոսային կոդ",
-  "factLanguages": "Լեզուներ"
+  "factLanguages": "Լեզուներ",
+  "factRate": "Փոխարժեք",
+  "rateShow": "Ցույց տալ փոխարժեքը",
+  "rateRefresh": "Թարմացնել փոխարժեքը",
+  "rateUnavailable": "Այս արժույթի փոխարժեքը հասանելի չէ։",
+  "rateFailed": "Չհաջողվեց ստանալ փոխարժեքը։ Ստուգեք ինտերնետը և նորից փորձեք։",
+  "rateDate": "{date}-ի փոխարժեքներ",
+  "officialLinkTitle": "Պաշտոնական կայք",
+  "officialLinkFor": "{country}․ միգրացիոն կայք",
+  "linkOpenTitle": "Բացե՞լ կայքը",
+  "linkOpenBody": "Սա կբացի {host}-ը ձեր դիտարկիչում։ Stamply-ը չի վերահսկում այդ կայքը։",
+  "linkOpenGo": "Բացել",
+  "linkFailed": "Չհաջողվեց բացել կայքը։",
+  "autoCheckSwitch": "Ավտոմատ ստուգել վիզայի նոր տվյալները",
+  "autoCheckHint": "Հավելվածը բացելիս՝ օրը առավելագույնը մեկ անգամ։ Լռելյայն անջատված է։ Օգտագործում է ինտերնետ։"
 }

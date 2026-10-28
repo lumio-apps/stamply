@@ -219,5 +219,19 @@
   "factCapital": "राजधानी",
   "factCurrency": "मुद्रा",
   "factCallingCode": "कॉलिंग कोड",
-  "factLanguages": "भाषाएँ"
+  "factLanguages": "भाषाएँ",
+  "factRate": "विनिमय दर",
+  "rateShow": "विनिमय दर दिखाएँ",
+  "rateRefresh": "दर ताज़ा करें",
+  "rateUnavailable": "इस मुद्रा की दर उपलब्ध नहीं है।",
+  "rateFailed": "दर नहीं मिल सकी। इंटरनेट जाँचकर फिर कोशिश करें।",
+  "rateDate": "{date} की दरें",
+  "officialLinkTitle": "आधिकारिक वेबसाइट",
+  "officialLinkFor": "{country} की इमिग्रेशन वेबसाइट",
+  "linkOpenTitle": "वेबसाइट खोलें?",
+  "linkOpenBody": "यह {host} को आपके ब्राउज़र में खोलेगा। उस वेबसाइट पर Stamply का कोई नियंत्रण नहीं है।",
+  "linkOpenGo": "खोलें",
+  "linkFailed": "वेबसाइट नहीं खुल सकी।",
+  "autoCheckSwitch": "नया वीज़ा डेटा अपने आप जाँचें",
+  "autoCheckHint": "ऐप खुलने पर, दिन में अधिकतम एक बार। डिफ़ॉल्ट रूप से बंद। इंटरनेट का उपयोग करता है।"
 }

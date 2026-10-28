@@ -219,5 +219,19 @@
   "factCapital": "Capital",
   "factCurrency": "Moneda",
   "factCallingCode": "Prefijo telefónico",
-  "factLanguages": "Idiomas"
+  "factLanguages": "Idiomas",
+  "factRate": "Tipo de cambio",
+  "rateShow": "Mostrar tipo de cambio",
+  "rateRefresh": "Actualizar tipo",
+  "rateUnavailable": "No hay tipo de cambio para esta moneda.",
+  "rateFailed": "No se pudo obtener el tipo. Revisa tu internet e inténtalo de nuevo.",
+  "rateDate": "Tipos del {date}",
+  "officialLinkTitle": "Sitio web oficial",
+  "officialLinkFor": "Sitio de inmigración de {country}",
+  "linkOpenTitle": "¿Abrir el sitio web?",
+  "linkOpenBody": "Se abrirá {host} en tu navegador. Stamply no controla ese sitio web.",
+  "linkOpenGo": "Abrir",
+  "linkFailed": "No se pudo abrir el sitio web.",
+  "autoCheckSwitch": "Buscar datos de visados nuevos automáticamente",
+  "autoCheckHint": "Al abrir la app, como máximo una vez al día. Desactivado por defecto. Usa internet."
 }

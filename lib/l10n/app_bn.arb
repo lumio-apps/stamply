@@ -219,5 +219,19 @@
   "factCapital": "রাজধানী",
   "factCurrency": "মুদ্রা",
   "factCallingCode": "কলিং কোড",
-  "factLanguages": "ভাষা"
+  "factLanguages": "ভাষা",
+  "factRate": "বিনিময় হার",
+  "rateShow": "বিনিময় হার দেখান",
+  "rateRefresh": "হার রিফ্রেশ করুন",
+  "rateUnavailable": "এই মুদ্রার হার পাওয়া যায়নি।",
+  "rateFailed": "হার পাওয়া যায়নি। ইন্টারনেট দেখে আবার চেষ্টা করুন।",
+  "rateDate": "{date}-এর হার",
+  "officialLinkTitle": "অফিসিয়াল ওয়েবসাইট",
+  "officialLinkFor": "{country}-এর ইমিগ্রেশন ওয়েবসাইট",
+  "linkOpenTitle": "ওয়েবসাইট খুলবেন?",
+  "linkOpenBody": "এটি {host} আপনার ব্রাউজারে খুলবে। ওই ওয়েবসাইটের উপর Stamply-র কোনো নিয়ন্ত্রণ নেই।",
+  "linkOpenGo": "খুলুন",
+  "linkFailed": "ওয়েবসাইট খোলা যায়নি।",
+  "autoCheckSwitch": "নতুন ভিসা ডেটা নিজে থেকে দেখুন",
+  "autoCheckHint": "অ্যাপ খুললে, দিনে সর্বোচ্চ একবার। ডিফল্টভাবে বন্ধ। ইন্টারনেট ব্যবহার করে।"
 }

@@ -219,5 +219,19 @@
   "factCapital": "首都",
   "factCurrency": "货币",
   "factCallingCode": "电话区号",
-  "factLanguages": "语言"
+  "factLanguages": "语言",
+  "factRate": "汇率",
+  "rateShow": "显示汇率",
+  "rateRefresh": "刷新汇率",
+  "rateUnavailable": "此货币暂无汇率。",
+  "rateFailed": "无法获取汇率。请检查网络后重试。",
+  "rateDate": "{date}的汇率",
+  "officialLinkTitle": "官方网站",
+  "officialLinkFor": "{country}移民局网站",
+  "linkOpenTitle": "打开网站？",
+  "linkOpenBody": "这会在浏览器中打开 {host}。Stamply 不控制该网站。",
+  "linkOpenGo": "打开",
+  "linkFailed": "无法打开网站。",
+  "autoCheckSwitch": "自动检查新的签证数据",
+  "autoCheckHint": "打开应用时检查，每天最多一次。默认关闭。会使用网络。"
 }

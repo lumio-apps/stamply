@@ -122,6 +122,25 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _openShortcut();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _autoDataCheck());
+  }
+
+  /// If the user turned it on: looks for new visa data once a day, quietly.
+  Future<void> _autoDataCheck() async {
+    if (!mounted) return;
+    final scope = AppScope.of(context);
+    if (!scope.state.autoDataCheckDue) return;
+    final messenger = ScaffoldMessenger.of(context);
+    final l = context.l10n;
+    final result = await scope.repo.refresh();
+    if (result == DataRefreshResult.failed) return;
+    scope.state.markDataChecked();
+    if (result == DataRefreshResult.updated) {
+      scope.state.cleanUp(scope.repo.data);
+      if (mounted) {
+        messenger.showSnackBar(SnackBar(content: Text(l.dataUpdated(scope.repo.data.version))));
+      }
+    }
   }
 
   @override

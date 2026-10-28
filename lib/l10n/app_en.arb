@@ -532,5 +532,40 @@
   "factCapital": "Capital",
   "factCurrency": "Currency",
   "factCallingCode": "Calling code",
-  "factLanguages": "Languages"
+  "factLanguages": "Languages",
+  "factRate": "Exchange rate",
+  "rateShow": "Show exchange rate",
+  "rateRefresh": "Refresh rate",
+  "rateUnavailable": "No rate available for this currency.",
+  "rateFailed": "Could not get the rate. Check your internet and try again.",
+  "rateDate": "Rates of {date}",
+  "@rateDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "officialLinkTitle": "Official website",
+  "officialLinkFor": "Immigration website of {country}",
+  "@officialLinkFor": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "linkOpenTitle": "Open website?",
+  "linkOpenBody": "This opens {host} in your browser. Stamply does not control that website.",
+  "@linkOpenBody": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "linkOpenGo": "Open",
+  "linkFailed": "Could not open the website.",
+  "autoCheckSwitch": "Check for new visa data automatically",
+  "autoCheckHint": "When the app opens, at most once a day. Off by default. Uses the internet."
 }

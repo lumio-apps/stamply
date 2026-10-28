@@ -219,5 +219,19 @@
   "factCapital": "دارالحکومت",
   "factCurrency": "کرنسی",
   "factCallingCode": "کالنگ کوڈ",
-  "factLanguages": "زبانیں"
+  "factLanguages": "زبانیں",
+  "factRate": "شرحِ تبادلہ",
+  "rateShow": "شرحِ تبادلہ دکھائیں",
+  "rateRefresh": "شرح تازہ کریں",
+  "rateUnavailable": "اس کرنسی کی شرح دستیاب نہیں ہے۔",
+  "rateFailed": "شرح حاصل نہیں ہو سکی۔ انٹرنیٹ چیک کر کے دوبارہ کوشش کریں۔",
+  "rateDate": "{date} کی شرحیں",
+  "officialLinkTitle": "سرکاری ویب سائٹ",
+  "officialLinkFor": "{country} کی امیگریشن ویب سائٹ",
+  "linkOpenTitle": "ویب سائٹ کھولیں؟",
+  "linkOpenBody": "یہ {host} کو آپ کے براؤزر میں کھولے گا۔ اس ویب سائٹ پر Stamply کا کوئی اختیار نہیں۔",
+  "linkOpenGo": "کھولیں",
+  "linkFailed": "ویب سائٹ نہیں کھل سکی۔",
+  "autoCheckSwitch": "نیا ویزا ڈیٹا خود بخود چیک کریں",
+  "autoCheckHint": "ایپ کھلنے پر، دن میں زیادہ سے زیادہ ایک بار۔ پہلے سے بند ہے۔ انٹرنیٹ استعمال کرتا ہے۔"
 }

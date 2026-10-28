@@ -219,5 +219,19 @@
   "factCapital": "ರಾಜಧಾನಿ",
   "factCurrency": "ಕರೆನ್ಸಿ",
   "factCallingCode": "ಕರೆ ಕೋಡ್",
-  "factLanguages": "ಭಾಷೆಗಳು"
+  "factLanguages": "ಭಾಷೆಗಳು",
+  "factRate": "ವಿನಿಮಯ ದರ",
+  "rateShow": "ವಿನಿಮಯ ದರ ತೋರಿಸಿ",
+  "rateRefresh": "ದರ ರಿಫ್ರೆಶ್ ಮಾಡಿ",
+  "rateUnavailable": "ಈ ಕರೆನ್ಸಿಗೆ ದರ ಲಭ್ಯವಿಲ್ಲ.",
+  "rateFailed": "ದರ ಪಡೆಯಲಾಗಲಿಲ್ಲ. ಇಂಟರ್ನೆಟ್ ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+  "rateDate": "{date} ರ ದರಗಳು",
+  "officialLinkTitle": "ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್",
+  "officialLinkFor": "{country} ವಲಸೆ ವೆಬ್‌ಸೈಟ್",
+  "linkOpenTitle": "ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಬೇಕೆ?",
+  "linkOpenBody": "ಇದು {host} ಅನ್ನು ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ. ಆ ವೆಬ್‌ಸೈಟ್ ಮೇಲೆ Stamply ಗೆ ನಿಯಂತ್ರಣವಿಲ್ಲ.",
+  "linkOpenGo": "ತೆರೆಯಿರಿ",
+  "linkFailed": "ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಲಾಗಲಿಲ್ಲ.",
+  "autoCheckSwitch": "ಹೊಸ ವೀಸಾ ಡೇಟಾವನ್ನು ತಾನಾಗಿ ಪರಿಶೀಲಿಸಿ",
+  "autoCheckHint": "ಆ್ಯಪ್ ತೆರೆದಾಗ, ದಿನಕ್ಕೆ ಗರಿಷ್ಠ ಒಮ್ಮೆ. ಡೀಫಾಲ್ಟ್ ಆಗಿ ಆಫ್. ಇಂಟರ್ನೆಟ್ ಬಳಸುತ್ತದೆ."
 }

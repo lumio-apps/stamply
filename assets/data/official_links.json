@@ -1,0 +1,5 @@
+{
+  "schema": 1,
+  "note": "Only https links to government immigration or e-visa pages, each checked by hand. Add one line per country: \"AM\": \"https://...\"",
+  "links": {}
+}

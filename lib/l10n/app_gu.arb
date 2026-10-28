@@ -219,5 +219,19 @@
   "factCapital": "રાજધાની",
   "factCurrency": "ચલણ",
   "factCallingCode": "કૉલિંગ કોડ",
-  "factLanguages": "ભાષાઓ"
+  "factLanguages": "ભાષાઓ",
+  "factRate": "વિનિમય દર",
+  "rateShow": "વિનિમય દર બતાવો",
+  "rateRefresh": "દર તાજો કરો",
+  "rateUnavailable": "આ ચલણનો દર ઉપલબ્ધ નથી.",
+  "rateFailed": "દર મળી શક્યો નહીં. ઇન્ટરનેટ તપાસીને ફરી પ્રયાસ કરો.",
+  "rateDate": "{date}ના દર",
+  "officialLinkTitle": "સત્તાવાર વેબસાઇટ",
+  "officialLinkFor": "{country}ની ઇમિગ્રેશન વેબસાઇટ",
+  "linkOpenTitle": "વેબસાઇટ ખોલવી છે?",
+  "linkOpenBody": "આ {host} તમારા બ્રાઉઝરમાં ખોલશે. તે વેબસાઇટ પર Stamplyનું નિયંત્રણ નથી.",
+  "linkOpenGo": "ખોલો",
+  "linkFailed": "વેબસાઇટ ખૂલી શકી નહીં.",
+  "autoCheckSwitch": "નવો વિઝા ડેટા આપમેળે તપાસો",
+  "autoCheckHint": "એપ ખુલે ત્યારે, દિવસમાં વધુમાં વધુ એક વાર. ડિફૉલ્ટ રૂપે બંધ. ઇન્ટરનેટનો ઉપયોગ કરે છે."
 }

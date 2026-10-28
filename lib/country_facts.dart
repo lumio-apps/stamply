@@ -7,6 +7,7 @@ class CountryFact {
   const CountryFact({
     this.capital,
     this.currencies = const [],
+    this.currencyCodes = const [],
     this.callingCode,
     this.languages = const [],
   });
@@ -15,6 +16,9 @@ class CountryFact {
 
   /// For example "Indian Rupee (₹)".
   final List<String> currencies;
+
+  /// For example ["INR"], in the same order as [currencies].
+  final List<String> currencyCodes;
 
   /// For example "+91".
   final String? callingCode;
@@ -76,6 +80,10 @@ class CountryFacts {
         for (final c in (row['cur'] as List<dynamic>? ?? const []))
           if (_currencies[c] != null)
             _currencyText(_currencies[c]![0] as String, _currencies[c]![1] as String),
+      ],
+      currencyCodes: [
+        for (final c in (row['cur'] as List<dynamic>? ?? const []))
+          if (_currencies[c] != null) c as String,
       ],
       callingCode: tel == null ? null : _callingCode(tel),
       languages: [

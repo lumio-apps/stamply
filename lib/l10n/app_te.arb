@@ -219,5 +219,19 @@
   "factCapital": "రాజధాని",
   "factCurrency": "కరెన్సీ",
   "factCallingCode": "కాలింగ్ కోడ్",
-  "factLanguages": "భాషలు"
+  "factLanguages": "భాషలు",
+  "factRate": "మార్పిడి రేటు",
+  "rateShow": "మార్పిడి రేటు చూపించు",
+  "rateRefresh": "రేటు రిఫ్రెష్ చేయి",
+  "rateUnavailable": "ఈ కరెన్సీకి రేటు అందుబాటులో లేదు.",
+  "rateFailed": "రేటు పొందలేకపోయాం. ఇంటర్నెట్ చూసి మళ్లీ ప్రయత్నించండి.",
+  "rateDate": "{date} నాటి రేట్లు",
+  "officialLinkTitle": "అధికారిక వెబ్‌సైట్",
+  "officialLinkFor": "{country} ఇమిగ్రేషన్ వెబ్‌సైట్",
+  "linkOpenTitle": "వెబ్‌సైట్ తెరవాలా?",
+  "linkOpenBody": "ఇది {host} ను మీ బ్రౌజర్‌లో తెరుస్తుంది. ఆ వెబ్‌సైట్‌ను Stamply నియంత్రించదు.",
+  "linkOpenGo": "తెరువు",
+  "linkFailed": "వెబ్‌సైట్ తెరవలేకపోయాం.",
+  "autoCheckSwitch": "కొత్త వీసా డేటాను ఆటోమేటిక్‌గా తనిఖీ చేయి",
+  "autoCheckHint": "యాప్ తెరిచినప్పుడు, రోజుకు గరిష్టంగా ఒకసారి. డిఫాల్ట్‌గా ఆఫ్. ఇంటర్నెట్ వాడుతుంది."
 }

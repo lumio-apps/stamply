@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Used only when the user taps "Update data" or "Check for updates" -->
+    <!-- Used only when the user taps "Update data", "Check for updates" or "Refresh" on an exchange rate, or turns on the automatic data check -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Install a downloaded update after the user confirms (GitHub APK) -->
@@ -61,6 +61,11 @@
         </provider>
     </application>
     <queries>
+        <!-- Open an official government website in the browser (asks first) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
+        </intent>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>

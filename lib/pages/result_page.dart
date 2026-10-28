@@ -4,12 +4,16 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../app_state.dart';
 import '../country_facts.dart';
+import '../exchange_rates.dart';
 import '../l10n/l10n.dart';
 import '../models.dart';
+import '../official_links.dart';
 import '../passport_validity.dart';
 import '../share.dart';
 import '../status_text.dart';
@@ -243,7 +247,8 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
           ],
-          _FactsSection(code: check.destination, name: to),
+          _FactsSection(code: check.destination, passport: check.passport, name: to),
+          _OfficialLinkSection(code: check.destination, name: to),
           const SizedBox(height: 16),
           _Disclaimer(version: data.version),
         ],
@@ -466,12 +471,13 @@ class _StampState extends State<_Stamp> with SingleTickerProviderStateMixin {
   }
 }
 
-/// "About (country)": capital, currency, calling code and languages.
-/// Shown only when the facts are available.
+/// "About (country)": capital, currency, calling code and languages, plus an
+/// exchange rate the user can refresh. Shown only when the facts are available.
 class _FactsSection extends StatelessWidget {
-  const _FactsSection({required this.code, required this.name});
+  const _FactsSection({required this.code, required this.passport, required this.name});
 
   final String code;
+  final String passport;
   final String name;
 
   @override
@@ -481,8 +487,10 @@ class _FactsSection extends StatelessWidget {
     return FutureBuilder<CountryFacts>(
       future: CountryFacts.load(),
       builder: (context, snapshot) {
-        final fact = snapshot.data?.of(code);
+        final facts = snapshot.data;
+        final fact = facts?.of(code);
         if (fact == null || fact.isEmpty) return const SizedBox.shrink();
+        final home = facts?.of(passport)?.currencyCodes;
         final rows = <(String, String)>[
           if (fact.capital != null) (l.factCapital, fact.capital!),
           if (fact.currencies.isNotEmpty) (l.factCurrency, fact.currencies.join(', ')),
@@ -519,7 +527,175 @@ class _FactsSection extends StatelessWidget {
                       ),
                     ),
                   ],
+                  if (fact.currencyCodes.isNotEmpty) ...[
+                    Divider(height: 1, color: extra.divider),
+                    _RatesBlock(
+                      destination: fact.currencyCodes,
+                      home: (home != null && home.isNotEmpty) ? home.first : null,
+                    ),
+                  ],
                 ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// Exchange rate lines. Nothing is downloaded until the user taps the button;
+/// the last download is kept so it also shows offline, with its date.
+class _RatesBlock extends StatefulWidget {
+  const _RatesBlock({required this.destination, required this.home});
+
+  final List<String> destination;
+  final String? home;
+
+  @override
+  State<_RatesBlock> createState() => _RatesBlockState();
+}
+
+class _RatesBlockState extends State<_RatesBlock> {
+  ExchangeRates? _rates;
+  bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    ExchangeRates.cached().then((r) {
+      if (mounted && r != null) setState(() => _rates = r);
+    });
+  }
+
+  Future<void> _refresh() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final failed = context.l10n.rateFailed;
+    setState(() => _loading = true);
+    final fresh = await ExchangeRates.fetch();
+    if (!mounted) return;
+    setState(() {
+      _loading = false;
+      if (fresh != null) _rates = fresh;
+    });
+    if (fresh == null) messenger.showSnackBar(SnackBar(content: Text(failed)));
+  }
+
+  static String _number(double v, String locale) {
+    final digits = v >= 100 ? 1 : (v >= 1 ? 2 : (v >= 0.01 ? 4 : 6));
+    try {
+      return NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: digits).format(v);
+    } catch (_) {
+      return v.toStringAsFixed(digits);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final extra = StamplyColors.of(context);
+    final locale = Localizations.localeOf(context).toString();
+    final rates = _rates;
+
+    final lines = <String>[];
+    if (rates != null) {
+      final bases = <String>{'USD', if (widget.home != null) widget.home!};
+      for (final to in widget.destination) {
+        for (final from in bases) {
+          if (from == to) continue;
+          final r = rates.rate(from, to);
+          if (r != null) lines.add('1 $from = ${_number(r, locale)} $to');
+        }
+      }
+    }
+
+    final button = TextButton.icon(
+      onPressed: _loading ? null : _refresh,
+      icon: _loading
+          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+          : const Icon(Icons.refresh, size: 18),
+      label: Text(rates == null ? l.rateShow : l.rateRefresh),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (rates != null) ...[
+            Text(l.factRate, style: TextStyle(fontSize: 14, color: extra.muted)),
+            const SizedBox(height: 6),
+            if (lines.isEmpty)
+              Text(l.rateUnavailable, style: TextStyle(fontSize: 14, color: extra.muted))
+            else
+              for (final line in lines)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2),
+                  child: Text(line,
+                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                ),
+            if (rates.date.isNotEmpty)
+              Text(l.rateDate(rates.date), style: TextStyle(fontSize: 12, color: extra.muted)),
+          ],
+          Align(alignment: AlignmentDirectional.centerStart, child: button),
+        ],
+      ),
+    );
+  }
+}
+
+/// Link to the official government website of the destination, when the app
+/// has a hand-checked one. Asks before leaving the app.
+class _OfficialLinkSection extends StatelessWidget {
+  const _OfficialLinkSection({required this.code, required this.name});
+
+  final String code;
+  final String name;
+
+  Future<void> _open(BuildContext context, Uri uri) async {
+    final l = context.l10n;
+    final messenger = ScaffoldMessenger.of(context);
+    final go = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l.linkOpenTitle),
+        content: Text(l.linkOpenBody(uri.host)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(MaterialLocalizations.of(ctx).cancelButtonLabel),
+          ),
+          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: Text(l.linkOpenGo)),
+        ],
+      ),
+    );
+    if (go != true) return;
+    var opened = false;
+    try {
+      opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (_) {}
+    if (!opened) messenger.showSnackBar(SnackBar(content: Text(l.linkFailed)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return FutureBuilder<OfficialLinks>(
+      future: OfficialLinks.load(),
+      builder: (context, snapshot) {
+        final uri = snapshot.data?.of(code);
+        if (uri == null) return const SizedBox.shrink();
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionLabel(l.officialLinkTitle),
+            CardBox(
+              child: ListTile(
+                leading: const Icon(Icons.open_in_new),
+                title: Text(l.officialLinkFor(name),
+                    style: const TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: Text(uri.host),
+                onTap: () => _open(context, uri),
               ),
             ),
           ],

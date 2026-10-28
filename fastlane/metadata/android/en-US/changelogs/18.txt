@@ -1,0 +1,1 @@
+Country facts now show a live exchange rate you refresh yourself (kept offline with its date). New optional switch to check for new visa data when the app opens. Official website links open only after you confirm.

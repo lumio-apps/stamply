@@ -96,6 +96,9 @@ No ads. No tracking. No account. Free and open source.
 - Filter by status: Visa-free, Visa on arrival, ETA, e-Visa, Visa required
 - Filter by **region**: Africa, Americas, Asia, Europe or Oceania
 - **Country facts**: on every result, the capital, currency, calling code and languages of the destination, offline
+- **Exchange rate**: tap Refresh to see `1 USD = …` (and your passport currency) for the destination; the last rate is kept offline with its date
+- **Auto data check** (optional, off by default): looks for new visa data when the app opens, at most once a day
+- **Official website link**: opens a hand-checked government page, only after you confirm
 - **Surprise me**: picks a random place you can visit without applying for a visa first (within the region you chose)
 - Search any destination
 
@@ -141,6 +144,10 @@ Planned next, in this order (emergency number, plug type and driving side are no
 
 Ideas and pull requests are welcome.
 
+### Adding an official link
+
+Open [`assets/data/official_links.json`](assets/data/official_links.json) and add one line per country, for example `"AM": "https://…"`. Rules: `https` only, a government immigration or e-visa page, and you opened it yourself and it is the real official site. The app drops anything that is not `https`. Links are never taken from the visa data or from the internet at run time.
+
 ## Privacy
 
 - ❌ No ads
@@ -148,7 +155,7 @@ Ideas and pull requests are welcome.
 - ❌ No account or sign-in
 - ✅ Your passport, saved trips and recent checks stay on your device
 - ✅ Backups are plain text that only you copy or share
-- 🌐 Internet is used **only** when you tap **Update data** or **Check for updates**
+- 🌐 Internet is used **only** when you tap **Update data**, **Check for updates** or **Refresh** on an exchange rate, or if you turn on the optional automatic data check (off by default). Nothing about you is sent; the server only sees your IP address, like any website
 
 Full policy: [PRIVACY.md](PRIVACY.md)
 
@@ -206,8 +213,11 @@ lib/
 tool/build_data.py          Builds visa_data.json from Passport Index Data
 tool/build_map.py           Builds world_map.json from Natural Earth (run once, needs internet)
 tool/build_facts.py         Builds country_facts.json from annexare/Countries (run once)
+lib/exchange_rates.dart     Downloads and keeps the exchange rates (tap only)
+lib/official_links.dart     Reads the hand-checked government links
 assets/data/country_names.json  Country names in 19 languages (Unicode CLDR)
 assets/data/country_facts.json  Capital, currency, calling code, languages (annexare/Countries)
+assets/data/official_links.json Hand-checked government links, one per country (https only)
 ```
 
 ## FAQ
@@ -235,6 +245,7 @@ Yes. See [Translations](#translations).
 - Visa data: [Passport Index Data](https://github.com/imorte/passport-index-data), MIT License
 - Country names: [Unicode CLDR](https://cldr.unicode.org/), Unicode License v3
 - Country facts: [annexare/Countries](https://github.com/annexare/Countries), MIT License
+- Exchange rates: [fawazahmed0/exchange-api](https://github.com/fawazahmed0/exchange-api), CC0
 - Map shapes: [Natural Earth](https://www.naturalearthdata.com/), public domain
 - Fonts: [Space Grotesk](https://github.com/floriankarsten/space-grotesk) and [IBM Plex Sans](https://github.com/IBM/plex), SIL Open Font License
 

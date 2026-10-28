@@ -219,5 +219,19 @@
   "factCapital": "首都",
   "factCurrency": "通貨",
   "factCallingCode": "国番号",
-  "factLanguages": "言語"
+  "factLanguages": "言語",
+  "factRate": "為替レート",
+  "rateShow": "為替レートを表示",
+  "rateRefresh": "レートを更新",
+  "rateUnavailable": "この通貨のレートはありません。",
+  "rateFailed": "レートを取得できませんでした。通信状況を確認して、もう一度お試しください。",
+  "rateDate": "{date}のレート",
+  "officialLinkTitle": "公式サイト",
+  "officialLinkFor": "{country}の入国管理サイト",
+  "linkOpenTitle": "サイトを開きますか？",
+  "linkOpenBody": "{host}をブラウザで開きます。Stamplyはそのサイトを管理していません。",
+  "linkOpenGo": "開く",
+  "linkFailed": "サイトを開けませんでした。",
+  "autoCheckSwitch": "新しいビザデータを自動で確認",
+  "autoCheckHint": "アプリを開いたときに、1日1回まで確認します。初期設定ではオフ。インターネットを使用します。"
 }

@@ -219,5 +219,19 @@
   "factCapital": "Ibu kota",
   "factCurrency": "Mata uang",
   "factCallingCode": "Kode telepon",
-  "factLanguages": "Bahasa"
+  "factLanguages": "Bahasa",
+  "factRate": "Kurs",
+  "rateShow": "Tampilkan kurs",
+  "rateRefresh": "Segarkan kurs",
+  "rateUnavailable": "Kurs untuk mata uang ini tidak tersedia.",
+  "rateFailed": "Tidak bisa mendapatkan kurs. Periksa internet lalu coba lagi.",
+  "rateDate": "Kurs tanggal {date}",
+  "officialLinkTitle": "Situs resmi",
+  "officialLinkFor": "Situs imigrasi {country}",
+  "linkOpenTitle": "Buka situs web?",
+  "linkOpenBody": "Ini akan membuka {host} di browser Anda. Stamply tidak mengendalikan situs itu.",
+  "linkOpenGo": "Buka",
+  "linkFailed": "Tidak bisa membuka situs web.",
+  "autoCheckSwitch": "Cek data visa baru secara otomatis",
+  "autoCheckHint": "Saat aplikasi dibuka, paling banyak sekali sehari. Mati secara default. Memakai internet."
 }
