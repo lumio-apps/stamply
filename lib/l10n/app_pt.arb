@@ -214,5 +214,10 @@
   "backupRestoreBody": "Seus passaportes, verificações salvas, viagem e estadias atuais serão substituídos pela cópia copiada.",
   "backupReplace": "Substituir",
   "backupRestored": "Cópia restaurada.",
-  "backupInvalid": "A área de transferência não contém uma cópia de segurança válida do Stamply."
+  "backupInvalid": "A área de transferência não contém uma cópia de segurança válida do Stamply.",
+  "factsTitle": "Sobre {country}",
+  "factCapital": "Capital",
+  "factCurrency": "Moeda",
+  "factCallingCode": "Código de chamada",
+  "factLanguages": "Idiomas"
 }

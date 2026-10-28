@@ -1,7 +1,7 @@
 name: stamply
 description: Stamply – Visa Checker. Offline visa requirements for 199 passports.
 publish_to: "none"
-version: 0.14.1+16
+version: 0.15.0+17
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -32,6 +32,8 @@ flutter:
     - assets/data/visa_data.json
     - assets/data/country_names.json
     - assets/data/world_map.json
+    - assets/data/country_facts.json
+    - assets/data/LICENSE-countries.txt
     - assets/data/LICENSE-data.txt
     - assets/data/LICENSE-cldr.txt
     - assets/fonts/OFL-SpaceGrotesk.txt

@@ -214,5 +214,10 @@
   "backupRestoreBody": "現在のパスポート、保存したチェック、旅行、滞在はコピーしたバックアップに置き換わります。",
   "backupReplace": "置き換える",
   "backupRestored": "バックアップを復元しました。",
-  "backupInvalid": "クリップボードに有効な Stamply のバックアップがありません。"
+  "backupInvalid": "クリップボードに有効な Stamply のバックアップがありません。",
+  "factsTitle": "{country}について",
+  "factCapital": "首都",
+  "factCurrency": "通貨",
+  "factCallingCode": "国番号",
+  "factLanguages": "言語"
 }

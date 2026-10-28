@@ -1,0 +1,1 @@
+Result screen now shows country facts: capital, currency, calling code and languages. Works offline. Also includes the Lite look and backup improvements.

@@ -214,5 +214,10 @@
   "backupRestoreBody": "ನಿಮ್ಮ ಈಗಿನ ಪಾಸ್‌ಪೋರ್ಟ್‌ಗಳು, ಉಳಿಸಿದ ಪರಿಶೀಲನೆಗಳು, ಪ್ರವಾಸ ಮತ್ತು ವಾಸ್ತವ್ಯಗಳು ನಕಲಿಸಿದ ಬ್ಯಾಕಪ್‌ನಿಂದ ಬದಲಾಗುತ್ತವೆ.",
   "backupReplace": "ಬದಲಿಸಿ",
   "backupRestored": "ಬ್ಯಾಕಪ್ ಮರುಸ್ಥಾಪಿತವಾಗಿದೆ.",
-  "backupInvalid": "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ ಮಾನ್ಯ Stamply ಬ್ಯಾಕಪ್ ಇಲ್ಲ."
+  "backupInvalid": "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ ಮಾನ್ಯ Stamply ಬ್ಯಾಕಪ್ ಇಲ್ಲ.",
+  "factsTitle": "{country} ಬಗ್ಗೆ",
+  "factCapital": "ರಾಜಧಾನಿ",
+  "factCurrency": "ಕರೆನ್ಸಿ",
+  "factCallingCode": "ಕರೆ ಕೋಡ್",
+  "factLanguages": "ಭಾಷೆಗಳು"
 }

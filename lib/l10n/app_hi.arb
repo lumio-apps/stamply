@@ -214,5 +214,10 @@
   "backupRestoreBody": "आपके मौजूदा पासपोर्ट, सेव की गई जाँचें, ट्रिप और ठहराव कॉपी किए गए बैकअप से बदल दिए जाएँगे।",
   "backupReplace": "बदलें",
   "backupRestored": "बैकअप रिस्टोर हो गया।",
-  "backupInvalid": "क्लिपबोर्ड में मान्य Stamply बैकअप नहीं है।"
+  "backupInvalid": "क्लिपबोर्ड में मान्य Stamply बैकअप नहीं है।",
+  "factsTitle": "{country} के बारे में",
+  "factCapital": "राजधानी",
+  "factCurrency": "मुद्रा",
+  "factCallingCode": "कॉलिंग कोड",
+  "factLanguages": "भाषाएँ"
 }

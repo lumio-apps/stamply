@@ -214,5 +214,10 @@
   "backupRestoreBody": "سيتم استبدال جوازاتك وعمليات التحقق المحفوظة ورحلتك وإقاماتك الحالية بالنسخة المنسوخة.",
   "backupReplace": "استبدال",
   "backupRestored": "تمت استعادة النسخة الاحتياطية.",
-  "backupInvalid": "الحافظة لا تحتوي على نسخة احتياطية صالحة من Stamply."
+  "backupInvalid": "الحافظة لا تحتوي على نسخة احتياطية صالحة من Stamply.",
+  "factsTitle": "عن {country}",
+  "factCapital": "العاصمة",
+  "factCurrency": "العملة",
+  "factCallingCode": "رمز الاتصال",
+  "factLanguages": "اللغات"
 }

@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../app_state.dart';
+import '../country_facts.dart';
 import '../l10n/l10n.dart';
 import '../models.dart';
 import '../passport_validity.dart';
@@ -242,6 +243,7 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
           ],
+          _FactsSection(code: check.destination, name: to),
           const SizedBox(height: 16),
           _Disclaimer(version: data.version),
         ],
@@ -460,6 +462,69 @@ class _StampState extends State<_Stamp> with SingleTickerProviderStateMixin {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// "About (country)": capital, currency, calling code and languages.
+/// Shown only when the facts are available.
+class _FactsSection extends StatelessWidget {
+  const _FactsSection({required this.code, required this.name});
+
+  final String code;
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final extra = StamplyColors.of(context);
+    return FutureBuilder<CountryFacts>(
+      future: CountryFacts.load(),
+      builder: (context, snapshot) {
+        final fact = snapshot.data?.of(code);
+        if (fact == null || fact.isEmpty) return const SizedBox.shrink();
+        final rows = <(String, String)>[
+          if (fact.capital != null) (l.factCapital, fact.capital!),
+          if (fact.currencies.isNotEmpty) (l.factCurrency, fact.currencies.join(', ')),
+          if (fact.callingCode != null) (l.factCallingCode, fact.callingCode!),
+          if (fact.languages.isNotEmpty) (l.factLanguages, fact.languages.join(', ')),
+        ];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionLabel(l.factsTitle(name)),
+            CardBox(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: Column(
+                children: [
+                  for (final (i, row) in rows.indexed) ...[
+                    if (i > 0) Divider(height: 1, color: extra.divider),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Text(row.$1, style: TextStyle(fontSize: 14, color: extra.muted)),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              row.$2,
+                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -214,5 +214,10 @@
   "backupRestoreBody": "আপনার বর্তমান পাসপোর্ট, সেভ করা চেক, ট্রিপ ও অবস্থান কপি করা ব্যাকআপ দিয়ে বদলে যাবে।",
   "backupReplace": "বদলান",
   "backupRestored": "ব্যাকআপ রিস্টোর হয়েছে।",
-  "backupInvalid": "ক্লিপবোর্ডে বৈধ Stamply ব্যাকআপ নেই।"
+  "backupInvalid": "ক্লিপবোর্ডে বৈধ Stamply ব্যাকআপ নেই।",
+  "factsTitle": "{country} সম্পর্কে",
+  "factCapital": "রাজধানী",
+  "factCurrency": "মুদ্রা",
+  "factCallingCode": "কলিং কোড",
+  "factLanguages": "ভাষা"
 }

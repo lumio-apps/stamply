@@ -214,5 +214,10 @@
   "backupRestoreBody": "మీ ప్రస్తుత పాస్‌పోర్ట్‌లు, సేవ్ చేసిన తనిఖీలు, ట్రిప్ మరియు బసలు కాపీ చేసిన బ్యాకప్‌తో భర్తీ అవుతాయి.",
   "backupReplace": "భర్తీ చేయండి",
   "backupRestored": "బ్యాకప్ పునరుద్ధరించబడింది.",
-  "backupInvalid": "క్లిప్‌బోర్డ్‌లో చెల్లుబాటు అయ్యే Stamply బ్యాకప్ లేదు."
+  "backupInvalid": "క్లిప్‌బోర్డ్‌లో చెల్లుబాటు అయ్యే Stamply బ్యాకప్ లేదు.",
+  "factsTitle": "{country} గురించి",
+  "factCapital": "రాజధాని",
+  "factCurrency": "కరెన్సీ",
+  "factCallingCode": "కాలింగ్ కోడ్",
+  "factLanguages": "భాషలు"
 }

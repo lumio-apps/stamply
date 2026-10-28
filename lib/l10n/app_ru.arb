@@ -214,5 +214,10 @@
   "backupRestoreBody": "Текущие паспорта, сохранённые проверки, поездка и пребывания будут заменены скопированной копией.",
   "backupReplace": "Заменить",
   "backupRestored": "Копия восстановлена.",
-  "backupInvalid": "В буфере обмена нет действительной резервной копии Stamply."
+  "backupInvalid": "В буфере обмена нет действительной резервной копии Stamply.",
+  "factsTitle": "О стране: {country}",
+  "factCapital": "Столица",
+  "factCurrency": "Валюта",
+  "factCallingCode": "Телефонный код",
+  "factLanguages": "Языки"
 }

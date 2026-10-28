@@ -95,6 +95,7 @@ No ads. No tracking. No account. Free and open source.
 - See how many countries you can visit **without a visa in advance**
 - Filter by status: Visa-free, Visa on arrival, ETA, e-Visa, Visa required
 - Filter by **region**: Africa, Americas, Asia, Europe or Oceania
+- **Country facts**: on every result, the capital, currency, calling code and languages of the destination, offline
 - **Surprise me**: picks a random place you can visit without applying for a visa first (within the region you chose)
 - Search any destination
 
@@ -130,7 +131,7 @@ python3 tool/build_data.py
 
 ## Roadmap
 
-Planned next, in this order:
+Planned next, in this order (emergency number, plug type and driving side are not in Country facts yet, because no reliable open source was found):
 
 1. **Schengen overstay warning**: a clear warning when a planned stay would go over 90 days in 180
 2. **Group check**: check one destination for several passports at once (family or friends)
@@ -204,7 +205,9 @@ lib/
 └── pages/                  Check, Explore, Saved, Settings, Result, Trip, Schengen, Ranking, Compare
 tool/build_data.py          Builds visa_data.json from Passport Index Data
 tool/build_map.py           Builds world_map.json from Natural Earth (run once, needs internet)
+tool/build_facts.py         Builds country_facts.json from annexare/Countries (run once)
 assets/data/country_names.json  Country names in 19 languages (Unicode CLDR)
+assets/data/country_facts.json  Capital, currency, calling code, languages (annexare/Countries)
 ```
 
 ## FAQ
@@ -231,6 +234,7 @@ Yes. See [Translations](#translations).
 
 - Visa data: [Passport Index Data](https://github.com/imorte/passport-index-data), MIT License
 - Country names: [Unicode CLDR](https://cldr.unicode.org/), Unicode License v3
+- Country facts: [annexare/Countries](https://github.com/annexare/Countries), MIT License
 - Map shapes: [Natural Earth](https://www.naturalearthdata.com/), public domain
 - Fonts: [Space Grotesk](https://github.com/floriankarsten/space-grotesk) and [IBM Plex Sans](https://github.com/IBM/plex), SIL Open Font License
 

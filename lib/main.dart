@@ -42,6 +42,10 @@ void _registerLicenses() {
       await rootBundle.loadString('assets/data/LICENSE-cldr.txt'),
     );
     yield LicenseEntryWithLineBreaks(
+      ['Annexare Countries (capitals, currencies, calling codes, languages)'],
+      await rootBundle.loadString('assets/data/LICENSE-countries.txt'),
+    );
+    yield LicenseEntryWithLineBreaks(
       ['Space Grotesk'],
       await rootBundle.loadString('assets/fonts/OFL-SpaceGrotesk.txt'),
     );

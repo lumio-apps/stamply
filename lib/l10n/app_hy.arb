@@ -214,5 +214,10 @@
   "backupRestoreBody": "Ձեր ընթացիկ անձնագրերը, պահված ստուգումները, ուղևորությունը և մնալու ժամկետները կփոխարինվեն պատճենված պահուստով։",
   "backupReplace": "Փոխարինել",
   "backupRestored": "Պահուստը վերականգնվեց։",
-  "backupInvalid": "Clipboard-ում վավեր Stamply պահուստ չկա։"
+  "backupInvalid": "Clipboard-ում վավեր Stamply պահուստ չկա։",
+  "factsTitle": "Տեղեկություն՝ {country}",
+  "factCapital": "Մայրաքաղաք",
+  "factCurrency": "Արժույթ",
+  "factCallingCode": "Հեռախոսային կոդ",
+  "factLanguages": "Լեզուներ"
 }

@@ -520,5 +520,17 @@
   "backupRestoreBody": "Your current passports, saved checks, trip and stays will be replaced by the copied backup.",
   "backupReplace": "Replace",
   "backupRestored": "Backup restored.",
-  "backupInvalid": "The clipboard does not contain a valid Stamply backup."
+  "backupInvalid": "The clipboard does not contain a valid Stamply backup.",
+  "factsTitle": "About {country}",
+  "@factsTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "factCapital": "Capital",
+  "factCurrency": "Currency",
+  "factCallingCode": "Calling code",
+  "factLanguages": "Languages"
 }

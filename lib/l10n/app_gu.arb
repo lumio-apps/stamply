@@ -214,5 +214,10 @@
   "backupRestoreBody": "તમારા હાલના પાસપોર્ટ, સેવ કરેલી તપાસ, ટ્રિપ અને રોકાણ કૉપિ કરેલા બેકઅપથી બદલાઈ જશે.",
   "backupReplace": "બદલો",
   "backupRestored": "બેકઅપ રિસ્ટોર થયું.",
-  "backupInvalid": "ક્લિપબોર્ડમાં માન્ય Stamply બેકઅપ નથી."
+  "backupInvalid": "ક્લિપબોર્ડમાં માન્ય Stamply બેકઅપ નથી.",
+  "factsTitle": "{country} વિશે",
+  "factCapital": "રાજધાની",
+  "factCurrency": "ચલણ",
+  "factCallingCode": "કૉલિંગ કોડ",
+  "factLanguages": "ભાષાઓ"
 }

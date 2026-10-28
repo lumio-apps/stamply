@@ -214,5 +214,10 @@
   "backupRestoreBody": "آپ کے موجودہ پاسپورٹ، محفوظ کردہ جانچیں، سفر اور قیام کاپی کیے گئے بیک اپ سے بدل دیے جائیں گے۔",
   "backupReplace": "بدلیں",
   "backupRestored": "بیک اپ بحال ہو گیا۔",
-  "backupInvalid": "کلپ بورڈ میں درست Stamply بیک اپ نہیں ہے۔"
+  "backupInvalid": "کلپ بورڈ میں درست Stamply بیک اپ نہیں ہے۔",
+  "factsTitle": "{country} کے بارے میں",
+  "factCapital": "دارالحکومت",
+  "factCurrency": "کرنسی",
+  "factCallingCode": "کالنگ کوڈ",
+  "factLanguages": "زبانیں"
 }

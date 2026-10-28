@@ -214,5 +214,10 @@
   "backupRestoreBody": "Paspor, pengecekan tersimpan, perjalanan, dan masa tinggal Anda saat ini akan diganti dengan cadangan yang disalin.",
   "backupReplace": "Ganti",
   "backupRestored": "Cadangan dipulihkan.",
-  "backupInvalid": "Papan klip tidak berisi cadangan Stamply yang valid."
+  "backupInvalid": "Papan klip tidak berisi cadangan Stamply yang valid.",
+  "factsTitle": "Tentang {country}",
+  "factCapital": "Ibu kota",
+  "factCurrency": "Mata uang",
+  "factCallingCode": "Kode telepon",
+  "factLanguages": "Bahasa"
 }

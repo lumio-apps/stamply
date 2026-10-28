@@ -214,5 +214,10 @@
   "backupRestoreBody": "Vos passeports, vérifications enregistrées, voyage et séjours actuels seront remplacés par la sauvegarde copiée.",
   "backupReplace": "Remplacer",
   "backupRestored": "Sauvegarde restaurée.",
-  "backupInvalid": "Le presse-papiers ne contient pas de sauvegarde Stamply valide."
+  "backupInvalid": "Le presse-papiers ne contient pas de sauvegarde Stamply valide.",
+  "factsTitle": "À propos : {country}",
+  "factCapital": "Capitale",
+  "factCurrency": "Monnaie",
+  "factCallingCode": "Indicatif téléphonique",
+  "factLanguages": "Langues"
 }

@@ -214,5 +214,10 @@
   "backupRestoreBody": "ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਪਾਸਪੋਰਟ, ਸੇਵ ਕੀਤੀਆਂ ਜਾਂਚਾਂ, ਟ੍ਰਿੱਪ ਅਤੇ ਠਹਿਰਾਅ ਕਾਪੀ ਕੀਤੇ ਬੈਕਅੱਪ ਨਾਲ ਬਦਲ ਦਿੱਤੇ ਜਾਣਗੇ।",
   "backupReplace": "ਬਦਲੋ",
   "backupRestored": "ਬੈਕਅੱਪ ਰੀਸਟੋਰ ਹੋ ਗਿਆ।",
-  "backupInvalid": "ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਵੈਧ Stamply ਬੈਕਅੱਪ ਨਹੀਂ ਹੈ।"
+  "backupInvalid": "ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਵੈਧ Stamply ਬੈਕਅੱਪ ਨਹੀਂ ਹੈ।",
+  "factsTitle": "{country} ਬਾਰੇ",
+  "factCapital": "ਰਾਜਧਾਨੀ",
+  "factCurrency": "ਮੁਦਰਾ",
+  "factCallingCode": "ਕਾਲਿੰਗ ਕੋਡ",
+  "factLanguages": "ਭਾਸ਼ਾਵਾਂ"
 }

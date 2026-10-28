@@ -214,5 +214,10 @@
   "backupRestoreBody": "Tus pasaportes, comprobaciones guardadas, viaje y estancias actuales se reemplazarán por la copia copiada.",
   "backupReplace": "Reemplazar",
   "backupRestored": "Copia restaurada.",
-  "backupInvalid": "El portapapeles no contiene una copia de seguridad válida de Stamply."
+  "backupInvalid": "El portapapeles no contiene una copia de seguridad válida de Stamply.",
+  "factsTitle": "Sobre {country}",
+  "factCapital": "Capital",
+  "factCurrency": "Moneda",
+  "factCallingCode": "Prefijo telefónico",
+  "factLanguages": "Idiomas"
 }

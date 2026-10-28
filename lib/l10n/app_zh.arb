@@ -214,5 +214,10 @@
   "backupRestoreBody": "当前的护照、已保存的查询、行程和停留记录将被复制的备份替换。",
   "backupReplace": "替换",
   "backupRestored": "备份已恢复。",
-  "backupInvalid": "剪贴板中没有有效的 Stamply 备份。"
+  "backupInvalid": "剪贴板中没有有效的 Stamply 备份。",
+  "factsTitle": "关于{country}",
+  "factCapital": "首都",
+  "factCurrency": "货币",
+  "factCallingCode": "电话区号",
+  "factLanguages": "语言"
 }
